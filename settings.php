@@ -9,11 +9,11 @@
   define('PROC_DIR','proc/');
   define('TRASH_DIR','trash/');
   define('FORMS_DIR','forms/');
-  define('RUN_DIR','run/'); 
+  define('RUN_DIR','run/');
   define('ALBUMS_DIR','albums/');
   define('ADMIN_DIR','admin/');
   define('WORKSPACE_DIR','tmp/');
-  define('SOFTWARE_DIR','bin/');
+  define('SOFTWARE_DIR','bun/');
 
   define('DIM_THUMB','186x186');
   define('DIM_MEDIUM','512x512');
