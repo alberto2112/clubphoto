@@ -1,0 +1,42 @@
+/* Card, Dialog */
+    .photo-card {
+      position: relative;
+      display: inline-block;
+      width: 186px;
+      /*vertical-align: top;*/
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+      margin:8px;
+      padding-top:186px;
+      
+      background-repeat: no-repeat;
+      background-position: top left;
+    }
+
+    .photo-tools{
+      float:left;
+      margin-top: -186px;
+      padding:5px;
+    }
+
+  .photo-tools a{
+    display:inline-block;
+    text-indent:-9999px;
+  }
+
+    .photo-tools .delete{
+      width:20px;
+      height:20px;
+      background:transparent url("../images/ui_ico_del_20x20.png") no-repeat 0 0;
+      
+    }
+
+    .photo-form input[type="text"]{
+      width:100%;
+      border:0;
+      background-color:#4DB6AC;
+      color:#fff;
+      font-family: "Lato", sans-serif;
+      font-size:127%;
+      font-weight:300;
+      padding:.47em .35em;
+    }

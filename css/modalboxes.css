@@ -1,0 +1,85 @@
+.modal_layer_bg{
+  /*visibility:hidden;*/
+  display:none;
+  position:fixed;
+  left:0;
+  top:0;
+  height:100%;
+  width:100%;
+  background-color: rgba(0,0,0,0.75);
+  text-align:center;
+}
+
+.modal_box{
+  /*
+  visibility:hidden;
+  display:inline-block;
+  position:relative;
+  */
+  margin-top:15%;
+  display:none;
+  padding:.25em .7em .5em;
+  background-color:#f4f4f4;
+  color:#313131;
+  font-weight: 100;
+}
+.modal_box p{
+  padding:0;
+  margin:.25em 0;
+}
+.modal_box ul{
+  margin:0;
+  padding:0;
+}
+.modal_box li{
+  list-style-type: none;
+  text-align:left;
+  margin:0;
+}
+
+.modal_layer_bg.modal_show{
+  /*display:block !important;
+  visibility:visible;*/
+  display:block !important;
+}
+.modal_box.modal_show{
+  display:inline-block !important;
+}
+
+/* Z-INDEX */
+.modal_layer_bg{ z-index: 1000;}
+.modal_box{z-index: 1001;}
+.admin_tools{z-index:990;}
+
+/* BUTTONS */
+.btn_wraper{
+  text-align:right;
+  padding-top:.5em;
+}
+
+.button {
+  -webkit-border-radius: 3;
+  -moz-border-radius: 3;
+  border-radius: 3px;
+  font-size: 85%px;
+  padding: .3em .85em .4em;
+  text-decoration: none;
+  margin:0 0 0 0.7em;
+  display:inline-block;
+}
+.button:hover {
+  text-decoration: none;
+}
+/* BUTTONS > COLORS*/
+.button.red{
+  background: #F44336;
+  color: #ffffff;
+}
+.button.green{
+  background: #28a60f;
+  color: #ffffff;
+}
+.button.gray{
+  background: #a3a3a3;
+  color: #ffffff;
+}

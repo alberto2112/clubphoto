@@ -1,0 +1,117 @@
+/* Little screens */
+@media 
+   only screen and (max-width:768px){
+    .photo-info ul{
+      margin:0 0 0 .65em;
+    }
+    .photo-info li{
+      display:inline-block;
+      width:31%;
+    }
+    .vote-form textarea{
+      width:50%; 
+      height:7em;
+      display:block;
+      margin:0 auto;} 
+}
+
+/* Large screens */
+@media 
+  tv,
+  only screen and (min-width:1025px){
+   .photo-wrapper{
+      position: absolute;
+      top: 2.9em;
+      bottom: 3.5em;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+    
+    .photo-info,
+    .vote-form,
+    .message,
+    .comments {width:16em;}
+    
+    .photo-info li{
+      display:block;
+    }
+
+    .nav{
+      position:absolute;
+      height:3.5em;
+      bottom: 0;
+      right:1em;
+      text-align: center;
+      padding:6px 0;
+    }
+    .photo-wrapper,
+    .nav{
+      left: 17.5em;
+      right:1em;
+    }
+    
+    .vote-form textarea{width:100%; height:5em;}
+    .handheld{display:none;}
+}
+
+/* Small screens */
+@media
+  only screen and (max-width: 1024px){
+    
+    .header h1{padding:8px 0 0 6px;}
+    .header h1>span{
+      display:block;
+      font-size:40%;
+      margin:-.5em 0 0 0;
+    }
+    
+    .photo-info,
+    .vote-form,
+    .message {
+      padding-left:6px;
+      padding-right:6px;
+    }
+    .photo-wrapper{
+      margin:0 6px;
+    }
+    .photo-wrapper img{
+      max-width:100%;
+    }
+    .nav {padding:1em 0 1.25em;}
+    .photo-info{
+      padding-top:.35em;
+    }
+    .photo-info li{
+      position:relative;
+      display:inline-block;
+      width:31%;
+    }
+    .photo-info .camera{
+      display:block !important;
+      font-weight:700;
+    }
+    .vote-form textarea{
+      width:50%; 
+      height:7em;
+      display:block;
+      margin:0 auto;} 
+  
+}
+/*Small screens /> */
+
+/* Smartphones */
+@media 
+  handheld,
+  only screen and (max-width: 768px),
+  only screen and (orientation:portrait){
+    .handheld{display:block;}
+    
+    .photo-info li{
+      display:inline-block;
+      width:47%;
+    }
+    
+    .vote-form textarea{width:100%; height:5em;}
+}
+/* Smartphones /> */

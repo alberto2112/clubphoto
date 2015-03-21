@@ -1,0 +1,27 @@
+@media screen and (max-width: 460px){
+  .panel{
+    width:97%;
+  }
+}
+
+@media screen and (min-width: 460px){
+  .panel{
+    width:450px;
+  }
+}
+
+body{
+  background-color: #e7e7e7;
+  font-family: 'Helvetica Neue', Helvetica, Arial;
+}
+
+.panel{margin:0 auto;}
+
+.quota-used,
+.quota-total{height:25px;margin:0;padding:0;color:#fff;}
+
+.quota-used{background-color:#55a;float:left;}
+.quota-used span{display:inline-block;font-size:80%;padding:.3em 0 0 .55em;}
+.quota-total{background-color:#aaa;overflow: hidden;}
+/* FIXES */
+  

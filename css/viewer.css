@@ -1,0 +1,104 @@
+.album-infos p{
+  margin:0;
+  padding:.75em;
+  font-size:80%;
+  color:#aaa;
+  font-weight:300;
+}
+a{
+    color:#09F;
+    text-decoration:none;
+}
+.header{
+    padding:0;
+    background-color: #272D35;
+}
+.header h1{
+    font-size: 215%;
+    color: #cdd3dd;
+    display:inline-block;
+    font-weight:100;
+    margin:0;
+    padding:.15em 0 .1em .25em;
+}
+.header h1 a{
+    color:#41505A;
+}
+.header h1 a:hover{
+    color:#09F;
+}
+
+h1.instance-header{
+    font-size: 14px;
+    padding:20px;
+    margin-bottom:10px;
+    margin-top: 30px;
+}
+/* Floating checkboxes */
+.floatchkbx{
+  position:absolute;
+  margin:10px 0 0 10px;
+  cursor: pointer;
+  
+}
+label {
+  position:absolute;
+  margin:10px 0 0 10px;
+  cursor: pointer;
+  font-size: 13px; margin-right:10px; line-height:18px;
+}
+input[type=checkbox] {
+    display:none; 
+}
+label:before {
+    content: "";
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background:transparent url("../images/ico_unchecked_32x32.png") no-repeat 0 0;
+  /*
+    vertical-align:middle;
+    background-color: #0088cc;
+    color: #f3f3f3;
+    text-align: center;
+    box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8); 
+    border-radius: 3px;*/
+}
+input[type=checkbox]:checked + label:before {
+    /*content: "\2713";
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+    font-size: 22px;*/
+    background:transparent url("../images/ico_checked_32x32.png") no-repeat 0 0;
+}
+/* Toolbar */
+.toolbar{
+  height:24px;
+  background-color:transparent;
+  position:absolute;
+  right:10px;
+  top:10px;
+}
+.toolbar ul{
+  list-style-type: none;
+  margin:0;
+  padding:0;
+}
+.toolbar li{
+  min-height:24px;
+  min-width:26px;
+  display:inline-block;
+  text-align:center;
+}
+.header .toolbar-home{
+  display:inline-block;
+  text-indent: -256px;
+  background: transparent url("../images/toolbar_home_32x32.png") no-repeat 0 0;
+  width:32px;
+  height:32px;
+  text-decoration: none;
+  opacity: .8;
+  vertical-align:bottom;
+  padding-right:.3em;
+  margin-right:.3em;
+  border-right:1px #cdd3dd solid;
+}

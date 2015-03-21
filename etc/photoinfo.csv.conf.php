@@ -1,0 +1,20 @@
+<?php
+  define('MARQUE',0);
+  define('MODEL',1);
+  define('EXPO',2);
+  define('OUVERTURE',3);
+  define('FDISTANCE',4);
+  define('EXBIAS',5);
+  define('FOCAL',6);
+  define('FOCAL35',7);
+  define('ISO',8);
+  define('FLASH',9);
+  define('TITLE',10);
+  define('LIBELLE',10);
+  define('PHOTOGRAPHE_RKEY',14);
+  define('PHOTOGRAPHE_UKEY',14);
+  define('PHOTOGRAPHE',15);
+  define('AUTHOR',15);
+  define('IPUPLOADER',16);
+  define('UPLOADERID',16);
+?>

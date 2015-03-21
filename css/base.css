@@ -1,0 +1,135 @@
+@import "http://fonts.googleapis.com/css?family=Lato:700,400,300,200";
+/* Colors */
+  body{
+    background-color: #F3F4EE;
+    color:#70716C;
+    font-family: "Lato", sans-serif;
+  }
+
+  .header{
+    background-color:#2F302C;
+    color:#fff;
+  }
+
+  .footnote{
+    color:#999;
+    padding:1em;
+    font-size:75%;
+    font-weight:400;
+    text-align: center;
+  }
+
+/* Card COLORS */
+  .card, .dialog {
+    background-color: #f4f4f4;
+  }
+
+  .card .row,
+  .card ul.row li{
+    border-color:#E1E1E1;
+  }
+
+  .card .link {color:#3950FF;}
+  
+  .card .row h2,
+  .card .row h3 {color:#575757;}
+
+  .card.red, 
+  .card .title.red {
+    background-color:#F44336;
+    color:#FFF;
+  }
+  .card.indigo,
+  .card .title.indigo{
+    background-color:#3F51B5;
+    color:#FFF;
+  }
+  .card.blue,
+  .card .title.blue{
+    background-color:#2196F3;
+    color:#FFF;
+  }
+  .card.green,
+  .card .title.green{
+    background-color:#4CAF50;
+    color:#FFF;
+  }
+  .card.light-green,
+  .card .title.light-green{
+    background-color:#8BC34A;
+    color:#FFF;
+  }
+  .card.lime,
+  .card .title.lime {
+    background-color:#F44336;
+    color:#212121;
+  }
+  .card.amber,
+  .card .title.amber{
+    background-color:#FFC107;
+    color:#212121;
+  }
+  .card.orange,
+  .card .title.orange {
+    background-color:#FF9800;
+    color:#212121;
+  }
+
+/* Cards */
+  .card {
+    position: relative;
+    display: block;
+    width: 96%;
+    vertical-align: top;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    margin:8px auto;
+
+  }
+  ul.row, ul.row li{margin:0;padding:0;}
+
+  .card div.row.border-up,
+  .card ul.row.border-up li{
+    border-top-width: 1px;
+    border-top-style: solid;
+  }
+
+  .card div.row.border-down,
+  .card ul.row.border-down li{
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+
+  .card .row ul.content,
+  .card ul.row li{
+    list-style-type: none;
+    margin:0;
+  }
+
+  .card .row .content,
+  .card ul.row li,
+  .card .row h1,
+  .card .row h2 {
+    padding:8px 13px;
+  }
+
+  .card .row .content.image{
+    padding:0 !important;
+  }
+
+  .card .row h1 {
+    font-size:32pt;
+    font-weight:100;
+    margin:0;
+  }
+
+  .card .row h2 {
+    font-size:24pt;
+    font-weight:100;
+    margin:0;
+  }
+
+  .card .row .content,
+  .card ul.row li{
+    font-size:90%;
+    color:#313131;
+  }

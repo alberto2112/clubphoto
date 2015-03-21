@@ -1,0 +1,126 @@
+
+@media screen and (max-width: 700px){
+  .login-form{
+    width:98%;
+  }
+}
+
+@media screen and (min-width: 700px){
+  .login-form{
+    width:33%;
+  }
+}
+
+.login-form{
+  background:rgba(255,255,255,.8);
+  margin:9% auto 4%;
+  position:relative;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+/*
+.logo{
+  position:absolute;
+  top:-15%;
+  left:32.3%;
+}
+
+.logo>img{
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border:6px solid rgba(221,218,215,0.23);
+}
+*/
+.select-box,
+.password-box,
+.text-box{
+  border:1px solid #b4b2b2;
+  margin-bottom:23px;
+  border-radius:.3em;
+  -moz-border-radius:.3em;
+  -webkit-border-radius:.3em;
+}
+
+.select-box:hover,
+.password-box:hover,
+.text-box:hover{
+  border:1px solid #40a9df;
+  box-shadow: 0 0 1em #40a9df;
+  -o-box-shadow: 0 0 1em #40a9df;
+  -moz-box-shadow: 0 0 1em #40a9df;
+  -webkit-box-shadow: 0 0 1em #40a9df;
+}
+
+body{
+  background: url(../images/login_background.jpg) no-repeat center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  position: relative;
+  font-family: 'Open Sans', sans-serif;
+}
+
+form{
+  padding: 2.5em 2.5em;
+}
+
+select,
+input[type="text"],
+input[type="password"],
+input[type="submit"]{
+  font-family:'Open Sans', sans-serif;
+  font-size:125%;
+  font-weight:600;
+  outline:none;
+  width:100%;
+}
+
+select,
+input[type="text"],
+input[type="password"]{
+  padding:.7em 2em;
+  color:#858282;
+  border:none;
+  background:none;
+}
+
+.select-box.user select{
+  background:url(../images/form_placeholder_user.png) no-repeat 11px center;
+}
+
+input[type="password"]{
+  text-align:center;
+}
+
+input[type="submit"]{
+  display:block;
+  color:#fff;
+  text-align:center;
+  font-weight:400;
+  vertical-align: middle;
+  cursor: pointer;
+  padding:15px 10px;
+  border-radius:.3em;
+  -webkit-border-radius:.3em;
+  -moz-border-radius:.3em;
+  background-color:#ED1C24;
+  border:1px solid #C4171D;
+/*
+  background: #ffe49e;
+  background: -moz-linear-gradient(top, #ffe49e 0%, #ffb700 3%, #ffad00 35%, #ff9000 97%, #e27f00 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffe49e), color-stop(3%,#ffb700), color-stop(35%,#ffad00), color-stop(97%,#ff9000), color-stop(100%,#e27f00));
+  background: -webkit-linear-gradient(top, #ffe49e 0%,#ffb700 3%,#ffad00 35%,#ff9000 97%,#e27f00 100%);
+  background: -o-linear-gradient(top, #ffe49e 0%,#ffb700 3%,#ffad00 35%,#ff9000 97%,#e27f00 100%);
+  background: -ms-linear-gradient(top, #ffe49e 0%,#ffb700 3%,#ffad00 35%,#ff9000 97%,#e27f00 100%);
+  background: linear-gradient(to bottom, #ffe49e 0%,#ffb700 3%,#ffad00 35%,#ff9000 97%,#e27f00 100%);
+*/
+}
+
+.clear{
+  clear:both;
+}

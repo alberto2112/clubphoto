@@ -1,0 +1,5 @@
+html, body {text-align: center;font-size:16pt;background-color:#CDCDCD;font-family:sans-serif;}
+div.error_msg{display:block;margin:10% 8%;padding:.75em;background-color:#FF5353;color:#fdd}
+div.error_msg h1{font-size:250%;font-weight:600;margin:.5em 0;line-height: .25em;}
+div.error_msg p{font-size:175%;}
+div.error_msg p, div.error_msg h1{text-align: center;}
