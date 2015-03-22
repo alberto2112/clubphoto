@@ -54,8 +54,13 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="<?php echo PUBLIC_ROOT; ?>css/login.css?v=<?php echo VERSION_CSS; ?>" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:600italic,400,300,600,700" rel="stylesheet" type="text/css" />
+    <link href="<?php echo PUBLIC_ROOT; ?>css/login.css?v=<?php echo VERSION_CSS; ?>" rel="stylesheet" type="text/css" />
+    <script src="<?php echo PUBLIC_ROOT; ?>js/fingerprint.js"></script>
+    <script type="text/javascript">
+      var fgrpt = new Fingerprint({screen_resolution: true}).get();
+      $.post(<?php echo '"'.((SYS_HTTPS_AVAILABLE==true)?'https://':'http://').SITE_DOMAIN.PUBLIC_ROOT.RUN_DIR.'fingerprint.php", {'.URI_QUERY_ACTION.':"refresh", '.URI_QUERY_FINGERPRINT.':'; ?>fgrpt});
+    </script>
   </head>
   <body>
     <div class="login-form">
