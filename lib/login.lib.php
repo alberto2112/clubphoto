@@ -85,7 +85,6 @@
   function do_logout(){
     session_start();
 	session_unset(); // Detruire toutes les variables de session
-    //session_unset('ADMIN');
 	session_destroy();
   }
 //----------------------------------------------------------
