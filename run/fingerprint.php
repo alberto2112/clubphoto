@@ -4,6 +4,8 @@
 
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
 
+  header('Access-Control-Allow-Origin: *');
+
   $fingerprint = clear_request_param(getRequest_param(URI_QUERY_FINGERPRINT, false), 'a-zA-Z0-9', 12, false);
   $action      = clear_request_param(getRequest_param(URI_QUERY_ACTION, false), 'a-zA-Z0-9', 8, false);
 

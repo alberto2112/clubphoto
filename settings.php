@@ -41,16 +41,16 @@
   define('URI_QUERY_PASSWORD','mdp');
   define('URI_QUERY_RIGHTS_KEY','rgtk');
   define('URI_QUERY_COMMENTS','C');
-  define('URI_QUERY_FINGERPRINT','fp');//[!] NEW
+  define('URI_QUERY_FINGERPRINT','fp');
 
   define('COOKIE_USER_KEY','USRKY');
   define('COOKIE_RIGHTS_KEY','RKEY');
-  define('COOKIE_FINGERPRINT','JSFPSESSID');//[!] NEW
+  define('COOKIE_FINGERPRINT','JSFPSESSID');
 
-  define('USER_LEVEL_SUPERADMIN','1'); //[!] NEW
-  define('USER_LEVEL_ADMIN','2');      //[!] NEW
-  define('USER_LEVEL_EXPO','5');       //[!] NEW
-  define('USER_LEVEL_GUEST','9');      //[!] NEW
+  define('USER_LEVEL_SUPERADMIN','1');
+  define('USER_LEVEL_ADMIN','2');
+  define('USER_LEVEL_EXPO','5');
+  define('USER_LEVEL_GUEST','9');
 # ======================================================= #
   if(function_exists('date_default_timezone_set'))
     date_default_timezone_set("Europe/Paris");
