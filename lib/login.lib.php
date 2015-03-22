@@ -19,7 +19,7 @@
       if($strict_mode){
         return ($_SESSION['ULEVEL'] == $level);
       }else{
-        return ($_SESSION['ULEVEL'] =< $level);
+        return ($_SESSION['ULEVEL'] <= $level);
       }
     }else{
       return false;
@@ -32,7 +32,6 @@
      */ 
     
       return is_admin($level, true);
-    }
   }
 //----------------------------------------------------------
   function do_login($userid, $password, $password_list, $givenPwdIsAHash=false){
