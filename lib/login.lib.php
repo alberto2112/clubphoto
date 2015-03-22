@@ -15,6 +15,7 @@
      * USER LEVEL (2) = ADMIN
      * @return Boolean: True | False
      */ 
+    @session_start();
     if(array_key_exists('ULEVEL', $_SESSION) && is_numeric($_SESSION['ULEVEL'])){
       if($strict_mode){
         return ($_SESSION['ULEVEL'] == $level);

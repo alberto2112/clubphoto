@@ -82,3 +82,6 @@
 2015-03-17 12:29:57 - UNKNOWN ALBUM CODE - 192.168.1.40 - [/run/vote.php] - QUERY STRING: UNKNOWN
 2015-03-17 12:30:37 - UNKNOWN ALBUM CODE - 192.168.1.40 - [/run/vote.php] - QUERY STRING: UNKNOWN
 2015-03-17 12:31:27 - UNKNOWN ALBUM CODE - 192.168.1.40 - [/run/vote.php] - QUERY STRING: UNKNOWN
+2015-03-22 12:18:46 - [!] Tentative de connexion avec un mot de passe invalide - uid=2 - ip=192.168.1.40
+2015-03-22 12:18:53 - [@] Connexion reussie - uid=2 - uname=Alberto - ip=192.168.1.40
+2015-03-22 12:23:04 - [@] Connexion reussie - uid=2 - uname=Alberto - ip=192.168.1.40
