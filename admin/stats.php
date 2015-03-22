@@ -21,7 +21,7 @@
 
     if($ratemethod=='stars'){
       echo '
-          <th data-sort="int">Points</th>
+          <th data-sort="int" data-sort-default="desc">Points</th>
           <th>Moyenne</th>
           ';
     }
@@ -142,6 +142,9 @@
       
 // GROUPING UPLOADERS
       $LoP = array();
+      //TODO: Add groupping methods: by PHOTOGRAPHE_UKEY | by UPLOADERID
+      $idx2group=PHOTOGRAPHE_UKEY;
+      //$idx2group=UPLOADERID;
       
       // Create grouped photos array
       foreach(glob($ALBUM_ROOT.'votes/*') as $file){
@@ -156,10 +159,10 @@
 
             // Leer fichero $photo_filename.csv
             $photo_info = read_csv($ALBUM_ROOT.'photos/'.$thumb_fname.'.csv');
-            if(!array_key_exists($photo_info[UPLOADERID], $LoP)){
-              $LoP[$photo_info[UPLOADERID]] = array();
+            if(!array_key_exists($photo_info[$idx2group], $LoP)){
+              $LoP[$photo_info[$idx2group]] = array();
             }
-            array_push($LoP[$photo_info[UPLOADERID]], array($thumb_fname, $votes, $points, $photo_info[AUTHOR]));
+            array_push($LoP[$photo_info[$idx2group]], array($thumb_fname, $votes, $points, $photo_info[AUTHOR]));
             
           }
         }
