@@ -6,6 +6,7 @@
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
   include_once SYSTEM_ROOT.ETC_DIR.'photoinfo.csv.conf.php';
+  include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
   include_once SYSTEM_ROOT.LIB_DIR.'csv.lib.php';
 
 //==============================
@@ -35,7 +36,7 @@
   function print_table_footer(){
     echo '
       </tbody>
-    </table>';
+    </table><br />&nbsp;<br />';
   }
 //==============================
 
@@ -63,17 +64,26 @@
 ?>
 <html>
   <head>
+    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/base.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
+    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/buttons.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
     <script src="<?php echo PUBLIC_ROOT; ?>js/jquery.1.10.1.min.js"></script>
     <script src="<?php echo PUBLIC_ROOT; ?>js/stupidtable.min.js"></script>
     <style>
       table{
         width:75%;
-        margin:0 auto;
+        margin:6px auto;
+        background-color:#fff;
+      }
+      
+      th{
+        color:#000;
+        font-weight:100;
       }
       
       th[data-sort]{
         cursor:pointer;
-        color:#777;
+        color:#559;
+        font-weight:700;
       }
       
       td{
@@ -88,7 +98,17 @@
     </style>
   </head>
   <body>
+    
 <?php
+    echo '<div class="button-wrapper at-center">';
+      if($action=='defsort'){
+        echo '<a class="blue" href="?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_ACTION.'=group">Grouper photos</a>';
+        echo '<a class="disabled" href="#">Ne pas grouper photos</a>';
+      }else{
+        echo '<a class="disabled" href="#">Grouper photos</a>';
+        echo '<a class="blue" href="?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_ACTION.'=defsort">Ne pas grouper photos</a>';
+      }
+    echo '</div>';
     if($action=='defsort'){
       print_table_header($AL_CONF['ratemethod']);
       foreach(glob($ALBUM_ROOT.'votes/*') as $file){
@@ -119,8 +139,11 @@
       }
       print_table_footer();
     }elseif($action=='group'){
+      
+// GROUPING UPLOADERS
       $LoP = array();
       
+      // Create grouped photos array
       foreach(glob($ALBUM_ROOT.'votes/*') as $file){
         if($file!='.' && $file!='..'){
           if(substr($file,-7)=='jpg.txt'){
@@ -142,6 +165,7 @@
         }
       }
       
+      // Render array
       foreach($LoP as $uploader){
         
         print_table_header($AL_CONF['ratemethod']);
@@ -157,8 +181,8 @@
             echo '<td><a href="download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'">T&eacute;l&eacute;charger</a></td>';
           echo '</tr>';
         }
+        print_table_footer();
       }
-      print_table_footer();
     }
   ?>
 
