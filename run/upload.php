@@ -59,8 +59,12 @@
   // Get and clean other request vars
     $author    = clear_request_param(getRequest_param('auteur', false), 'a-zA-Z0-9\,\'\ ', 32, false);
 
-  // Set other vars
-    $LONGIP = @sprintf("%u",ip2long($IP)) | '0';
+  // Get fingerprint
+    if(array_key_exists(COOKIE_FINGERPRINT, $_COOKIE)){
+      $UPLOADERID = $_COOKIE[COOKIE_FINGERPRINT];
+    }else{
+      $UPLOADERID = @sprintf("%u",ip2long($IP)) | '0';
+    }
     
     $file_album_size = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/album_size.txt';
     //$file_current_used_quota = FILE_USED_QUOTA; //SYSTEM_ROOT.ALBUMS_DIR.'quota.txt';
@@ -154,7 +158,7 @@
       $PROC->insert($result, true); // Insert and close file
 
       // Ajouter auteur et identificateur dans le fichier d'informations relatives a la photo
-      fwrite($CSV,';'.$title.';;;;'.$USER_KEY.';'.$author.';'.$LONGIP);
+      fwrite($CSV,';'.$title.';;;;'.$USER_KEY.';'.$author.';'.$UPLOADERID);
       
       // Liberer et fermer fichier CSV
       flock($CSV, LOCK_UN);
