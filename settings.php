@@ -13,7 +13,7 @@
   define('ALBUMS_DIR','albums/');
   define('ADMIN_DIR','admin/');
   define('WORKSPACE_DIR','tmp/');
-  define('SOFTWARE_DIR','bun/');
+  define('SOFTWARE_DIR','bin/');
 
   define('DIM_THUMB','186x186');
   define('DIM_MEDIUM','512x512');
@@ -41,9 +41,11 @@
   define('URI_QUERY_PASSWORD','mdp');
   define('URI_QUERY_RIGHTS_KEY','rgtk');
   define('URI_QUERY_COMMENTS','C');
+  define('URI_QUERY_FINGERPRINT','fp');//[!] NEW
 
   define('COOKIE_USER_KEY','USRKY');
   define('COOKIE_RIGHTS_KEY','RKEY');
+  define('COOKIE_FINGERPRINT','JSFPSESSID');//[!] NEW
 
   define('USER_LEVEL_SUPERADMIN','1'); //[!] NEW
   define('USER_LEVEL_ADMIN','2');      //[!] NEW

@@ -59,56 +59,57 @@
     $AL_CONF['allowupload']='0';
   }
 ?>
+<!DOCTYPE html>
 <html class="no-js">
   <head>
     <title><?php echo get_arr_value($AL_CONF, 'albumname'); ?> - MJC ClubPhoto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/reset.css" type="text/css" />
-    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/base.css?v=20150212" type="text/css" />
-    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/modalboxes.css?v=20150211" type="text/css" />
-    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/viewer.css?v=20150226" type="text/css" />
-    <link rel="stylesheet" media="all" href="<?php echo PUBLIC_ROOT; ?>css/collagePlus.css?v=20150126" type="text/css" />
-    <link rel="stylesheet" media="all" href="<?php echo PUBLIC_ROOT; ?>css/collagePlus.transitions.css" type="text/css" />
+    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/base.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
+    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/modalboxes.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
+    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/viewer.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
+    <link rel="stylesheet" media="all" href="<?php echo PUBLIC_ROOT; ?>css/collagePlus.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
+    <link rel="stylesheet" media="all" href="<?php echo PUBLIC_ROOT; ?>css/collagePlus.transitions.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
 
     <script src="<?php echo PUBLIC_ROOT; ?>js/jquery.1.10.1.min.js"></script>
     <script src="<?php echo PUBLIC_ROOT; ?>js/jquery.collagePlus.min.js"></script>
     <script src="<?php echo PUBLIC_ROOT; ?>js/jquery.removeWhitespace.min.js"></script>
     <script src="<?php echo PUBLIC_ROOT; ?>js/jquery.collageCaption.min.js"></script>
+    <script src="<?php echo PUBLIC_ROOT; ?>js/fingerprint.js"></script>
 
     <script type="text/javascript">
+      var fgrpt = new Fingerprint({screen_resolution: true}).get();
+      $.post(<?php echo '"'.((SYS_HTTPS_AVAILABLE==true)?'https://':'http://').SITE_DOMAIN.PUBLIC_ROOT.RUN_DIR.'fingerprint.php", {'.URI_QUERY_ACTION.':"refresh", '.URI_QUERY_FINGERPRINT.':'; ?>fgrpt});
+      
+      $(window).load(function () {
+          $(document).ready(function(){
+              collage();
+              $('.Collage').collageCaption();
+          });
+      });
 
-    // All images need to be loaded for this plugin to work so
-    // we end up waiting for the whole window to load in this example
-    $(window).load(function () {
-        $(document).ready(function(){
-            collage();
-            $('.Collage').collageCaption();
-        });
-    });
+      // Here we apply the actual CollagePlus plugin
+      function collage() {
+          $('.Collage').removeWhitespace().collagePlus(
+              {
+                  'fadeSpeed'     : 2000,
+                  'targetHeight'  : 200,
+                  'effect'        : 'effect-2',
+                  'direction'     : 'vertical',
+                  'allowPartialLastRow':false
+              }
+          );
+      };
 
-    // Here we apply the actual CollagePlus plugin
-    function collage() {
-        $('.Collage').removeWhitespace().collagePlus(
-            {
-                'fadeSpeed'     : 2000,
-                'targetHeight'  : 200,
-                'effect'        : 'effect-2',
-                'direction'     : 'vertical',
-                'allowPartialLastRow':false
-            }
-        );
-    };
-
-    // This is just for the case that the browser window is resized
-    var resizeTimer = null;
-    $(window).bind('resize', function() {
-        // hide all the images until we resize them
-        $('.Collage .Image_Wrapper').css("opacity", 0);
-        // set a timer to re-apply the plugin
-        if (resizeTimer) clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(collage, 200);
-    });
-
+      // This is just for the case that the browser window is resized
+      var resizeTimer = null;
+      $(window).bind('resize', function() {
+          // hide all the images until we resize them
+          $('.Collage .Image_Wrapper').css("opacity", 0);
+          // set a timer to re-apply the plugin
+          if (resizeTimer) clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(collage, 200);
+      });
     </script>
   </head>
   <body>
