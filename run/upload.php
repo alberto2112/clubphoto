@@ -38,6 +38,14 @@
                    16, 
                    false);
 
+
+// Get fingerprint
+  if(array_key_exists(COOKIE_FINGERPRINT, $_COOKIE)){
+    $UPLOADERID = $_COOKIE[COOKIE_FINGERPRINT];
+  }else{
+    $UPLOADERID = @sprintf("%u",ip2long($IP)) | '0';
+  }
+
   if (!empty($_FILES)) {
 
     // Charger les parametres de l'album
@@ -51,20 +59,13 @@
     // Empecher de telecharger des photos a tout personne externe au club photo
     if(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($CONFIG, COOKIE_RIGHTS_KEY)){
       // Add log line if not album_rkey cookie founded
-      $ERRLOG->insert('RKEY NOT FOUND - '.$IP.' - REFERER: '.get_arr_value($_SERVER, 'HTTP_REFERER', 'UNKNOWN'));
+      $ERRLOG->insert('RKEY NOT FOUND - ip='.$IP.' uploaderid='.$UPLOADERID.' - referer='.get_arr_value($_SERVER, 'HTTP_REFERER', 'UNKNOWN'));
       $ERRLOG->close();
       exit;
     }
 
   // Get and clean other request vars
     $author    = clear_request_param(getRequest_param('auteur', false), 'a-zA-Z0-9\,\'\ ', 32, false);
-
-  // Get fingerprint
-    if(array_key_exists(COOKIE_FINGERPRINT, $_COOKIE)){
-      $UPLOADERID = $_COOKIE[COOKIE_FINGERPRINT];
-    }else{
-      $UPLOADERID = @sprintf("%u",ip2long($IP)) | '0';
-    }
     
     $file_album_size = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/album_size.txt';
     //$file_current_used_quota = FILE_USED_QUOTA; //SYSTEM_ROOT.ALBUMS_DIR.'quota.txt';
@@ -118,7 +119,7 @@
     @mkdir($workspace,0777,true); // Dossier temporel base en adresse ip
 
     // Ajouter evenement au log d'activite
-    $LOG->insert('UPLOADED - '.$IP.' - UKEY: '.$USER_KEY.' - Temp file name: '.$_FILES['file']['tmp_name'].' (/'.RUN_DIR.'upload.php)');
+    $LOG->insert('UPLOADED - ip='.$IP.' - UKEY='.$USER_KEY.' - uploaderid='.$UPLOADERID.' - msg=Temp file name: '.$_FILES['file']['tmp_name'].' (/'.RUN_DIR.'upload.php)');
 
     try{
       // Reserver memoire
@@ -172,10 +173,10 @@
       file_put_contents(FILE_USED_QUOTA, ($current_used_quota + $photo_filesize), LOCK_EX);
 
       // Creer et/ou ajouter au log d'activite
-      $LOG->insert('INSTALLED - '.$IP.' - UKEY: '.$USER_KEY.' - Photo: '.$result);
+      $LOG->insert('INSTALLED - ip='.$IP.' - UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' - photo: '.$result);
     } catch (Exception $e){
       // Si une erreur est produite lors de l'installation de l'image l'enregistrer dans le log
-      $LOG->insert('[!] INSTALL ERROR - '.$IP.' - UKEY: '.$USER_KEY.' - Photo: '.$result.'(/'.RUN_DIR.'upload.php)'); //
+      $LOG->insert('[!] INSTALL ERROR - ip='.$IP.' - UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' - photo='.$result.'(/'.RUN_DIR.'upload.php)'); //
       $ERRLOG->insert($IP.' - Photo: '.$result.' '.$e->getMessage());
     }
     // Effacer toute trace du dossier de travail temporel
@@ -184,7 +185,7 @@
     if(empty($USER_KEY))
       $USER_KEY = 'Unknown';
     
-    $ERROR->insert('[!] UPLOAD ERROR - '.$IP.' - UKEY: '.$USER_KEY.' - Telechargement vide (/'.RUN_DIR.'upload.php)');
+    $ERROR->insert('[!] UPLOAD ERROR - ip='.$IP.' - UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' - msg=Telechargement vide (/'.RUN_DIR.'upload.php)');
   }
   $LOG->close();
   $ERRLOG->close();
