@@ -2,24 +2,37 @@
 //----------------------------------------------------------
   function is_logged(){
     /**
-     * @return True | False
+     * @return Boolean: True | False
      */
-    //return empty(session_id());
     @session_start();
-    if(isset($_SESSION['ADMIN'])){
-      return ($_SESSION['ADMIN']=='true');
+    return array_key_exists('UID', $_SESSION);
+    
+  }
+//----------------------------------------------------------
+  function is_admin($level = 2, $strict_mode=false){
+    /**
+     * USER LEVEL (1) = SUPER ADMIN
+     * USER LEVEL (2) = ADMIN
+     * @return Boolean: True | False
+     */ 
+    if(array_key_exists('ULEVEL', $_SESSION) && is_numeric($_SESSION['ULEVEL'])){
+      if($strict_mode){
+        return ($_SESSION['ULEVEL'] == $level);
+      }else{
+        return ($_SESSION['ULEVEL'] =< $level);
+      }
     }else{
       return false;
     }
   }
 //----------------------------------------------------------
-  function is_admin(){
-    #Alias from is_logged();
-    return is_logged();
-  }
-//----------------------------------------------------------
-  function is_super_admin(){
-    //TODO is_super_admin()
+  function is_super_admin($level = 1){
+    /**
+     * alias of #is_admin($level);
+     */ 
+    
+      return is_admin($level, true);
+    }
   }
 //----------------------------------------------------------
   function do_login($userid, $password, $password_list, $givenPwdIsAHash=false){
@@ -60,11 +73,10 @@
     if($great_login){
       session_start();
       
-      $_SESSION['ADMIN']='true';
-      $_SESSION['UID']=$U[1];
-      $_SESSION['ULEVEL']=$U[2];
-      $_SESSION['URIGHTS']=$U[3];
-      $_SESSION['UNAME']=rtrim($U[4]);
+      $_SESSION['UID']    = $U[1];
+      $_SESSION['ULEVEL'] = $U[2];
+      $_SESSION['URIGHTS']= $U[3];
+      $_SESSION['UNAME']  = rtrim($U[4]);
     }
 
     return $great_login;
