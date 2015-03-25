@@ -240,6 +240,8 @@
      * @return disk space libered
      */ 
   {
+    
+      // FIXME: Comprobar si los ficheros existen y olvidarse de $uninstall_from_trash
       
       //Delete thumbnail
       if($uninstall_from_trash===false){
@@ -262,9 +264,6 @@
       foreach (glob($album_path.'/photos/votes/'.$photo_filename.'*') as $file2del) {
         @unlink($file2del);
       }
-      # @unlink($album_path.'/photos/votes/'.$photo_filename.'.txt');
-      # @unlink($album_path.'/photos/votes/'.$photo_filename.'.pts.txt');
-
       //Delete photo infos
       //@unlink($album_path.'/photos/'.$photo_filename.'.csv'); // Ne pas supprimer ce fichier
     

@@ -22,25 +22,31 @@
   $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
   $RKEY     = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);
   $_ISADMIN = is_admin();
+  $_ISMEMBER = false;
+  $_SHOWRANKING = false;
   $ERROR    = new LOG(SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/logs/error.log');
 
   if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php')===true){
     $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php';
     
+    // Determiner si cette personne es un des adherents
     if(!empty($RKEY) && get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY) == $RKEY){
-      setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + (3600 * 2), PUBLIC_ROOT); // Permettre a cette personne de voter ou telecharger ses photos pendant 2 heures
-    }elseif(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY)){
-      // Empecher de telecharger des photos a toute personne externe au club photo
+      // Est un adherent: Permettre a cette personne de voter ou telecharger ses photos pendant 2 heures
+      setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + (3600 * 2), PUBLIC_ROOT);
+      $_ISMEMBER = true;
+    }elseif(array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) && get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) == get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY)){
+      // Est un adherent
+      $_ISMEMBER = true;
+    }else{
+      // N'est pas un adherent: Empecher de telecharger des photos a toute personne externe au club photo
       $AL_CONF['allowupload']='0';
     }
 
+  // Determiner droit de telechargement par raport de la date limite
     if($AL_CONF['allowupload']=='1'){
-      // Calculer droit de vote par raport de la date limite
       $UPLOAD_FROM = (@array_key_exists('upload-from', $AL_CONF))? explode('/', $AL_CONF['upload-from'],3):false;
       $UPLOAD_TO = (@array_key_exists('upload-to', $AL_CONF))? explode('/', $AL_CONF['upload-to'],3):false;
-// debug
-//      print_r($VOTE_FROM);
-// debug />
+
       if($UPLOAD_FROM==false)
         $AL_CONF['allowupload']='0';
       else
@@ -52,6 +58,17 @@
       else
         if(time()-(3600 * 24) >= mktime(0,0,0, $UPLOAD_TO[1], $UPLOAD_TO[0], $UPLOAD_TO[2])) // Si la periode est depasee
           $AL_CONF['allowupload']='0';
+    }
+    
+    // Determiner droit a voir le classement
+    if($AL_CONF['allowvotes']=='1'){
+      $VOTE_FROM = (@array_key_exists('vote-from', $AL_CONF))? explode('/', $AL_CONF['vote-from'],3):false;
+      $VOTE_TO   = (@array_key_exists('vote-to', $AL_CONF))? explode('/', $AL_CONF['vote-to'],3):false;
+        
+      if(!empty($VOTE_TO) && time()-(3600 * 24) >= mktime(0,0,0, $VOTE_TO[1], $VOTE_TO[0], $VOTE_TO[2])) // Si la periode de votes est depasee
+        {
+          $_SHOWRANKING=true;
+        }
     }
   } else{
     $ERROR->insert('ALBUM CONFIG NOT FOUND AT: '.SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php', true);
@@ -278,8 +295,12 @@ if($_ISADMIN){
 ?>
     </div>
 <!-- / Content -->
-    <p class="footnote">Club photo - MJC Rodez - 
+    <p class="footnote">Club photo - MJC Rodez | 
 <?php
+  if($_ISMEMBER && $_SHOWRANKING){
+    echo '<a href="'.PUBLIC_ROOT.'classement.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'">Voir classement</a> | ';
+  }
+
   if($_ISADMIN){
     echo '<a href="'.PUBLIC_ROOT.'logout.php">Se d&eacute;connecter</a>';
   } else {
