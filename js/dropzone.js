@@ -138,7 +138,7 @@
       addRemoveLinks: false,
       previewsContainer: null,
       capture: null,      
-      dictDefaultMessage: "Glisez vos photos pour commencer le t&eacute;l&eacute;chargement",
+      dictDefaultMessage: "Glisez vos photos ici pour commencer le t&eacute;l&eacute;chargement",
       dictFallbackMessage: "Votre navigateur ne suporte pas la technologie drag'n'drop.",
       dictFallbackText: "S'il vous plaît, utilisez le formulaire ci-dessous pour t&eacute;l&eacute;charger vos photos, comme autrefois.",
       dictFileTooBig: "Le fichier est trop gros ({{filesize}}MiB). Maximum: {{maxFilesize}}MiB.",

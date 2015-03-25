@@ -63,7 +63,7 @@
 			<input type="hidden" name="<?php echo URI_QUERY_ALBUM; ?>" value="<?php echo $codalbum; ?>" />
             <input type="hidden" name="<?php echo URI_QUERY_RIGHTS_KEY; ?>" value="<?php echo $USER_KEY; ?>" />
             <div class="form_items" id="frm-step-1">
-              <p>Pour faciliter le tri vis-&agrave;-vis de l'administrateur, vous pouvez renseigner votre nom et pr&eacute;nom <i>(Avant de t&eacute;l&eacute;charger quoique se soit)</i>.</p>
+              <p>Pour faciliter le tri vis-&agrave;-vis de l'administrateur, vous pouvez renseigner votre nom et pr&eacute;nom.</p>
               <p>Cette information sera r&eacute;serv&eacute;e uniquement &agrave; l'administrateur</p>
               <input class="txt_auteur" type="text" name="auteur" value="<?php echo html_entity_decode($UNAME, ENT_COMPAT, CHARSET); ?>" placeholder="NOM, Prenom auteur (facultatif)" />
             </div>
