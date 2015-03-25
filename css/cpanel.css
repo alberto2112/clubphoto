@@ -17,11 +17,60 @@ body{
 
 .panel{margin:0 auto;}
 
+/* QUOTA */
 .quota-used,
 .quota-total{height:25px;margin:0;padding:0;color:#fff;}
 
 .quota-used{background-color:#55a;float:left;}
 .quota-used span{display:inline-block;font-size:80%;padding:.3em 0 0 .55em;}
 .quota-total{background-color:#aaa;overflow: hidden;}
+
+/* ALBUMS */
+.album-name{
+  display:block;
+  text-decoration: none;
+  color:inherit;
+}
+.nphotos{
+  background:transparent url(../images/ico_photos_b_16x16.png) no-repeat left 3px;
+  padding-left:23px;
+  float:right;
+  color:inherit;
+  font-size:90%;
+}
+/*
+.album-thmbnl{
+  height:148px;
+  background-size:cover;
+  background-position:center;
+}
+*/
+.album-tools{
+  display:block;
+  padding:8px 0;
+  text-align:center;
+}
+
+.album-tools a{
+  display:block;
+  text-indent: -999px;
+  background-repeat: no-repeat;
+  width:42px;
+  height:42px;
+}
+
+.album-tools .tool-view{  background-image: url(../images/ico_eye_g_42x42.png); background-position: left 6px;}
+.album-tools .tool-logs{  background-image: url(../images/ico_file_document_g_42x42.png);}
+.album-tools .tool-trash{  background-image: url(../images/ico_delete_g_42x42.png);}
+.album-tools .tool-delete{  background-image: url(../images/ico_close_g_42x42.png);}
+.album-tools .tool-ranking{  background-image: url(../images/ico_circle_checkbox_g_42x42.png);}
+.album-tools .tool-settings{  background-image: url(../images/ico_settings_g_42x42.png);}
+
+.album-tools li{
+  display:inline-block;
+  margin:0 12px;
+  overflow: hidden;
+}
+
 /* FIXES */
   

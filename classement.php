@@ -51,6 +51,7 @@ if(OPT_DEVELOPPING){
   }
 
 DEBUG:
+  echo '<h2>Classement approximatif pour l\'album: '.get_arr_value($AL_CONF, 'albumname').'</h2>';
   if($action != 'nocache' && $action != 'redocache' && is_readable($RANKING_FILENAME)){
     include $RANKING_FILENAME;
   }else{
@@ -92,7 +93,7 @@ DEBUG:
       // Print result to cache file
       foreach($LoP as $photo){
         $i++;
-        $ranking_cache->insert('<p>['.$i.']<img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /> votes='.$photo[1].', points='.$photo[2].', moyenne='.round($photo[2] / $photo[1], 1).'</p>', false);
+        $ranking_cache->insert('<p>['.$i.']<a href="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/large/'.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /></a> votes='.$photo[1].', points='.$photo[2].', moyenne='.round($photo[2] / $photo[1], 1).'</p>', false);
       }
 
       // Close cache file
@@ -107,7 +108,7 @@ DEBUG:
       // Print result
       foreach($LoP as $photo){
         $i++;
-        echo '<p>['.$i.']<img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /> votes='.$photo[1].', points='.$photo[2].', moyenne='.round($photo[2] / $photo[1], 1).'</p>', false;
+        echo '<p>['.$i.']<a href="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/large/'.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /></a> votes='.$photo[1].', points='.$photo[2].', moyenne='.round($photo[2] / $photo[1], 1).'</p>', false;
       }
     }
   }
