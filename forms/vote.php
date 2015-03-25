@@ -51,9 +51,9 @@
       $sended_points = get_arr_value($_COOKIE, $str_cookie, '0'); // Chercher et lire cookie pour cette photo
       
       if($sended_points=='-1'){
-        // Il est le propietaire de la photo
+        // Il est le proprietaire de la photo
         // TODO: si c'est configure comme ça
-        $str_message = 'Vous &ecirc;tes le propietaire de cette photo.';
+        $str_message = 'Vous &ecirc;tes le proprietaire de cette photo.';
         $AL_CONF['allowvotes']='0';
       }elseif($AL_CONF['antitriche']=='1' && $AL_CONF['allowvotes']=='1'){
         // Il a deja vote et l'antitriche a ete active

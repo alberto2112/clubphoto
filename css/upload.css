@@ -18,7 +18,7 @@ input[type="text"],  input[type="email"], textarea, select {
     outline: 0 none;
     padding: 5px 3px 3px 30px;
     width: 99%;
-    font-size: 107%;
+    font-size: 85%;
     line-height:15px;
     box-shadow: inset 0px 1px 4px #ECECEC;
     -moz-box-shadow: inset 0px 1px 4px #ECECEC;
@@ -27,4 +27,11 @@ input[type="text"],  input[type="email"], textarea, select {
 
 .txt_auteur{
   background: transparent url(../images/form_placeholder_user.png) no-repeat 3px 50%;
+}
+
+.dz-default{
+  /**
+   * Ceci est pour permettre de faire un formulaire pas a pas avec javascript
+   */
+  display:none;
 }
