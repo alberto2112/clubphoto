@@ -22,7 +22,7 @@ body{
 .quota-total{height:25px;margin:0;padding:0;color:#fff;}
 
 .quota-used{background-color:#55a;float:left;}
-.quota-used span{display:inline-block;font-size:80%;padding:.3em 0 0 .55em;}
+.quota-used span{display:inline-block;font-size:80%;padding:.3em 0 0 .55em;width:8em;}
 .quota-total{background-color:#aaa;overflow: hidden;}
 
 /* ALBUMS */

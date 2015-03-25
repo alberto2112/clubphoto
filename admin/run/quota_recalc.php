@@ -1,6 +1,6 @@
 <?php
   if(!defined('SYSTEM_ROOT'))
-    require_once __DIR__.'/../settings.php';
+    require_once __DIR__.'/../../settings.php';
 
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
@@ -18,48 +18,49 @@
   include SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
   include SYSTEM_ROOT.LIB_DIR.'log.class.php';
 
+  $quota = $album_size = 0;
 
-  foreach(glob(SYSTEM_ROOT.ALBUMS_DIR.'*', GLOB_ONLYDIR) as $folder){
-    if($folder!='.' && $folder!='..'){
-      $fname = basename($folder);
-      $nphotos = count_files(SYSTEM_ROOT.ALBUMS_DIR.$fname.'/photos/thumbs', '*.jpg');
-      
-      if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$fname.'/config.php')===true)
-        $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$fname.'/config.php';
-      else
-        $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
+  foreach(glob(SYSTEM_ROOT.ALBUMS_DIR.'*', GLOB_ONLYDIR) as $album){
+    if($album!='.' && $album!='..'){
+      $album_size = 0;
+      $aname = basename($album);
 
-      if ($hdir = opendir(SYSTEM_ROOT.ALBUMS_DIR.$fname.'/photos/thumbs')) {
-          $entry = readdir($hdir);
-          closedir($hdir);
+      // Calculate total size of thumbs
+      foreach(read_dir(SYSTEM_ROOT.ALBUMS_DIR.$aname.'/photos/thumbs','*.jpg', false) as $file){
+        $album_size += filesize($file);
       }
-      
-      echo '<div class="card">';
-        echo '<div class="row">';
-          echo '<div class="content image">';
-            echo '<a href="'.PUBLIC_ROOT.ALBUMS_DIR.$fname.'" class="info-photo" title="Regarder album"';
-      // Add any photo thumb
-          foreach(read_dir(SYSTEM_ROOT.ALBUMS_DIR.$fname.'/photos/thumbs','*.jpg',true) as $file){
-            echo ' style="background-image: url('.PUBLIC_ROOT.ALBUMS_DIR.$fname.'/photos/medium/'.$file.');"';
-            break;
-          }
-/*
-      if ($hdir = opendir(SYSTEM_ROOT.ALBUMS_DIR.$fname.'/photos/thumbs')) {
-        while (false !== ($entry = readdir($hdir))) {
-          
-          if($entry != '.' && $entry != '..')
-            break;
+
+      // Calculate total size of medium
+      foreach(read_dir(SYSTEM_ROOT.ALBUMS_DIR.$aname.'/photos/medium','*.jpg', false) as $file){
+        $album_size += filesize($file);
+      }
+
+      // Calculate total size of large
+      foreach(read_dir(SYSTEM_ROOT.ALBUMS_DIR.$aname.'/photos/large','*.jpg', false) as $file){
+        $album_size += filesize($file);
+      }
+
+      // Calculate total size of trash
+      if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$aname.'trash')){
+        foreach(read_dir(SYSTEM_ROOT.ALBUMS_DIR.$aname.'/trash','*.jpg', false) as $file){
+          $album_size += filesize($file);
         }
-
-          echo '<span><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$fname.'/photos/thumbs/'.basename($entry).'" /></span>';
-          closedir($hdir);
       }
-*/
-            echo '><span class="info-aname">'.$AL_CONF['albumname'].'</span>';
-            echo '<span class="info-nphotos">'.$nphotos.'</span></a>';
-          echo '</div>';
-        echo '</div>';
-      echo '</div>';
+      
+      $album_size = round($album_size / 1024); // Convert in kB
+      
+      // Update album quota file
+      file_put_contents(SYSTEM_ROOT.ALBUMS_DIR.$aname.'/album_size.txt', $album_size, LOCK_EX);
+     
+      // Increment quota size var
+      $quota += $album_size;
     }
   }
+
+  // Update site quota file
+  file_put_contents(FILE_USED_QUOTA, $quota, LOCK_EX);
+
+  // User redirect
+  header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ADMIN_DIR);
+  
 ?>

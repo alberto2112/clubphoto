@@ -117,9 +117,18 @@
       </div>
       <div class="row border-up">
         <div class="quota-total">
-
-          <div class="quota-used" style="width:<?php echo $quota_used_prct; ?>%;"><span><?php echo $quota_used; ?> Ko</span></div>
+          <div class="quota-used" style="width:<?php echo $quota_used_prct; ?>%;"><span><?php echo human_filesize($quota_used * 1024); ?>o</span></div>
         </div>
+<?php
+      if($_SESSION['ULEVEL']==USER_LEVEL_SUPERADMIN){
+        echo '
+      <div class="row border-up">
+        <ul class="content">
+          <li><a href="'.PUBLIC_ROOT.ADMIN_DIR.RUN_DIR.'quota_recalc.php">Recalculer quota</a></li>
+        </ul>
+      </div>'."\n";
+      }
+?>
       </div>
     </div>
     <!-- </Quota> -->
