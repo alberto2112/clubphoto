@@ -78,9 +78,24 @@
 
         }
         break;
+      
+      case 'update':
+      // Get vars
+        $label = clear_request_param(getRequest_param('label', ''), false, 128, true);
+        $description = clear_request_param(getRequest_param('description', ''), false, 500, true);
+      
+      // Save label n description
+        file_put_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.lbl.txt', $label);
+        file_put_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.dsc.txt', nl2br2($description)); // Replace newline char by "<br />"
+      
+      // TODO: Update album log file
+      
+      // User redirect
+        header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.FORMS_DIR.'myuploads.php?'.URI_QUERY_ALBUM.'='.$codalbum);
+      break;
     }
   } else{
-    $ERRLOG->insert('[!] CONFIG NOT FOUND - album='.$codalbum.' - ip='.$IP.'['.RUN_DIR.'myuploads.php]', true);
+    $ERRLOG->insert('[!] CONFIG NOT FOUND - album='.$codalbum.' - ip='.$IP.' ['.RUN_DIR.'myuploads.php]', true);
     header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum);
     exit;
   }

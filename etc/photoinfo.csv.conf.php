@@ -17,4 +17,5 @@
   define('AUTHOR',15);
   define('IPUPLOADER',16);
   define('UPLOADERID',16);
+  define('DESCRIPTION', 17);
 ?>

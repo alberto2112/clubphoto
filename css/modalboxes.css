@@ -8,6 +8,7 @@
   width:100%;
   background-color: rgba(0,0,0,0.75);
   text-align:center;
+  overflow: scroll;
 }
 
 .modal_box{
@@ -22,6 +23,7 @@
   background-color:#f4f4f4;
   color:#313131;
   font-weight: 100;
+  box-shadow: 5px 3px 30px black;
 }
 .modal_box p{
   padding:0;

@@ -1,42 +1,88 @@
 /* Card, Dialog */
-    .photo-card {
-      position: relative;
-      display: inline-block;
-      width: 186px;
-      /*vertical-align: top;*/
-      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-      margin:8px;
-      padding-top:186px;
-      
-      background-repeat: no-repeat;
-      background-position: top left;
-    }
+.photo-card {
+  position: relative;
+  display: inline-block;
+  width: 186px;
+  /*vertical-align: top;*/
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  margin:8px;
+  padding-top:186px;
+  height:34px;
 
-    .photo-tools{
-      float:left;
-      margin-top: -186px;
-      padding:5px;
-    }
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  /*overflow:hidden;*/
+}
 
-  .photo-tools a{
-    display:inline-block;
-    text-indent:-9999px;
-  }
+.photo-tools{
+  float:left;
+  margin-top: -186px;
+  padding:5px;
+}
 
-    .photo-tools .delete{
-      width:20px;
-      height:20px;
-      background:transparent url("../images/ui_ico_del_20x20.png") no-repeat 0 0;
-      
-    }
+.photo-tools a{
+display:inline-block;
+text-indent:-9999px;
+}
 
-    .photo-form input[type="text"]{
-      width:100%;
-      border:0;
-      background-color:#4DB6AC;
-      color:#fff;
-      font-family: "Lato", sans-serif;
-      font-size:127%;
-      font-weight:300;
-      padding:.47em .35em;
-    }
+.photo-tools .delete{
+  width:20px;
+  height:20px;
+  background:transparent url("../images/ui_ico_del_20x20.png") no-repeat 0 0;
+
+}
+
+.photo-form .photo-label{
+  border:0;
+  background:#4DB6AC url("../images/ico_pencil_w_20x20.png") no-repeat 161px center;
+  padding:0 28px .47em .35em;
+  display:block;
+  height:25px;
+  overflow: hidden;
+  line-height: 150%;
+  font-weight:300;
+}
+
+#mbupdate-photo-thumb{
+  display:block;
+  /*margin:8px 0 4px;*/
+}
+
+#mb-update-photo input[type="text"],
+#mb-update-photo textarea{
+  display:block;
+  width:100%;
+  /*margin:4px 0;*/
+  padding:.3em;  
+  
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+#mb-update-photo input[type="text"]{
+  border-width: 0 0 1px;
+  border-style: dotted;
+  border-color: #fff;
+  font-weight:700;
+}
+
+#mb-update-photo textarea{
+  height:5em;
+  border:0;
+  font-weight:300;
+  resize: none;
+}
+
+/* FONT SIZES & COLORS */
+.photo-form .photo-label,
+#mb-update-photo input[type="text"],
+#mb-update-photo textarea{
+  background-color:#10ADF5;
+  color:#fff;
+  font-family: "Lato", sans-serif;
+  font-size:127%;
+  text-decoration: none;
+}

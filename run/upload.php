@@ -159,11 +159,15 @@
       $PROC->insert($result, true); // Insert and close file
 
       // Ajouter auteur et identificateur dans le fichier d'informations relatives a la photo
-      fwrite($CSV,';'.$title.';;;;'.$USER_KEY.';'.$author.';'.$UPLOADERID);
+      #fwrite($CSV,';'.$title.';;;;'.$USER_KEY.';'.$author.';'.$UPLOADERID);
+      fwrite($CSV,';;;;;'.$USER_KEY.';'.$author.';'.$UPLOADERID);
       
       // Liberer et fermer fichier CSV
       flock($CSV, LOCK_UN);
       fclose($CSV);
+      
+      // Enregistrer libelle
+      file_put_contents($targetAlbum.'photos/'.$image_basename.'.lbl.txt', $title);
 
       // Ajouter taille d'image au fichier de quota
       $photo_filesize = round(@filesize($targetAlbum.'photos/thumbs/'.$result) / 1024);

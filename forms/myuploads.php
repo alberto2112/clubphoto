@@ -71,6 +71,24 @@
         </div>
       </div>
       <!-- /Modal box - Photos to trash -->
+      <!-- Modal box - Update label n description -->
+      <div class="modal_box" id="mb-update-photo">
+        <form action="<?php echo PUBLIC_ROOT.RUN_DIR.'myuploads.php'?>" method="post" id="frm-update">
+          <input type="hidden" name="<?php echo URI_QUERY_ALBUM; ?>" value="<?php echo $codalbum; ?>" />
+          <input type="hidden" name="<?php echo URI_QUERY_PHOTO; ?>" id="mbupdate-photo-fname" value="" />
+          <input type="hidden" name="<?php echo URI_QUERY_ACTION; ?>" value="update" />
+          <input type="text" name="label" maxlength="128" id="mbupdate-photo-lbl" />
+          <textarea maxlength="500" name="description" id="mbupdate-photo-dsc"></textarea>
+          <img src="" id="mbupdate-photo-thumb" />
+
+          <div class="btn_wraper">
+            <a href="#" class="button gray" onclick="HideModalBoxes('mb-update-photo');">Annuler</a>
+            <a href="#" class="button green" id="mbox-btn-update" onclick="javascript:$('#frm-update').submit();">Enregistrer</a>
+            <!-- <input type="submit" value="Enregistrer" class="button green" /> -->
+          </div>
+        </form>
+      </div>
+      <!-- /Modal box - Update label n description -->
     </div>
 <!-- /Modal boxes -->
     <div class="header">
@@ -96,12 +114,26 @@
         // Get photo info
         $PHOTOINFO = read_csv(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.csv');
         
+        // Load photo label
+        if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.lbl.txt')){
+          $PHOTOINFO[TITLE] = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.lbl.txt', false, null, -1, 128); // Limited to 128 chars
+        }
+        
+        // Load photo description
+        if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.dsc.txt')){
+          $PHOTOINFO[DESCRIPTION] = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.dsc.txt', false, null, -1, 500); // Limited to 128 chars
+        }
+        
         echo '<div class="photo-card" style="background-image:url('.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo_filename.')">
+        <input type="hidden" id="photo-filename-'.$i.'" value="'.$photo_filename.'" />
+        <input type="hidden" id="photo-lbl-'.$i.'" value="'.get_arr_value($PHOTOINFO, TITLE).'" />
+        <input type="hidden" id="photo-dsc-'.$i.'" value="'.get_arr_value($PHOTOINFO, DESCRIPTION).'" />
+        
         <div class="photo-tools">
           <a href="#" onclick="javascript:dlgDelete(\''.$photo_filename.'\')" title="Supprimer" class="delete">Supprimer</a>
         </div>
         <div class="photo-form">
-          <input type="text" name="txt['.$i.']" value="'.get_arr_value($PHOTOINFO, LIBELLE).'" />
+          <a href="#" onclick="javascript:dlgUpdate(\''.$i.'\');" class="photo-label">'.get_arr_value($PHOTOINFO, LIBELLE).'</a>
         </div>
       </div>'."\n";
       }
@@ -123,7 +155,7 @@
   }
 ?>
     <script type="text/javascript">
-      var photo_to_delete; // <---- Peut s'effacer
+      //var photo_to_delete; // <---- Peut s'effacer
       var cur_modal_box_id;
 
       function ShowModalBox(LayerID){
@@ -140,9 +172,27 @@
       }
       
       function dlgDelete(Photo2Del){
-        this.photo_to_delete = Photo2Del; // <---- Peut s'effacer
+        //this.photo_to_delete = Photo2Del; // <---- Peut s'effacer
         $("#mbox-btn-delete").attr("href", "<?php echo PUBLIC_ROOT.RUN_DIR. 'myuploads.php?'.URI_QUERY_ACTION.'=delete&'.URI_QUERY_ALBUM.'='.$codalbum.'&'.URI_QUERY_PHOTO.'='; ?>"+Photo2Del);
         ShowModalBox('mb-delete-photo');
+      }
+      
+      function dlgUpdate(photoID){
+        //this.photo_to_delete = Photo2Del; // <---- Peut s'effacer
+        var photo_filename = $('#photo-filename-'+photoID).val();
+        
+        $("#mbupdate-photo-thumb").attr("src", "<?php echo PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/medium/';?>"+photo_filename);
+        
+        $("#mbupdate-photo-fname").val( photo_filename );
+        $("#mbupdate-photo-lbl").val( $('#photo-lbl-'+photoID).val() );
+        $("#mbupdate-photo-dsc").html( $('#photo-dsc-'+photoID).val().replace(/<br\s?\/?>/g,"\n") ); // For other all
+        
+        ShowModalBox("mb-update-photo");
+        
+        // Repositionning modalbox
+        // var y = round( ($(window).height() - $("#mb-update-photo").height()) / 2);  // <- don't work
+        // $("#mb-update-photo").css("margin-top", y+"px");   // <- don't work
+        $("#mb-update-photo").css("margin-top", "5%");
       }
     </script>
   </body>

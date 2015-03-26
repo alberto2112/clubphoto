@@ -295,16 +295,16 @@ if($_ISADMIN){
 ?>
     </div>
 <!-- / Content -->
-    <p class="footnote">Club photo - MJC Rodez | 
+    <p class="footnote">Club photo &#64; <a href="http://www.mjcrodez.com/">MJC Rodez</a> | <a href="http://www.dropzonejs.com/">Dropzonejs</a> | 
 <?php
   if($_ISMEMBER && $_SHOWRANKING){
     echo '<a href="'.PUBLIC_ROOT.'classement.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'">Voir classement</a> | ';
   }
 
   if($_ISADMIN){
-    echo '<a href="'.PUBLIC_ROOT.'logout.php">Se d&eacute;connecter</a>';
+    echo '<a style="color:#E88" href="'.PUBLIC_ROOT.'logout.php">Se d&eacute;connecter</a>';
   } else {
-    echo '<a href="'.PUBLIC_ROOT.'login.php">Administrer</a>';
+    echo '<a style="color:#a5a5a5;"href="'.PUBLIC_ROOT.'login.php">Administrer</a>';
   }
 ?>
       </p>
