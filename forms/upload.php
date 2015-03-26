@@ -48,9 +48,11 @@
   $UNAME = (@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_KEY.'.uname')) ? file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_KEY.'.uname') : '';
   
 ?>
+<!DOCTYPE html>
 <html>
     <head>
         <title>Upload</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="<?php echo PUBLIC_ROOT.'css/upload.css?v='.VERSION_CSS; ?>" media="all" rel="stylesheet" type="text/css" />
         <link href="<?php echo PUBLIC_ROOT.'css/buttons.css?v='.VERSION_CSS; ?>" media="all" rel="stylesheet" type="text/css" />
         <link href="<?php echo PUBLIC_ROOT.'css/dropzone.css?v='.VERSION_CSS; ?>" media="all" rel="stylesheet" type="text/css" />
@@ -59,12 +61,12 @@
     </head>
     <body>
         <form action="<?php echo PUBLIC_ROOT.RUN_DIR; ?>upload.php" class="dropzone" id="myDropzone"
-              method="post" enctype="image/jpeg" >
+              method="post" enctype="image/jpeg" accept="image/x-png, image/gif, image/jpeg">
 			<input type="hidden" name="<?php echo URI_QUERY_ALBUM; ?>" value="<?php echo $codalbum; ?>" />
             <input type="hidden" name="<?php echo URI_QUERY_RIGHTS_KEY; ?>" value="<?php echo $USER_KEY; ?>" />
             <div class="form_items" id="frm-step-1">
-              <p>Pour faciliter le tri vis-&agrave;-vis de l'administrateur, vous pouvez renseigner votre nom et pr&eacute;nom.</p>
-              <p>Cette information sera r&eacute;serv&eacute;e uniquement &agrave; l'administrateur</p>
+              <p>Pour faciliter le tri vis-&agrave;-vis de l'administrateur, vous pouvez renseigner votre nom et pr&eacute;nom.<br />
+              Cette information sera r&eacute;serv&eacute;e uniquement &agrave; l'administrateur</p>
               <input class="txt_auteur" type="text" name="auteur" value="<?php echo html_entity_decode($UNAME, ENT_COMPAT, CHARSET); ?>" placeholder="NOM, Prenom auteur (facultatif)" />
             </div>
             <div class="fallback" id="frm-step-2" style="display:none;">
