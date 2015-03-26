@@ -33,9 +33,19 @@
   // Leer fichero $photo_filename.csv
   $photo_info = read_csv(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.csv');
 
+  // Init sensible vars
+  $photo_info[DESCRIPTION] = $photo_info[TITLE] = '';
+
   // Load photo label
   if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.lbl.txt')){
     $photo_info[TITLE] = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.lbl.txt', false, null, -1, 128); // Limited to 128 chars
+  }else{
+    $photo_info[TITLE] = $photo_filename;
+  }
+
+  // Load photo label
+  if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.dsc.txt')){
+    $photo_info[DESCRIPTION] = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.dsc.txt', false, null, -1, 128); // Limited to 128 chars
   }
 
   // Lire fichier de configuation de l'album
@@ -179,13 +189,21 @@
       </ul>
     </div>
 <!-- / Info Photo -->
+    
+   
 <!-- Rating -->
 <?php
+// Print photo description if exists
+  if(!empty($photo_info[DESCRIPTION])){
+    echo  '<!-- Desc Photo -->'."\n".'<div class="message"><h2>Description</h2><p>'.$photo_info[DESCRIPTION].'</p></div>'."\n".'<!-- / Desc Photo -->';
+  }
+
 //DEBUG
 //$AL_CONF['allowvotes']='1';
 //$AL_CONF['ratemethod']='likes';
 //DEBUG />
 
+// Print vote form
   if($AL_CONF['allowvotes']=='1'){ // Montrer le bouton uniquement si la periode de votes est ouverte
     echo '<div class="vote-form" id="vote-counter"><h2>Votations</h2>';
     if($AL_CONF['ratemethod']=='stars'){

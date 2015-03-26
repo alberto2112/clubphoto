@@ -66,6 +66,9 @@
   $comments = clear_request_param(getRequest_param(URI_QUERY_COMMENTS, false), false, 500, true);
   $RKEY     = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);
 
+// Recuperer USER_KEY (Cookie)
+  $USER_KEY = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
+
   $votes_filename = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.txt';
   $points_filename = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt';
   $comments_filename = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.cmts.csv';
@@ -168,6 +171,13 @@ if(empty($codalbum)){
       $comments = str_replace('&Atilde;&reg;', '&icirc;', $comments);
       $comments = str_replace('&Atilde;&macr;', '&uml;', $comments);
       $comments = str_replace('&Atilde;&sect;', '&ccedil;', $comments);
+      
+    // Enregistrer traçabilite du vote
+      if($USER_KEY && is_numeric($points_result)){
+        $V= new LOG(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_KEY.'.votes');
+        $V->insert(';'.$points.';'.$photo_filename);
+        $V->close();
+      }
       
     // Enregistrer commentaire    
       $C = new LOG($comments_filename, false);
