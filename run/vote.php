@@ -174,8 +174,8 @@ if(empty($codalbum)){
       
     // Enregistrer traçabilite du vote
       if($USER_KEY && is_numeric($points_result)){
-        $V= new LOG(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_KEY.'.votes');
-        $V->insert(';'.$points.';'.$photo_filename);
+        $V= new LOG(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_KEY.'.votes', false);
+        $V->insert(date('d.m.Y H:i:s').';'.$points.';'.$photo_filename);
         $V->close();
       }
       
