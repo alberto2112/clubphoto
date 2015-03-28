@@ -60,7 +60,6 @@ body{
   width:20px;
   height:20px;
   background-repeat: no-repeat;
-  /* debug */
   background-size:contain;
   background-position:center;
 }
