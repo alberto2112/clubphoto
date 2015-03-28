@@ -38,6 +38,8 @@
   $action = clear_request_param(getRequest_param(URI_QUERY_ACTION, 'new'), 'a-z', 8, false);
   $path_album = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/';
 
+  $ADMIN_NAME = get_arr_value($_SESSION, 'UNAME', 'Unknown');// For LOGs
+
   $IP  = getClient_ip();
   $LOG = new LOG(SYSTEM_ROOT.ADMIN_DIR.'/logs/albums.log'); // Le fichier sera cree/ouvert uniquement si on ajoute des lignes
 
@@ -46,7 +48,7 @@
     echo "<p>Album non trouv&eacute;</p>";
 
     // Enregistrer activitee
-    $LOG->insert('[!] - ALBUM CODE NOT FOUND - '.$IP);    
+    $LOG->insert('[!] msg=ALBUM CODE NOT FOUND ip='.$IP.' admin='.$ADMIN_NAME);    
   }else{
     $AL_LOG = new LOG(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/logs/events.log'); // Le fichier sera cree/ouvert uniquement si on ajoute des lignes
     
@@ -121,8 +123,8 @@
                           LOCK_EX);
 
         // Enregistrer activitee
-        $LOG->insert('[+] ['.$codalbum.'] - ALBUM CREATED - '.$IP);
-        $AL_LOG->insert('[+] - ALBUM CREATED - '.$IP);
+        $LOG->insert('[+] ['.$codalbum.'] - ALBUM CREATED by '.$ADMIN_NAME.'  - '.$IP);
+        $AL_LOG->insert('[+] - ALBUM CREATED by '.$ADMIN_NAME.'  - '.$IP);
 
         // !! Ne pas ajouter -> break;
 
@@ -154,8 +156,8 @@
       
         // Enregistrer activitee
         if($action=='edit'){
-          $LOG->insert('[=] ['.$codalbum.'] - ALBUM MODIFIED - '.$IP);
-          $AL_LOG->insert('[=] - ALBUM MODIFIED - '.$IP);
+          $LOG->insert('[=] ['.$codalbum.'] - ALBUM MODIFIED by '.$ADMIN_NAME.' - '.$IP);
+          $AL_LOG->insert('[=] - ALBUM MODIFIED by '.$ADMIN_NAME.' - '.$IP);
         }
       
         $LOG->close();
@@ -172,7 +174,7 @@
         rename(SYSTEM_ROOT.ALBUMS_DIR.$codalbum, SYSTEM_ROOT.TRASH_DIR.$codalbum);
       
         // Enregistrer activitee
-        $LOG->insert('[<] ['.$codalbum.'] -  ALBUM TO TRASH - '.$IP, true);
+        $LOG->insert('[<] ['.$codalbum.'] -  ALBUM TO TRASH by '.$ADMIN_NAME.'  - '.$IP, true);
 
         header('Location: '.PUBLIC_ROOT.ADMIN_DIR.'list_albums.php'); exit;
         break;
@@ -187,7 +189,7 @@
         // Delete album
         rmdir_recurse(SYSTEM_ROOT.TRASH_DIR.$codalbum);
       
-        $LOG->insert('[-] ['.$codalbum.'] -  ALBUM DELETED FROM TRASH - '.$IP, true);
+        $LOG->insert('[-] ['.$codalbum.'] -  ALBUM DELETED FROM TRASH by '.$ADMIN_NAME.'  - '.$IP, true);
       
         header('Location: '.PUBLIC_ROOT.ADMIN_DIR.'list_albums.php'); exit;
         break;
@@ -203,7 +205,7 @@
         rmdir_recurse(SYSTEM_ROOT.ALBUMS_DIR.$codalbum);
       
         // Enregistrer activitee
-        $LOG->insert('[-] ['.$codalbum.'] - ALBUM DELETED - '.$IP, true);
+        $LOG->insert('[-] ['.$codalbum.'] - ALBUM DELETED by '.$ADMIN_NAME.'  - '.$IP, true);
 
         header('Location: '.PUBLIC_ROOT.ADMIN_DIR.'list_albums.php'); exit;
         break;
