@@ -31,7 +31,10 @@
     .photo-info,
     .vote-form,
     .message,
-    .comments {width:16em;}
+    .comments {
+      /* width:235px; */
+      width:15.35em;
+    }
     
     .photo-info li{
       display:block;

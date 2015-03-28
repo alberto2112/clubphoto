@@ -57,12 +57,15 @@ body{
 .album-tools a{
   display:block;
   text-indent: -999px;
+  width:20px;
+  height:20px;
   background-repeat: no-repeat;
-  width:42px;
-  height:42px;
+  /* debug */
+  background-size:contain;
+  background-position:center;
 }
 
-.album-tools .tool-view{  background-image: url(../images/ico_eye_g_42x42.png); background-position: left 6px;}
+.album-tools .tool-view{  background-image: url(../images/ico_eye_g_42x42.png); }
 .album-tools .tool-logs{  background-image: url(../images/ico_file_document_g_42x42.png);}
 .album-tools .tool-trash{  background-image: url(../images/ico_delete_g_42x42.png);}
 .album-tools .tool-delete{  background-image: url(../images/ico_close_g_42x42.png);}
@@ -71,7 +74,7 @@ body{
 
 .album-tools li{
   display:inline-block;
-  margin:0 12px;
+  margin:0 4.97%;
   overflow: hidden;
 }
 
