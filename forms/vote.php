@@ -165,27 +165,35 @@
     <div class="photo-info">
       <h2>Informations</h2>
       <ul>
-        <li class="camera" style="background-image:url(<?php echo PUBLIC_ROOT; ?>images/ico_camera_24x24.png);">
+        <li class="camera">
           <span title="Boitier"><?php echo $photo_info[MODEL]; ?></span>
         </li>
-        <li style="background-image:url(<?php echo PUBLIC_ROOT; ?>images/ico_ouverture_24x24.png)";>
+        <li class="aperture">
           <span title="Ouverture"><?php echo $photo_info[OUVERTURE]; ?></span>
         </li>
-        <li style="background-image:url(<?php echo PUBLIC_ROOT; ?>images/ico_expo_24x24.png);">
+        <li class="expo">
           <span title="Exposition"><?php echo $photo_info[EXPO]; ?></span>
         </li>
-        <li style="background-image:url(<?php echo PUBLIC_ROOT; ?>images/ico_iso_24x24.png)";>
+        <li class="iso">
           <span title="ISO"><?php echo $photo_info[ISO]; ?></span>
         </li>
-        <li style="background-image:url(<?php echo PUBLIC_ROOT; ?>images/ico_focal_24x24.png)";>
+        <li class="focal">
           <span title="Focal35: <?php echo $photo_info[FOCAL35]; ?>"><?php echo $photo_info[FOCAL]; ?></span>
         </li>
-        <li style="background-image:url(<?php echo PUBLIC_ROOT; ?>images/ico_expobias_24x24.png)";>
+        <li class="expobias">
           <span title="Exposure compensation"><?php echo $photo_info[EXBIAS]; ?></span>
         </li>
-        <li class="flash" style="background-image:url(<?php echo PUBLIC_ROOT; ?>images/ico_flash_24x24.png)";>
+        <li class="flash">
           <span title="Flash"><?php echo $photo_info[FLASH]; ?></span>
         </li>
+<?php
+
+  //if($codalbum=='phjvd'){
+  if(strpos(get_arr_value($AL_CONF, 'albumdesc', ''), '[\d]') > 0){
+    echo '<li class="download"><a href="'.PUBLIC_ROOT.RUN_DIR.'download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo_filename.'">T&eacute;l&eacute;charger</a></li>';
+  }
+
+?>
       </ul>
     </div>
 <!-- / Info Photo -->

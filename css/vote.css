@@ -51,7 +51,8 @@ h2{
   background-position: left center;
   min-height:24px;
 }
-.photo-info li>span{
+.photo-info li>span,
+.photo-info li>a{
   padding:0 0 0 33px;
   display:inline-block;
   margin-top:.25em;
@@ -110,7 +111,8 @@ h1,h2{ color: #f4f4f4; }
 .header h1>a{color: inherit;}
 
 .photo-info .camera p,
-.photo-info li { color:#e5e5e5; }
+.photo-info li, 
+.photo-info a { color:#e5e5e5; }
 .vote-form textarea{
   background-color:#fff;
   border-color:#f4f4f4;
@@ -209,3 +211,13 @@ a{text-decoration: none;}
 .hidden{
   visibility: hidden;
 }
+
+/* ICONS */
+.camera{  background-image:url(../images/ico_camera_24x24.png); }
+.flash{background-image:url(../images/ico_flash_24x24.png); }
+.expo{background-image:url(../images/ico_expo_24x24.png); }
+.expobias{background-image:url(../images/ico_expobias_24x24.png); }
+.iso{background-image:url(../images/ico_iso_24x24.png); }
+.aperture{background-image:url(../images/ico_ouverture_24x24.png); }
+.focal{background-image:url(../images/ico_focal_24x24.png); }
+.download{background-image:url(../images/ico_cloud_download_w_24x24.png); }
