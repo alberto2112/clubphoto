@@ -1,4 +1,5 @@
 <?php
+
   function exif_get_float($value) {
     $pos = strpos($value, '/');
     if ($pos === false) return (float) $value;
@@ -148,19 +149,15 @@
      * @return String => image final filename
      */
 
-      // Make necesary dirs
-      @mkdir($album_dest.'/logs',0755,true);
-      @mkdir($album_dest.'/photos/thumbs',0755,true);
-      @mkdir($album_dest.'/photos/medium',0755);
-      @mkdir($album_dest.'/photos/large',0755);
-
-    // Extraire basename
-      $output_filename = basename($image_filename);
+    // Make necesary dirs
+    @mkdir($album_dest.'/logs',0755,true);
+    @mkdir($album_dest.'/photos/thumbs',0755,true);
+    @mkdir($album_dest.'/photos/medium',0755);
+    @mkdir($album_dest.'/photos/large',0755);
 
 
-    //If class Imagick not exists load bricoled Imagick class with GD library
-    if(!class_exists('Imagick'))
-        include realpath( dirname(__FILE__)).'/imagick.class.php';
+  // Extraire basename
+    $output_filename = basename($image_filename);
 
     $photo = new Imagick();
 
