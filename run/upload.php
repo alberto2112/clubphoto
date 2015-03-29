@@ -118,9 +118,22 @@
     }
 
     $workspace  = SYSTEM_ROOT.WORKSPACE_DIR.$IP.'/';
-    $title = @substr(basename($_FILES['file']['name']), 0, -4);
+    $title = clear_request_param(@substr(basename($_FILES['file']['name']), 0, -4), false, 128, true); // Transformer characteres non conformes du nom de fichier
     $image_basename = md5(rand().time()."ClubPhotoMJCRodez").'.jpg'; // Calculer nuveau nom du fichier
     $targetAlbum = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/';   // Album d'installation
+    
+  // Remplacer autres caracteres que JavaScript a l'obligation de mettre
+    $title = str_replace('&Atilde;&iexcl;', '&aacute;', $title);
+    $title = str_replace('&Atilde;&nbsp;', '&agrave;', $title);
+    $title = str_replace('&Atilde;&copy;', '&eacute;', $title);
+    $title = str_replace('&Atilde;&scaron;', '&egrave;', $title);
+    $title = str_replace('&Atilde;&sup1;', '&ugrave;', $title);
+    $title = str_replace('&Atilde;&ordf;', '&ecirc;', $title);
+    $title = str_replace('&Atilde;&cent;', '&acirc;', $title);
+    $title = str_replace('&Atilde;&reg;', '&icirc;', $title);
+    $title = str_replace('&Atilde;&macr;', '&uml;', $title);
+    $title = str_replace('&Atilde;&sect;', '&ccedil;', $title);
+    
 
     // Creer dossiers necesaires
     @mkdir($targetAlbum,0777,true); // Dossier des albums

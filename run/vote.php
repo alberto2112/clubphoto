@@ -168,6 +168,7 @@ if(empty($codalbum)){
       $comments = str_replace('&Atilde;&scaron;', '&egrave;', $comments);
       $comments = str_replace('&Atilde;&sup1;', '&ugrave;', $comments);
       $comments = str_replace('&Atilde;&ordf;', '&ecirc;', $comments);
+      $comments = str_replace('&Atilde;&cent;', '&acirc;', $comments);
       $comments = str_replace('&Atilde;&reg;', '&icirc;', $comments);
       $comments = str_replace('&Atilde;&macr;', '&uml;', $comments);
       $comments = str_replace('&Atilde;&sect;', '&ccedil;', $comments);
