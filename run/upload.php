@@ -7,6 +7,14 @@
   include_once SYSTEM_ROOT.LIB_DIR.'photo.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
 
+  //If class Imagick not exists load bricoled Imagick class with GD library
+  if(!class_exists('Imagick')){
+      include SYSTEM_ROOT.LIB_DIR.'imagick.class.php';
+      $CLONE_EXIF = true;
+  }else{
+    $CLONE_EXIF = false;
+  }
+
 // Get IP address
   $IP = getClient_ip();
 
