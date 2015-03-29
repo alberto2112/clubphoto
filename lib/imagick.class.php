@@ -53,27 +53,7 @@ class Imagick{
             $this->getSizes();
     }
 
-    if($bestfit===true && ($this->image_in_width > $toWidth || $this->image_in_height > $toHeight)){
-/*
-      // Obtenemos la relación de tamaño respecto
-      // al ancho y alto máximo.
-      $xscale=$this->image_in_width/$toWidth;
-      $yscale=$this->image_in_height/$toHeight;
-
-      // Cuando la escala en y es mayor que la escala en x
-      // implica que debemos redimensionar en base al nuevo
-      // alto.
-      if ($yscale>$xscale){
-        $new_width = round($toWidth * (1/$yscale));
-        $new_height = round($toHeight * (1/$yscale));
-
-      // Por el contrario si la escala en x es mayor o igual
-      // debemos de redimensionar en base al nuevo ancho.
-      } else {
-        $new_width = round($this->image_in_width * (1/$xscale));
-        $new_height = round($this->image_in_height * (1/$xscale));
-      }
-*/
+    if(($this->image_in_width > $toWidth || $this->image_in_height > $toHeight) || $bestfit===false ){
       // Obtener relacion aspecto imagen
       $logos = $this->image_in_width / $this->image_in_height;
 
@@ -86,6 +66,10 @@ class Imagick{
         $new_width = $toWidth;
         $new_height = $toWidth / $logos;
       }
+    }else{
+      // Si la imagen de entrada es mas pequena que las dimensiones deseadas en la salida la imagen no se redimensiona
+      $new_width = $this->image_in_width;
+      $new_height = $this->image_in_height;
     }
 
     // Reservamos espacio en memoria para la nueva imágen
