@@ -16,6 +16,7 @@ body{
 }
 
 .panel{margin:0 auto;}
+.content span{color: #888;}
 
 /* QUOTA */
 .quota-used,
@@ -78,4 +79,6 @@ body{
 }
 
 /* FIXES */
-  
+.disabled{
+  text-decoration:line-through;
+}

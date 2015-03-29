@@ -176,6 +176,20 @@
       
       // Enregistrer libelle
       file_put_contents($targetAlbum.'photos/'.$image_basename.'.lbl.txt', $title);
+      
+      // Cloner EXIF avec PEL si necesaire
+      if($CLONE_EXIF){
+        include SYSTEM_ROOT.LIB_DIR.'pel/autoload.php';
+        
+        $orig = new lsolesen\pel\PelJpeg($tempFile);
+        $dest = new lsolesen\pel\PelJpeg($targetAlbum.'photos/large/'.$result);
+
+        $exif = $orig->getExif();
+        if(!empty($exif)){
+          $dest->setExif($exif);
+          $dest->saveFile($targetAlbum.'photos/large/'.$result);
+        }
+      }
 
       // Ajouter taille d'image au fichier de quota
       $photo_filesize = round(@filesize($targetAlbum.'photos/thumbs/'.$result) / 1024);
@@ -191,7 +205,8 @@
       $LOG->insert('[!] INSTALL ERROR - ip='.$IP.' - UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' - photo='.$result.'(/'.RUN_DIR.'upload.php)'); //
       $ERRLOG->insert($IP.' - Photo: '.$result.' '.$e->getMessage());
     }
-    // Effacer toute trace du dossier de travail temporel
+    
+  // Effacer toute trace du dossier de travail temporel
     rmdir_recurse($workspace);
   }else{
     if(empty($USER_KEY))

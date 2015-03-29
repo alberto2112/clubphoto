@@ -88,14 +88,12 @@
             </div>
             <div class="row">
               <div class="content">
-                <label>
                   <span>Lieu de la sortie:</span>
                   <input id="sortie" type="text" name="albumname" placeholder="Nom du village ou endroit" <?php echo $FORM['albumname']; ?>/>
-                </label>
-                <label>
+
                   <span>Commentaires:</span>
                   <textarea id="description" name="albumdesc" maxlength="500" placeholder="Description/Notes/Observations"><?php echo get_arr_value($CONFIG,'albumdesc'); ?></textarea>
-                </label>
+                
               </div>
             </div>
           </div>
@@ -105,11 +103,17 @@
             <div class="row">
               <h2>T&eacute;l&eacute;chargements</h2>
             </div>
-            <ul class="row border-up">
+            <ul class="row border-up content">
               <li>
-                <label>
-                  <span><input id="allowupload" type="checkbox" name="allowupload" value="1" <?php echo $FORM['allowupload']; ?>/> Permetre aux utilisateurs de poster ses photos.</span>
-                </label>
+                  <input id="allowupload" type="checkbox" name="allowupload" value="1" <?php echo $FORM['allowupload']; ?>/>
+                  <span>Permetre aux utilisateurs de poster ses photos.</span>
+              </li>
+              <li>
+                <span>Du</span>
+                <input id="upload-from" type="text" name="upload-from" value="<?php echo $CONFIG['upload-from']; ?>" class="datepicker" />
+
+                <span>Au</span>
+                <input id="upload-to" type="text" name="upload-to" value="<?php echo $CONFIG['upload-to']; ?>" class="datepicker" />
               </li>
               <li>
                 <label>
@@ -127,13 +131,6 @@
                   </select>
                 </label>
               </li>
-              <li>
-                <span>Du</span>
-                <input id="upload-from" type="text" name="upload-from" value="<?php echo $CONFIG['upload-from']; ?>" class="datepicker" />
-
-                <span>Au</span>
-                <input id="upload-to" type="text" name="upload-to" value="<?php echo $CONFIG['upload-to']; ?>" class="datepicker" />
-              </li>
             </ul>
           </div>
           <!-- /telechargements -->
@@ -143,27 +140,37 @@
             <div class="row">
               <h2>Votations</h2>
             </div>
-            <div class="row border-down">
-              <div class="content chbx_cascade">
+            
+
+            <ul class="row border-down content chbx_cascade">
+              <li>
                   <input id="allowvotes" type="checkbox" name="allowvotes" value="1" <?php echo $FORM['allowvotes']; ?>/>
                   <span>Permetre aux utilisateurs de voter parmi les photos post&eacute;s.</span>
-              </div>
-            </div>
-             <div class="row border-down">
-              <div class="content chbx_cascade">
-                <input id="antitriche" type="checkbox" name="antitriche" value="1" <?php echo $FORM['antitriche']; ?>/>
-                <span>&Eacute;viter que les utilisateurs puissent voter plusieurs fois par la m&ecirc;me photo.</span>
-              </div>
-            </div>
-            <div class="row border-down">
-              <div class="content">
-                  <span class="datepicker">Du</span>
-                  <input id="vote-from" type="text" name="vote-from" value="<?php echo $CONFIG['vote-from']; ?>" class="datepicker" />
+              </li>
+              <li>
+                <span class="datepicker">Du</span>
+                <input id="vote-from" type="text" name="vote-from" value="<?php echo $CONFIG['vote-from']; ?>" class="datepicker" />
 
-                  <span class="datepicker">Au</span>
-                  <input id="vote-to" type="text" name="vote-to" value="<?php echo $CONFIG['vote-to']; ?>" class="datepicker" />
-                </div>
-            </div>
+                <span class="datepicker">Au</span>
+                <input id="vote-to" type="text" name="vote-to" value="<?php echo $CONFIG['vote-to']; ?>" class="datepicker" />
+              </li>
+              <li>
+                  <input id="antitriche" type="checkbox" name="antitriche" value="1" <?php echo $FORM['antitriche']; ?>/>
+                  <span>&Eacute;viter que les utilisateurs puissent voter plusieurs fois par la m&ecirc;me photo.</span>
+              </li>
+              <li class="disabled">
+                  <input id="allowcomments" type="checkbox" name="allowcomments" value="0" />
+                  <span>Les photographes peuvent donner son avis lors du vote.</span>
+              </li>
+              <li class="disabled">
+                  <input id="allowrateview" type="checkbox" name="allowrateview" value="0" />
+                  <span>Les photographes peuvent regarder le classement pour ses photos en temps r&eacute;el.</span>
+              </li>
+              <li class="disabled">
+                  <input id="allowselfrating" type="checkbox" name="allowselfrating" value="0" />
+                  <span>Les photographes peuvent voter par ses propres photos.</span>
+              </li>
+            </ul>
             
             <div class="row">
               <h3>Syst&egrave;me de votes</h3>
@@ -186,15 +193,15 @@
             </div>
             <div class="row border-down">
               <div class="content chbx_cascade">
-                <input id="watermark" type="checkbox" name="watermark" value="1" <?php echo $FORM['watermark']; ?>/>
-                <span>Apliquer automatiquement une filigrane aux photos post&eacute;s.</span>
+                <span class="disabled"><input id="watermark" type="checkbox" name="watermark" value="1" <?php echo $FORM['watermark']; ?>/>
+                Apliquer automatiquement une filigrane aux photos post&eacute;s.</span>
               </div>
             </div>
             <div class="row border-down">
               <h3>Les photographes peuvent gerer ses photos</h3>
             </div>
             <div class="row border-down">
-              <div class="content">
+              <div class="content disabled">
                 <span><input id="ratemethod-like" type="radio" name="user-photo-del" value="never" />Jamais</span><br />
                 <span><input id="ratemethod-like" type="radio" name="user-photo-del" value="onuploadtime" />Pendant la p&eacute;riode de t&eacute;l&eacute;chargements</span><br />
                 <span><input id="ratemethod-like" type="radio" name="user-photo-del" value="always" />&Aacute; tout moment</span>
