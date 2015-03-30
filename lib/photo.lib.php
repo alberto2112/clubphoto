@@ -215,8 +215,14 @@
   }
 
 // -----------------------------------------------------------------
-  function photo_to_trash($codalbum, $photo_filename){
-    
+  function photo_to_trash($photo_filename, $path_to_trash){
+    if(file_exists($photo_filename)){
+      if(!file_exists($path_to_trash)){
+        @mkdir($path_to_trash, 0777, true);
+      }
+
+      rename($photo_filename, $path_to_trash);
+    }
   }
 // -----------------------------------------------------------------
 
@@ -259,11 +265,11 @@
 
 // -----------------------------------------------------------------
 
-  function delete_photo($codalbum, $photo_filename, $delete_from_trash=false)
+  function delete_photo($album_path, $photo_filename, $delete_from_trash=false)
     /**
      * Alias of uninstall_photo();
      */ 
   {
-    return uninstall_photo($codalbum, $photo_filename, $delete_from_trash);
+    return uninstall_photo($album_path, $photo_filename, $delete_from_trash);
   }
 ?>

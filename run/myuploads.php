@@ -62,17 +62,26 @@
 
           // Delete photo
           $used_disk = delete_photo(SYSTEM_ROOT.ALBUMS_DIR.$codalbum, $photo_filename, false);
+          
+          // Convert $used_disk to Ko
+          if(!empty($used_disk)){
+            $used_disk = round($used_disk / 1024);
+            
+            //Update quota file
+            if($current_used_quota > 0)
+              file_put_contents(FILE_USED_QUOTA, ($current_used_quota - $used_disk), LOCK_EX);
+            else
+              file_put_contents(FILE_USED_QUOTA, '0', LOCK_EX);
+
+            //Update album size file
+            if($album_current_size > 0)
+              file_put_contents($file_album_size, ($album_current_size - $used_disk), LOCK_EX);
+            else
+              file_put_contents($file_album_size, '0', LOCK_EX);
+          }
 
           //Insert log line journal and close/unlock journal log file
-          $LOG->insert('photo='.$photo_filename.' [-] DELETED by user - ip='.$IP.' - ['.RUN_DIR.'myuploads.php]', true);
-
-          //Update quota file
-          if($current_used_quota > 0)
-            file_put_contents(FILE_USED_QUOTA, ($current_used_quota - $used_disk), LOCK_EX);
-
-          //Update album size file
-          if($album_current_size > 0)
-            file_put_contents($file_album_size, ($album_current_size - $used_disk), LOCK_EX);
+          $LOG->insert('[-] PHOTO DELETED by user - photo='.$photo_filename.' ip='.$IP.' ('.RUN_DIR.'myuploads.php)', true);
 
           header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.FORMS_DIR.'myuploads.php?'.URI_QUERY_ALBUM.'='.$codalbum);
 
