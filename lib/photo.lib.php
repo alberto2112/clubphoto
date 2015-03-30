@@ -146,88 +146,78 @@
      * @param $image_filename => absolute filename
      * @param $album_dest => absolute path
      * @param $watermark_filename => absolute filename. If null = no watermark
-     * @return String => image final filename
+     * @return (long) used disk for large, medium and thumb file | (object) Exception
      */
+    
+    try{
+      // Make necesary dirs
+      @mkdir($album_dest.'/logs',0755,true);
+      @mkdir($album_dest.'/photos/thumbs',0755,true);
+      @mkdir($album_dest.'/photos/medium',0755);
+      @mkdir($album_dest.'/photos/large',0755);
 
-    // Make necesary dirs
-    @mkdir($album_dest.'/logs',0755,true);
-    @mkdir($album_dest.'/photos/thumbs',0755,true);
-    @mkdir($album_dest.'/photos/medium',0755);
-    @mkdir($album_dest.'/photos/large',0755);
+      $used_disk = 0;
 
+    // Extraire basename
+      $output_filename = basename($image_filename);
 
-  // Extraire basename
-    $output_filename = basename($image_filename);
+      $photo = new Imagick();
 
-    $photo = new Imagick();
+       // Do large and watermark
+       //exec('mogrify -resize '.$large_size.' +repage "'.$image_filename.'"');
+      $dim = explode('x',$large_size,2);
+      $photo->readImage($image_filename);
+      $photo->scaleImage($dim[0],$dim[1],true);
+      // Do watermark
+      if(!empty($watermark_filename) && is_readable($watermark_filename)){
+        $wm = new Imagick($watermark_filename);
 
-     // Do large and watermark
-     //exec('mogrify -resize '.$large_size.' +repage "'.$image_filename.'"');
-    $size = explode('x',$large_size,2);
-    $photo->readImage($image_filename);
-    $photo->scaleImage($size[0],$size[1],true);
-    // Do watermark
-    if($watermark_filename!= '' && $watermark_filename != false && is_readable($watermark_filename)){
-      $wm = new Imagick($watermark_filename);
+        $iWidth  = $photo->getImageWidth();
+        $iHeight = $photo->getImageHeight();
+        $wWidth  = $wm->getImageWidth();
+        $wHeight = $wm->getImageHeight();
 
-      $iWidth = $photo->getImageWidth();
-      $iHeight = $photo->getImageHeight();
-      $wWidth = $wm->getImageWidth();
-      $wHeight = $wm->getImageHeight();
+        if ($iHeight < $wHeight || $iWidth < $wWidth) {
+            // resize the watermark
+            $wm->scaleImage($iWidth, $iHeight);
+            $wWidth = $wm->getImageWidth();
+            $wHeight = $wm->getImageHeight();
+        }
 
-      if ($iHeight < $wHeight || $iWidth < $wWidth) {
-          // resize the watermark
-          $wm->scaleImage($iWidth, $iHeight);
-          $wWidth = $wm->getImageWidth();
-          $wHeight = $wm->getImageHeight();
+        // calculer position
+        $x = ($iWidth - $wWidth) - 25;
+        $y = ($iHeight - $wHeight) - 15;
+
+        $photo->compositeImage($wm, imagick::COMPOSITE_OVER, $x, $y);
       }
+      $photo->writeImage($album_dest.'photos/large/'.$output_filename);
+      $used_disk = @filesize($album_dest.'photos/large/'.$output_filename);
 
-      // calculer position
-      $x = ($iWidth - $wWidth) - 25;
-      $y = ($iHeight - $wHeight) - 15;
+      // Do medium
+      $dim = explode('x',$medium_size,2);
+      $photo->readImage($image_filename);
+      $photo->scaleImage($dim[0],$dim[1],true);
+      $photo->writeImage($album_dest.'photos/medium/'.$output_filename);
+      $used_disk += @filesize($album_dest.'photos/medium/'.$output_filename);
+      
+      // Do thumbs
+      $dim = explode('x',$thumb_size,2);
+      $photo->cropThumbnailImage(intval($dim[0]),intval($dim[1]));
+      $photo->writeImage($album_dest.'photos/thumbs/'.$output_filename);
+      $used_disk += @filesize($album_dest.'photos/thumbs/'.$output_filename);
 
-      $photo->compositeImage($wm, imagick::COMPOSITE_OVER, $x, $y);
+      $photo->clear();
+      
+      return $used_disk;
+    } catch(Exception $e){
+      return $e;
     }
-    $photo->writeImage($album_dest.'photos/large/'.$output_filename);
-
-    // Do medium
-    $size = explode('x',$medium_size,2);
-    $photo->readImage($image_filename);
-    $photo->scaleImage($size[0],$size[1],true);
-    $photo->writeImage($album_dest.'photos/medium/'.$output_filename);
-
-    // Do thumbs
-    $size = explode('x',$thumb_size,2);
-    $photo->cropThumbnailImage(intval($size[0]),intval($size[1]));
-    $photo->writeImage($album_dest.'photos/thumbs/'.$output_filename);
-
-    $photo->clear();
-
-/*
-     // Do and install thumbs
-     //exec('convert "'.$image_filename.'" -resize '.$thumb_size.'^ -gravity center -extent '.$thumb_size.' "'.$album_dest.'photos/thumbs/'.$output_filename.'"');
-
-     // Do watermark
-     if($watermark_filename=='' || $watermark_filename===false){
-        // Install large version
-        copy($image_filename, $album_dest.'photos/large/'.$output_filename);
-     }else{
-        // Install large version with watermark
-        exec('composite -gravity SouthEast "'.$watermark_filename.'" "'.$image_filename.'" "'.$album_dest.'photos/large/'.$output_filename.'"');
-     }
-
-     // Do and install medium
-     exec('mogrify -resize '.$medium_size.' +repage "'.$image_filename.'"');
-     copy($image_filename, $album_dest.'photos/medium/'.$output_filename);
-*/
-    return $output_filename;
   }
 
 // -----------------------------------------------------------------
   function photo_to_trash($codalbum, $photo_filename){
     
   }
-    
 // -----------------------------------------------------------------
 
   function uninstall_photo($album_path, $photo_filename, $uninstall_from_trash=false)

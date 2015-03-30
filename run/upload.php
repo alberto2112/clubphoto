@@ -77,7 +77,7 @@
     
     $file_album_size = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/album_size.txt';
     //$file_current_used_quota = FILE_USED_QUOTA; //SYSTEM_ROOT.ALBUMS_DIR.'quota.txt';
-    $album_current_size = 0;
+    $current_album_size = 0;
     $current_used_quota = 0;
 
   // Create USER_KEY if error
@@ -113,13 +113,13 @@
       }
 
       if(file_exists($file_album_size)){
-        $album_current_size = file_get_contents($file_album_size,null,null,null,9); // in Ko
+        $current_album_size = file_get_contents($file_album_size,null,null,null,9); // in Ko
       }
     }
 
     $workspace  = SYSTEM_ROOT.WORKSPACE_DIR.$IP.'/';
     $title = clear_request_param(@substr(basename($_FILES['file']['name']), 0, -4), false, 128, true); // Transformer characteres non conformes du nom de fichier
-    $image_basename = md5(rand().time()."ClubPhotoMJCRodez").'.jpg'; // Calculer nuveau nom du fichier
+    $photo_basename = md5(rand().time()."ClubPhotoMJCRodez").'.jpg'; // Calculer nuveau nom du fichier
     $targetAlbum = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/';   // Album d'installation
     
   // Remplacer autres caracteres que JavaScript a l'obligation de mettre
@@ -147,20 +147,20 @@
       ini_set('memory_limit', SYS_MEMORY_LIMIT );
       
       // Calculer nom final du fichier
-      if(file_exists($targetAlbum.$image_basename.'.csv')){
-        $image_basename = md5(rand().time()."ClubPhotoMJCRodez").'.jpg';
-        while(!file_exists($targetAlbum.$image_basename.'.csv')){
-            $image_basename = md5(rand().time()."ClubPhotoMJCRodez").'.jpg';
+      if(file_exists($targetAlbum.$photo_basename.'.csv')){
+        $photo_basename = md5(rand().time()."ClubPhotoMJCRodez").'.jpg';
+        while(!file_exists($targetAlbum.$photo_basename.'.csv')){
+            $photo_basename = md5(rand().time()."ClubPhotoMJCRodez").'.jpg';
         }
       }
     
-      $tempFile = $workspace. $image_basename;                       // Destination origine du fichier
+      $tempFile = $workspace. $photo_basename;                       // Destination origine du fichier
 
       // Stocker photo en dossier temporel
       move_uploaded_file($_FILES['file']['tmp_name'], $tempFile);
       
       // Reserver fichier CSV
-      $CSV = fopen($targetAlbum.'photos/'.$image_basename.'.csv','w');
+      $CSV = fopen($targetAlbum.'photos/'.$photo_basename.'.csv','w');
       flock($CSV, LOCK_EX);
       
       // Extraire infos EXIF
@@ -172,51 +172,56 @@
       // Installer photo et creer fichier d'information
       $result = install_photo($tempFile, $targetAlbum, false, DIM_THUMB, DIM_MEDIUM, DIM_LARGE );
       
-      // Creer cookie d'auteur
-      $str_cookie = $codalbum.'_'.str_replace('.','_',$result);
-      setcookie($str_cookie,'-1',time()+(3600 * 24 * 21), PUBLIC_ROOT); // For 21 days
-      
-      // Ajouter photo au fichier proc
-      $PROC->insert($result, true); // Insert and close file
-
-      // Ajouter auteur et identificateur dans le fichier d'informations relatives a la photo
-      #fwrite($CSV,';'.$title.';;;;'.$USER_KEY.';'.$author.';'.$UPLOADERID);
-      fwrite($CSV,';;;;;'.$USER_KEY.';'.$author.';'.$UPLOADERID);
-      
-      // Liberer et fermer fichier CSV
-      flock($CSV, LOCK_UN);
-      fclose($CSV);
-      
-      // Enregistrer libelle
-      file_put_contents($targetAlbum.'photos/'.$image_basename.'.lbl.txt', $title);
-      
-      // Cloner EXIF avec PEL si necesaire
-      if($CLONE_EXIF){
-        include SYSTEM_ROOT.LIB_DIR.'pel/autoload.php';
+      if(is_object($result)){
+        // S'il y a une erreur logger celui-ci dans les archives
+        $LOG->insert('[!] INSTALL ERROR - ip='.$IP.' UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' photo='.$photo_basename.' (/'.RUN_DIR.'upload.php)'); //
+        $ERRLOG->insert('[!] INSTALL ERROR - photo='.$photo_basename.' file='.$e->getFile().' [@'.$e->getLine().'] msg='.$e->getMessage());
         
-        $orig = new lsolesen\pel\PelJpeg($tempFile);
-        $dest = new lsolesen\pel\PelJpeg($targetAlbum.'photos/large/'.$result);
+      }else{
+        // Creer cookie d'auteur
+        $str_cookie = $codalbum.'_'.str_replace('.','_',$photo_basename);
+        setcookie($str_cookie,'-1',time()+(3600 * 24 * 21), PUBLIC_ROOT); // For 21 days
 
-        $exif = $orig->getExif();
-        if(!empty($exif)){
-          $dest->setExif($exif);
-          $dest->saveFile($targetAlbum.'photos/large/'.$result);
+        // Ajouter photo au fichier proc
+        $PROC->insert($photo_basename, true); // Insert and close file
+
+        // Ajouter auteur et identificateur dans le fichier d'informations relatives a la photo
+        #fwrite($CSV,';'.$title.';;;;'.$USER_KEY.';'.$author.';'.$UPLOADERID);
+        fwrite($CSV,';;;;;'.$USER_KEY.';'.$author.';'.$UPLOADERID);
+
+        // Liberer et fermer fichier CSV
+        flock($CSV, LOCK_UN);
+        fclose($CSV);
+
+        // Enregistrer libelle
+        file_put_contents($targetAlbum.'photos/'.$photo_basename.'.lbl.txt', $title);
+
+        // Cloner EXIF avec PEL si necesaire
+        if($CLONE_EXIF){
+          include SYSTEM_ROOT.LIB_DIR.'pel/autoload.php';
+
+          $orig = new lsolesen\pel\PelJpeg($tempFile);
+          $dest = new lsolesen\pel\PelJpeg($targetAlbum.'photos/large/'.$photo_basename);
+
+          $exif = $orig->getExif();
+          if(!empty($exif)){
+            $dest->setExif($exif);
+            $dest->saveFile($targetAlbum.'photos/large/'.$photo_basename);
+          }
         }
+
+        // Ajouter taille d'image aux fichiers de quota
+        $photo_filesize = round($result / 1024);
+        file_put_contents($file_album_size, ($current_album_size + $photo_filesize), LOCK_EX);
+        file_put_contents(FILE_USED_QUOTA, ($current_used_quota + $photo_filesize), LOCK_EX);
+
+        // Creer et/ou ajouter au log d'activite
+        $LOG->insert('INSTALLED - ip='.$IP.' UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' photo='.$photo_basename);
       }
-
-      // Ajouter taille d'image au fichier de quota
-      $photo_filesize = round(@filesize($targetAlbum.'photos/thumbs/'.$result) / 1024);
-      $photo_filesize += round(@filesize($targetAlbum.'photos/medium/'.$result) / 1024);
-      $photo_filesize += round(@filesize($targetAlbum.'photos/large/'.$result) / 1024);
-      file_put_contents($file_album_size, ($album_current_size + $photo_filesize), LOCK_EX);
-      file_put_contents(FILE_USED_QUOTA, ($current_used_quota + $photo_filesize), LOCK_EX);
-
-      // Creer et/ou ajouter au log d'activite
-      $LOG->insert('INSTALLED - ip='.$IP.' - UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' - photo: '.$result);
     } catch (Exception $e){
       // Si une erreur est produite lors de l'installation de l'image l'enregistrer dans le log
-      $LOG->insert('[!] INSTALL ERROR - ip='.$IP.' - UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' - photo='.$result.'(/'.RUN_DIR.'upload.php)'); //
-      $ERRLOG->insert($IP.' - Photo: '.$result.' '.$e->getMessage());
+      $LOG->insert('[!] INSTALL ERROR - ip='.$IP.' UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' photo='.$photo_basename.' (/'.RUN_DIR.'upload.php)'); //
+      $ERRLOG->insert('[!] INSTALL ERROR - photo='.$photo_basename.' file='.$e->getFile().' @='.$e->getLine().' msg='.$e->getMessage());
     }
     
   // Effacer toute trace du dossier de travail temporel

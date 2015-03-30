@@ -48,7 +48,6 @@ class Imagick{
      * correctas.
      */
 
-    //list($width, $height) = getimagesize($this->file_in);
     if($this->image_in_width==0 || $this->image_in_height==0) {
             $this->getSizes();
     }
@@ -76,7 +75,6 @@ class Imagick{
     $imageResized = imagecreatetruecolor($new_width, $new_height);
 
     // Cargamos la imágen original y redimensionamos
-    //$img_tmp     = imagecreatefromjpeg ($this->file_in);
     imagecopyresampled($imageResized, $this->image_temp,
                        0, 0, 0, 0,
                        $new_width, $new_height,
@@ -93,7 +91,7 @@ class Imagick{
   }
 # --------------------------------------------------------
   function getSizes(){
-    if($this->file_in != '' || is_readable($this->file_in)){
+    if(!empty($this->file_in) && is_readable($this->file_in)){
 		list($width, $height) = getimagesize($this->file_in);
 		$this->image_in_width = $width;
 		$this->image_in_height = $height;
@@ -101,7 +99,7 @@ class Imagick{
   }
 # --------------------------------------------------------
   function getSize(){
-    if($this->file_in != '' || is_readable($this->file_in)){
+    if(!empty($this->file_in) && is_readable($this->file_in)){
 		list($width, $height) = getimagesize($this->file_in);
 		$this->image_in_width = $width;
 		$this->image_in_height = $height;
@@ -110,12 +108,12 @@ class Imagick{
   }
 # --------------------------------------------------------
   function getImageWidth(){
-	if($this->image_in_width == 0 || $this->image_in_height == 0 ) $this->getSizes();
+	if($this->image_in_width == 0 ) $this->getSizes();
 	return $this->image_in_width;
   }
 # --------------------------------------------------------
   function getImageHeight(){
-	if($this->image_in_width == 0 || $this->image_in_height == 0 ) $this->getSizes();
+	if($this->image_in_height == 0 ) $this->getSizes();
 	return $this->image_in_height;
   }
 # --------------------------------------------------------
@@ -132,15 +130,6 @@ class Imagick{
   function cropThumbnailImage($toWidth,$toHeight=-1){
 
     if($toHeight==-1) $toHeight = $toWidth;
-/*
-	$ini_filename = 'test.JPG';
-	$im = imagecreatefromjpeg($ini_filename );
-
-	$ini_x_size = getimagesize($ini_filename )[0];
-	$ini_y_size = getimagesize($ini_filename )[1];
-*/
-	//the minimum of xlength and ylength to crop.
-//	$crop_measure = min($this->image_in_width, $this->image_in_height);
 
 	$original_aspect = $this->image_in_width / $this->image_in_height;
 	$thumb_aspect = $toWidth / $toHeight;
@@ -173,13 +162,6 @@ class Imagick{
 
 	$this->image_in_width = $new_width;
 	$this->image_in_height = $new_height;
-
-	//imagedestroy($thumb);
-
-	//$to_crop_array = array('x' =>0 , 'y' => 0, 'width' => $crop_measure, 'height'=> $crop_measure);
-	//$thumb_im = imagecrop($im, $to_crop_array);
-
-	//imagejpeg($thumb_im, 'thumb.jpeg', 94);
   }
 # --------------------------------------------------------
   function destroy(){
