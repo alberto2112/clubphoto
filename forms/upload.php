@@ -76,7 +76,7 @@
       
 		<div class="button-wrapper" style="text-align:center; padding:.8em;">
             <a class="button blue" id="btn-next" style="display:inline;" onclick="javascript:showNextStep();" href="#">Suivant</a>
-            <a class="button blue" id="btn-prev" style="display:none;" onclick="javascript:showPrevStep();" href="#">Arriere</a>
+            <a class="button blue" id="btn-prev" style="display:none;" onclick="javascript:showPrevStep();" href="#">Retour</a>
 			<a class="button green" id="btn-send" style="display:none;" href="<?php echo PUBLIC_ROOT.FORMS_DIR.'myuploads.php?'.URI_QUERY_ALBUM.'='.$codalbum; ?>">Continuer</a>
 		</div>
       
