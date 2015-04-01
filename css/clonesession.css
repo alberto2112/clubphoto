@@ -1,0 +1,17 @@
+.faq{
+  display:block;
+}
+
+.pin{
+  display:none;
+  text-align:center;
+  padding-top:2em;
+}
+
+.pin p{margin:0;padding:0;}
+
+#pincode{
+  font-size:375%;
+  font-weight:300;
+  color:#1476B7;
+}

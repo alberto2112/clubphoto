@@ -14,10 +14,24 @@
   }
 
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
+  
+// Voir s'il y a une demande de clonage de sesion et rediriger utilisateur vers le formulaire correspondant
+  $IP       = getClient_ip();
+  $LONGIP   = @sprintf("%u",ip2long($IP)) | '0';
+
+  if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn')){
+  // Il existe bien une demande de clonage de sesion
+    if(SYS_HTTPS_AVAILABLE){
+      header('Location: https://'.SITE_DOMAIN.PUBLIC_ROOT.FORMS_DIR.'clonesession.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'&'.URI_QUERY_ACTION.'=detected');
+    }else{
+      header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.FORMS_DIR.'clonesession.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'&'.URI_QUERY_ACTION.'=detected');
+    }
+    exit;
+  }
+
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
-  
 
   $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
   $RKEY     = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);
@@ -191,6 +205,7 @@ if($_ISADMIN){
         <li><a href="#" title="Envoyer photos s&eacute;lection&eacute;s &aacute; ..." onclick="ShowModalBox('mb-snd-selct')"><img src="<?php echo PUBLIC_ROOT.'images/toolbar_envoyer_16x16.png'; ?>" alt="Envoyer &aacute; ..." /></a></li>
         <li><a href="<?php echo PUBLIC_ROOT.ADMIN_DIR.FORMS_DIR.'manageAlbum.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM; ?>" title="Editer album"><img src="<?php echo PUBLIC_ROOT.'images/toolbar_settings_16x16.png'; ?>" alt="Editer" /></a></li>
 <?php
+  echo '<li><a href="'.PUBLIC_ROOT.FORMS_DIR.'clonesession.php?'.URI_QUERY_ACTION.'=request&amp;'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Clonner session"><img src="'.PUBLIC_ROOT.'images/toolbar_account_switch_w_16x16.png" alt="Clonner session" /></a></li>';
     if($AL_CONF['allowupload']=='1'){
       echo '        <li><a href="'.PUBLIC_ROOT.FORMS_DIR.'myuploads.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Mes t&eacute;l&eacute;chargements"><img src="'.PUBLIC_ROOT.'images/toolbar_my_uploads_16x16.png'.'" alt="Mes t&eacute;l&eacute;chargements" /></a></li>';
     }
@@ -252,15 +267,21 @@ if($_ISADMIN){
 <?php
   } // if($_ISADMIN) />
 
-  if($AL_CONF['allowupload']=='1' && !$_ISADMIN){
+  if(!$_ISADMIN){
     echo '
-<!-- User Toolbar -->
-    <div id="user-tools" class="toolbar">
-      <ul>
-        <li><a href="'.PUBLIC_ROOT.FORMS_DIR.'myuploads.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Mes t&eacute;l&eacute;chargements"><img src="'.PUBLIC_ROOT.'images/toolbar_my_uploads_20x20.png'.'" alt="Mes t&eacute;l&eacute;chargements" /></a></li>
-      </ul>
-    </div>
-<!-- / User Toolbar -->';
+  <!-- User Toolbar -->
+      <div id="user-tools" class="toolbar">
+        <ul>
+          <li><a href="'.PUBLIC_ROOT.FORMS_DIR.'clonesession.php?'.URI_QUERY_ACTION.'=request&amp;'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Clonner session"><img src="'.PUBLIC_ROOT.'images/toolbar_account_switch_w_16x16.png" alt="Clonner session" /></a></li>';
+
+    if($AL_CONF['allowupload']=='1'){
+      echo '
+          <li><a href="'.PUBLIC_ROOT.FORMS_DIR.'myuploads.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Mes t&eacute;l&eacute;chargements"><img src="'.PUBLIC_ROOT.'images/toolbar_my_uploads_16x16.png'.'" alt="Mes t&eacute;l&eacute;chargements" /></a></li>';
+    }
+    echo '
+        </ul>
+      </div>
+  <!-- / User Toolbar -->';
   }
 
   echo '<!-- Content -->'."\n".'    <div class="Collage effect-parent">'."\n";

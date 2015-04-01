@@ -102,6 +102,7 @@
 // ------------------------------------
   
 ?>
+<!DOCTYPE html>
 <html>
   <head>
     <title>&Eacute;valuation: <?php echo get_arr_value($AL_CONF, 'albumname'); ?></title>

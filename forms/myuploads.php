@@ -47,6 +47,7 @@
 // Recuperer USER_KEY (Cookie)
   $USER_KEY = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
 ?>
+<!DOCTYPE html>
 <html>
   <head>
     <title>MJC-CP - Mes telechargements</title>
