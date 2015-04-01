@@ -27,7 +27,7 @@
 
   define('CHARSET','ISO-8859-15');
 
-  define('OPT_HTACCESS_SUPPORT',true);
+  define('OPT_HTACCESS_AVAILABLE',true); //[!] MODIFIED
   define('OPT_DEVELOPPING',true);
 
   define('URI_QUERY_PHOTO','p');
