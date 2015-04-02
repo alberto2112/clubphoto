@@ -1,6 +1,7 @@
     <div class="header">
       <h1 style="font-weight: 100; padding: .35em;">Clonner sesion</h1>
     </div>
+    <p style="color:red;text-align:center;font-size:135%;font-weight:100;">&Aacute; r&eacute;diger correctement</p>
     <div class="faq">
       <p><img src="../images/clonesession_h.png" style="float:left; margin:.75em;"/>Ceci est un outil qui permet de transferer votre sesion actuel vers autre dispositif (smartphone, tablette, pc portable, etc.) de vôtre reśseau.</p>
 

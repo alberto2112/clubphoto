@@ -22,7 +22,7 @@ if(!empty($pincode))
   $pincode = md5($pincode);
 
 // Lire fichier de configuation de l'album
-if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true){
+if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
   $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
 
 
