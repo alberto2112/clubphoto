@@ -9,38 +9,51 @@
 // Get request vars
   $codalbum = clear_request_param(getRequest_param(URI_QUERY_ALBUM, 0), 'a-zA-Z0-9', 8, false);
   $action   = clear_request_param(getRequest_param(URI_QUERY_ACTION, false), 'a-zA-Z0-9', 8, false);
+  $pincode  = clear_request_param(getRequest_param('pin', false), '0-9', 5, false);
   
 // Get other vars
   $USER_KEY = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
   $IP       = getClient_ip();
   $LONGIP   = @sprintf("%u",ip2long($IP)) | '0';
+  $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
 
 
-//debug
-//echo 'codalbum='.$codalbum.' action='.$action;
-//!debug
+if(!empty($pincode))
+  $pincode = md5($pincode);
 
-//TODO Redirect with album RKEY
+// Lire fichier de configuation de l'album
+if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true){
+  $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
+
 
   if(!empty($codalbum)){
     switch($action){
       case 'clone':
         if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn')){
           $NEW_USER_KEY = explode( ';', file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn'), 3);
-echo $NEW_USER_KEY[0];
+//echo $NEW_USER_KEY[0];
           if(count($NEW_USER_KEY)>0){
-          // Refresh/Create USER_KEY cookie
-            setcookie(COOKIE_USER_KEY.$codalbum, $NEW_USER_KEY[0], time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+          // Comprobar PIN
+            if($NEW_USER_KEY[1]==$pincode){
+            // SUCCESS: Refresh/Create USER_KEY cookie
+              setcookie(COOKIE_USER_KEY.$codalbum, $NEW_USER_KEY[0], time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+
+            // Remove clone request
+              unlink(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn');
+
+            // Redirect user to album
+              header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.'?'.URI_QUERY_RIGHTS_KEY.'='.$AL_CONF['RKEY']);
+            }else{
+                //ERROR: PIN incorrecto
+                //TODO: PIN incorrecto
+                echo '<h1>PIN incorrect</h1>';
+            }
           }else{
             // ERROR: No user key found on clone request
             // TODO: Error handling
-          }
-
           // Remove clone request
             unlink(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn');
-            
-          // Redirect user to album
-            header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum);
+          }
         }else{
             // TODO: Error handling
             echo 'ERROR: codalbum='.$codalbum.' action='.$action.' longip='.$LONGIP;
@@ -61,25 +74,36 @@ echo $NEW_USER_KEY[0];
             $NEW_USER_KEY = explode( ';', file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn'), 3);
             
             if(count($NEW_USER_KEY)>0){
-            // Recuperar sesion actual
-              if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$CUR_SESSION_KEY)){
-                $CUR_SESSION = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$CUR_SESSION_KEY);
-                if(is_writable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$NEW_USER_KEY[0])){
-                // Volcar sesion actual en sesion a clonar
-                 file_put_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$NEW_USER_KEY[0], $CUR_SESSION, FILE_APPEND); 
+            // Comprobar pin
+              if($NEW_USER_KEY[1]==$pincode){
+                // SUCCESS: 
+                // Recuperar sesion actual
+                if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$CUR_SESSION_KEY)){
+                  $CUR_SESSION = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$CUR_SESSION_KEY);
+                  if(is_writable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$NEW_USER_KEY[0])){
+                  // Volcar sesion actual en sesion a clonar
+                   file_put_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$NEW_USER_KEY[0], $CUR_SESSION, FILE_APPEND); 
+                  }
                 }
-              }
-            // Clonar cookie de sesion
-            setcookie(COOKIE_USER_KEY.$codalbum, $NEW_USER_KEY[0], time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+                // Clonar cookie de sesion
+                setcookie(COOKIE_USER_KEY.$codalbum, $NEW_USER_KEY[0], time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
 
-            // Eliminar peticion de clonado
-            unlink(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn');
-            
+                // Eliminar peticion de clonado
+                unlink(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn');
+                
+                // Redirect user to album
+                header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.'?'.URI_QUERY_RIGHTS_KEY.'='.$AL_CONF['RKEY']);
+                exit;
+              }else{
+                //ERROR: PIN incorrecto
+                //TODO: PIN incorrecto
+                echo '<h1>PIN incorrect</h1>';
+              }
           // Redirect user to album
             header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum);
             }else{
                 // ERROR: Session not found on clone request
-                // TODO: Error handling
+                // TODO: Error: Session not found
               }
           }
         }

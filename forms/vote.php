@@ -20,6 +20,7 @@
   $codalbum       = clear_request_param(getRequest_param(URI_QUERY_ALBUM,''), 'a-zA-Z0-9', 8, false);
   $photo_filename = clear_request_param(getRequest_param(URI_QUERY_PHOTO,''), 'a-zA-Z0-9\.', 42, false);
   $str_cookie     = $codalbum.'_'.str_replace('.','_',$photo_filename);
+  $AL_CONF        = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
   $USER_RKEY      = get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY);
   $_ISADMIN       = is_admin();
   $str_message    = '';

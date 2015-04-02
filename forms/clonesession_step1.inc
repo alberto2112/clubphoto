@@ -8,7 +8,7 @@
 <?php
   echo '<a class="button red" href="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'">Annuler</a>';
   //echo '<a class="button blue" href="'.PUBLIC_ROOT.RUN_DIR.'clonesession.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_ACTION.'=request" onclick="javscript:cloneSendRequest(this);">Cloner</a>';
-  echo '<a class="button blue btn-clone" href="'.PUBLIC_ROOT.RUN_DIR.'clonesession.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_ACTION.'=request">Cloner</a>';
+  echo '<a class="button blue btn-request" href="'.PUBLIC_ROOT.RUN_DIR.'clonesession.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_ACTION.'=request">Cloner</a>';
 ?>
     </div>
       
@@ -38,13 +38,7 @@
   <?php
     echo '<a class="button red" href="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'">Annuler</a>';
 
-    echo '<a class="button blue btn-clone" href="'.PUBLIC_ROOT.RUN_DIR.'clonesession.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_ACTION.'=request" onclick="javascript:cloneSendRequest(this);">Cloner</a>';
-
-  /*
-  echo '<a href="../run/clonesession.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_ACTION.'=clone">Cloner</a>&nbsp;&nbsp;&nbsp;&nbsp;';
-  echo '<a href="../run/clonesession.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_ACTION.'=merge">Combiner</a>&nbsp;&nbsp;&nbsp;&nbsp;';
-  echo '<a href="../run/clonesession.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_ACTION.'=cancel">Annuler</a>';
-  */
+    echo '<a class="button blue btn-request" href="'.PUBLIC_ROOT.RUN_DIR.'clonesession.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_ACTION.'=request" onclick="javascript:cloneSendRequest(this);">Cloner</a>';
   ?>
       </div>
     </div>
@@ -54,7 +48,7 @@
       <p id="pincode"></p>
     </div>
     <script>
-      $(".btn-clone").click(function (e){
+      $(".btn-request").click(function (e){
         e.preventDefault();
         var url = $(this).attr('href'); 
         /* $.post(

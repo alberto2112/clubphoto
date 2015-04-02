@@ -77,21 +77,62 @@ input[type=checkbox]:checked + label:before {
   right:10px;
   top:10px;
 }
+.toolbar .tb-dots{
+  display:block;
+  width:16px;
+  height:16px;
+  cursor: pointer;
+}
 .toolbar ul{
   list-style-type: none;
   margin:0;
   padding:0;
 }
 .toolbar li{
-  min-height:24px;
-  min-width:26px;
+  min-height:16px;
+  min-width:16px;
   display:inline-block;
   text-align:center;
+  margin:0 4px;
+}
+.toolbar>ul>li>a{
+  width:16px;
+  height:16px;
+  display:block;
+  text-indent:-9999px;
+}
+
+.toolbar ul.submenu,
+.toolbar ul.submenu_ico{
+  display:none;
+  position:absolute;
+  background:#fafafa;
+  color:#333;
+  padding:5px;
+  margin:5px;
+  width:10em;
+  right:5px;
+  font-size:90%;
+  z-index:998;
+}
+.toolbar ul.submenu_ico li,
+.toolbar ul.submenu li
+{
+  display:block;
+  min-height: 20px;
+  padding:.4em 0;
+}
+.toolbar ul.submenu_ico li{
+  padding-left:24px;
+  text-align:left;
+}
+.toolbar ul.submenu_ico a,
+.toolbar ul.submenu a{
+  color:inherit;
 }
 .header .toolbar-home{
   display:inline-block;
   text-indent: -256px;
-  background: transparent url("../images/toolbar_home_32x32.png") no-repeat 0 0;
   width:32px;
   height:32px;
   text-decoration: none;
@@ -101,3 +142,16 @@ input[type=checkbox]:checked + label:before {
   margin-right:.3em;
   border-right:1px #cdd3dd solid;
 }
+
+/* ICONS */
+.toolbar-home{ background: transparent url("../images/toolbar_home_32x32.png") no-repeat 0 0; }
+
+.toolbar .tb-dots-w{ background: transparent url(../images/toolbar_dots_v_w_16x16.png) no-repeat left center;}
+.toolbar .tb-delete-w{ background: transparent url(../images/toolbar_delete_16x16.png) no-repeat left center;}
+.toolbar .tb-myuploads-w{background: transparent url(../images/toolbar_myuploads_w_16x16.png) no-repeat left center;}
+
+.toolbar .tb-myuploads-g{background: transparent url(../images/toolbar_myuploads_g_16x16.png) no-repeat left center;}
+.toolbar .tb-myrates-g{background: transparent url(../images/toolbar_double_check_g_16x16.png) no-repeat left center;}
+.toolbar .tb-clonesession-g{background: transparent url(../images/toolbar_account_switch_g_16x16.png) no-repeat left center;}
+.toolbar .tb-settings-g{background: transparent url(../images/toolbar_settings_g_16x16.png) no-repeat left center;}
+.toolbar .tb-sendto-g{background: transparent url(../images/toolbar_send_g_16x16.png) no-repeat left center;}

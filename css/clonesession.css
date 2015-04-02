@@ -10,8 +10,21 @@
 
 .pin p{margin:0;padding:0;}
 
-#pincode{
+#pincode,
+#txt-pincode{
   font-size:375%;
   font-weight:300;
   color:#1476B7;
+}
+
+/* Step2 */
+.form-pincode{
+  padding: 2em 0 1em;
+  text-align:center;
+}
+.form-pincode input{
+  text-align:center;
+  display:block;
+  width:6em;
+  margin:0 auto;
 }

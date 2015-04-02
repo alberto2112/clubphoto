@@ -32,6 +32,7 @@
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
+  include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
 
   $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
   $RKEY     = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);
@@ -154,138 +155,22 @@
     </div>
 <!-- / Header -->
 <?php
-  //include SYSTEM_ROOT.FORMS_DIR.'viewer_admin_buttons.php';
-if($_ISADMIN){
-?>
-    
-<!-- Modal boxes -->
-    <div class="modal_layer_bg" id="modal-layer-bg">
-      <!-- Modal box - Photos to trash -->
-      <div class="modal_box" id="mb-del-selct">
-        <p>Envoyer les photos s&eacute;lection&eacute;es &agrave; la corbeille</p>
-        <div class="btn_wraper">
-          <a href="#" class="button gray" onClick="HideModalBoxes('mb-del-selct');">Annuler</a>
-          <a href="#" class="button red" onClick="delSelectedPhotos();">Continuer</a>
-        </div>
-      </div>
-      <!-- Modal box - Photos to trash -->
-      
-      <!-- Modal box - Send to album -->
-      <div class="modal_box" id="mb-snd-selct">
-        <ul>
-          <li><input type="text" name="txt_newalbum" palceholder="Nouveau album" /></li>
-<?php
-              $lof_albums = list_dirs(SYSTEM_ROOT.ALBUMS_DIR, false);
-              if(count($lof_albums)>0){
-                foreach($lof_albums as $album){
-                  if(@is_readable($album.'config.php')===true)
-                    $CFG = include $album.'config.php';
-                  else
-                    $CFG = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
-                  
-                  echo '          <li><a href="#">'.get_arr_value($CFG, 'albumname').'</a></li>'."\n";
-                }
-                unset($CFG);
-                unset($lof_albums);
-              }
-?>
-        </ul>
-        <div class="btn_wraper">
-          <a href="#" class="button red">Continuer</a>
-          <a href="#" class="button gray" onClick="HideModalBoxes('mb-snd-selct');">Annuler</a>
-        </div>
-      </div>
-      <!-- Modal box - Send to album -->
-    </div>
-<!-- / Modal boxes -->
-<!-- Admin Toolbar -->
-    <div id="admin-tools" class="toolbar">
-      <ul>
-        <li><a href="#" title="Suprimer photos s&eacute;lection&eacute;s" onclick="ShowModalBox('mb-del-selct')"><img src="<?php echo PUBLIC_ROOT.'images/toolbar_delete_16x16.png'; ?>" alt="Suprimer" /></a></li>
-        <li><a href="#" title="Envoyer photos s&eacute;lection&eacute;s &aacute; ..." onclick="ShowModalBox('mb-snd-selct')"><img src="<?php echo PUBLIC_ROOT.'images/toolbar_envoyer_16x16.png'; ?>" alt="Envoyer &aacute; ..." /></a></li>
-        <li><a href="<?php echo PUBLIC_ROOT.ADMIN_DIR.FORMS_DIR.'manageAlbum.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM; ?>" title="Editer album"><img src="<?php echo PUBLIC_ROOT.'images/toolbar_settings_16x16.png'; ?>" alt="Editer" /></a></li>
-<?php
-  echo '<li><a href="'.PUBLIC_ROOT.FORMS_DIR.'clonesession.php?'.URI_QUERY_ACTION.'=request&amp;'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Clonner session"><img src="'.PUBLIC_ROOT.'images/toolbar_account_switch_w_16x16.png" alt="Clonner session" /></a></li>';
-    if($AL_CONF['allowupload']=='1'){
-      echo '        <li><a href="'.PUBLIC_ROOT.FORMS_DIR.'myuploads.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Mes t&eacute;l&eacute;chargements"><img src="'.PUBLIC_ROOT.'images/toolbar_my_uploads_16x16.png'.'" alt="Mes t&eacute;l&eacute;chargements" /></a></li>';
-    }
-?>
-      </ul>
-    </div>
-<!-- / Admin Toolbar -->
-    <script type="text/javascript">
-      var cur_modalbox_id;
-      
-      function ShowModalBox(LayerID){
-        $("#modal-layer-bg").addClass("modal_show");
-        $("#"+LayerID).addClass("modal_show");
-        cur_modal_box_id = LayerID;
-      }
-      
-      function HideModalBoxes(LayerID){
-        if( $("#modal-layer-bg").hasClass("modal_show") ) {
-          $("#"+LayerID).removeClass("modal_show");
-          $("#modal-layer-bg").removeClass("modal_show");
-        }
-      }
-      
-      function delSelectedPhotos() {
-       // JavaScript & jQuery Course - http://coursesweb.net/javascript/
-        var selchbox = ""; //[];        // array that will store the value of selected checkboxes
 
-        // gets all the input tags in frm, and their number
-        var inpfields = document.getElementsByTagName('input');
-        var nr_inpfields = inpfields.length;
+  if($_ISMEMBER || $_ISADMIN){
+    // Incluire toolbar s'il est un membre ou un administrateur
+    include SYSTEM_ROOT.FORMS_DIR.'viewer_toolbar.inc';
 
-        // traverse the inpfields elements, and adds the value of selected (checked) checkbox in selchbox
-        for(var i=0; i<nr_inpfields; i++) {
-          if(inpfields[i].type == 'checkbox' && inpfields[i].checked == true){
-            //selchbox.push(inpfields[i].value);
-            selchbox += inpfields[i].value+";";
-          }
-        }
-
-        //alert(selchbox);
-        document.location.href="<?php echo PUBLIC_ROOT.ADMIN_DIR.'managePhotos.php?'.URI_QUERY_ACTION.'=trash&'.URI_QUERY_ALBUM.'='.$_CODALBUM.'&'.URI_QUERY_PHOTO.'='  ?>"+selchbox ;
-      }
-      
-      $(document).ready(function(){
-        
-        $(".cancel").click(function(){
-            HideModalBoxes(cur_modalbox_id); 
-        });
-        
-        $(document).keyup(function(e) {
-          if(e.keyCode == 27) { // esc
-            HideModalBoxes(cur_modalbox_id); 
-          }
-        });
-
-      });
-      
-    </script>
-<?php
-  } // if($_ISADMIN) />
-
-  if(!$_ISADMIN){
-    echo '
-  <!-- User Toolbar -->
-      <div id="user-tools" class="toolbar">
-        <ul>
-          <li><a href="'.PUBLIC_ROOT.FORMS_DIR.'clonesession.php?'.URI_QUERY_ACTION.'=request&amp;'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Clonner session"><img src="'.PUBLIC_ROOT.'images/toolbar_account_switch_w_16x16.png" alt="Clonner session" /></a></li>';
-
-    if($AL_CONF['allowupload']=='1'){
-      echo '
-          <li><a href="'.PUBLIC_ROOT.FORMS_DIR.'myuploads.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Mes t&eacute;l&eacute;chargements"><img src="'.PUBLIC_ROOT.'images/toolbar_my_uploads_16x16.png'.'" alt="Mes t&eacute;l&eacute;chargements" /></a></li>';
-    }
-    echo '
-        </ul>
-      </div>
-  <!-- / User Toolbar -->';
+    if($_ISADMIN){
+      // Incluire les dialogs modales s'il est un administrateur
+      include SYSTEM_ROOT.FORMS_DIR.'viewer_modalboxes.inc';
+    } 
   }
+?>
 
-  echo '<!-- Content -->'."\n".'    <div class="Collage effect-parent">'."\n";
+  <!-- Content -->
+  <div class="Collage effect-parent">
 
+<?php
   if($AL_CONF['allowupload']=='1'){    
     echo '
       <div class="Image_Wrapper" data-caption="<u>Ajouter</u> photos">
@@ -298,6 +183,7 @@ if($_ISADMIN){
       </div>
 
 */
+
   // Lire le dossier "thumbs" et composer la gallerie de photos
   if($_ISADMIN){
     $i=0;
