@@ -2,7 +2,7 @@
   return array(
       'albumname'=>'',
       'allowupload'=>'',
-      'allowphotomanag'=>''
+      'allowphotomanag'=>'',
       'uploadslimit'=>'0',
       'upload-from'=>'',
       'upload-to'=>'',

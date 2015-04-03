@@ -133,9 +133,9 @@
               <li class="row border-up">
                 <span>Les photographes peuvent gerer ses photos</span>
                 <div class="indent">
-                  <span><input type="radio" name="user-photo-manag" value="0" <?php echo $HTML['allowphotomanag_0']; ?>/>Jamais</span><br />
-                  <span><input type="radio" name="user-photo-manag" value="1" <?php echo $HTML['allowphotomanag_1']; ?>/>Pendant la p&eacute;riode de t&eacute;l&eacute;chargements</span><br />
-                  <span><input type="radio" name="user-photo-manag" value="2" <?php echo $HTML['allowphotomanag_2']; ?>/>Oui et &aacute; tout moment</span>
+                  <span><input type="radio" name="allowphotomanag" value="0" <?php echo $HTML['allowphotomanag_0']; ?>/>Jamais</span><br />
+                  <span><input type="radio" name="allowphotomanag" value="1" <?php echo $HTML['allowphotomanag_1']; ?>/>Pendant la p&eacute;riode de t&eacute;l&eacute;chargements</span><br />
+                  <span><input type="radio" name="allowphotomanag" value="2" <?php echo $HTML['allowphotomanag_2']; ?>/>Oui et &aacute; tout moment</span>
                 </div>
               </li>
             </ul>

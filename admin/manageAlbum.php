@@ -58,7 +58,7 @@
       $ratemethod=clear_request_param(getRequest_param($VARLABELS['RATEMETHOD'], '0'),'a-z',8,false);
 
       $albumname    = clear_request_param(getRequest_param($VARLABELS['ALBUMNAME'], date('d.m.Y')), false, 254, true);
-      $albumdesc    = clear_request_param(getRequest_param($VARLABELS['ALBUMDESC'],''), false, 500, true);
+      $albumdesc    = nl2br2( clear_request_param(getRequest_param($VARLABELS['ALBUMDESC'],''), false, 500, true) );
 
       $allowupload  = clear_request_param(getRequest_param($VARLABELS['ALLOWUPLOAD'], '0'),'0-9',2,false);
       $uploadslimit = clear_request_param(getRequest_param($VARLABELS['UPLOADSLIMIT'], '6'),'0-9',2,false);
@@ -66,9 +66,9 @@
       $allowvotes   = clear_request_param(getRequest_param($VARLABELS['ALLOWVOTES'], '0'),'0-9',2,false);
       $watermark    = clear_request_param(getRequest_param($VARLABELS['WATERMARK'], '0'),'0-9',2,false);
       
-      $showranking        = clear_request_param(getRequest_param('showranking', '1'),'0-9',2,false);
-      $allowphotomanag    = clear_request_param(getRequest_param('allowphotomanag', '1'),'0-9',2,false);
-      $showrateforuploads = clear_request_param(getRequest_param('showrateforuploads', '1'),'0-9',2,false);
+      $showranking        = clear_request_param(getRequest_param('showranking', '0'),'0-9',2,false);
+      $allowphotomanag    = clear_request_param(getRequest_param('allowphotomanag', '0'),'0-9',2,false);
+      $showrateforuploads = clear_request_param(getRequest_param('showrateforuploads', '0'),'0-9',2,false);
       $allowcomments      = clear_request_param(getRequest_param('allowcomments', '0'),'0-9',2,false);
       $allowselfrating    = clear_request_param(getRequest_param('allowselfrating', '0'),'0-9',2,false);
 
