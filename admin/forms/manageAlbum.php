@@ -4,6 +4,7 @@
 
     include SYSTEM_ROOT.LIB_DIR.'system.lib.php';
     include SYSTEM_ROOT.LIB_DIR.'login.lib.php';
+    include SYSTEM_ROOT.LIB_DIR.'htmlhelper.badlib.php';
 
     // Forcer administrateur
     if(!is_admin()){
@@ -39,26 +40,24 @@
     // Forcer creation de une rights_key
     if(!array_key_exists('RKEY', $CONFIG) || empty($CONFIG['RKEY']))
         $CONFIG['RKEY'] = tinyURL(16,'0123456789abcdefABCDEF');
-/*
-    $def_cal_date = array(
-      'upload-from'=>date('d/m/Y'),
-      'upload-to'=>date('d/m/Y',time() + (7 * 24 * 60 * 60)),
-      'vote-to'=>date('d/m/Y',time() + (14 * 24 * 60 * 60))
-    );
-    $def_cal_date['vote-from']=$def_cal_date['upload-to'];
-*/
-    // Si le fichier config.php existe, remplir les cases avec son contenu
-    // TODO
+
     // Construir code html parametres formulaire
-    $FORM = array(
-      'albumname'=>(get_arr_value($CONFIG,'albumname')!='')?'value="'.$CONFIG['albumname'].'" ':'',
-      'watermark'=>(get_arr_value($CONFIG,'watermark')=='1')?'checked="checked" ':'',
-      'allowupload'=>(get_arr_value($CONFIG,'allowupload')=='1')?'checked="checked" ':'',
-      'uploadslimit'=>'<option selected>'.get_arr_value($CONFIG,'uploadslimit','6').' (actuellement)</option>',
-      'allowvotes'=>(get_arr_value($CONFIG,'allowvotes')=='1')?'checked="checked" ':'',
-      'antitriche'=>(get_arr_value($CONFIG,'antitriche')=='1')?'checked="checked" ':'',
-      'ratemethod_likes'=>(get_arr_value($CONFIG,'ratemethod')=='like')?'checked="checked" ':'',
-      'ratemethod_stars'=>(get_arr_value($CONFIG,'ratemethod')=='stars')?'checked="checked" ':''
+    $HTML = array(
+      'albumname'        =>(get_arr_value($CONFIG,'albumname')!='')?'value="'.$CONFIG['albumname'].'" ':'',
+      'watermark'        => getHTML4CheckBoxState( get_arr_value($CONFIG,'watermark') ), 
+      'allowupload'      => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowupload') ),
+      'uploadslimit'     =>'<option selected>'.get_arr_value($CONFIG,'uploadslimit','6').' (actuellement)</option>',
+      'allowvotes'       => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowvotes') ),
+      'antitriche'       => getHTML4CheckBoxState( get_arr_value($CONFIG,'antitriche') ),
+      'ratemethod_likes' => getHTML4CheckBoxState( get_arr_value($CONFIG,'ratemethod'), 'like' ),
+      'ratemethod_stars' => getHTML4CheckBoxState( get_arr_value($CONFIG,'ratemethod'), 'stars' ),
+      'allowselfrating'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowselfrating') ),
+      'allowcomments'    => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowcomments') ),
+      'showranking'        => getHTML4CheckBoxState( get_arr_value($CONFIG,'showranking') ),
+      'showrateforuploads' => getHTML4CheckBoxState( get_arr_value($CONFIG,'showrateforuploads') ),
+      'allowphotomanag_0'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowphotomanag'),'0' ),
+      'allowphotomanag_1'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowphotomanag'),'1' ),
+      'allowphotomanag_2'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowphotomanag'),'2' )
     );
 //DEBUG
 //print_r($CONFIG);
@@ -89,7 +88,7 @@
             <div class="row">
               <div class="content">
                   <span>Lieu de la sortie:</span>
-                  <input id="sortie" type="text" name="albumname" placeholder="Nom du village ou endroit" <?php echo $FORM['albumname']; ?>/>
+                  <input id="sortie" type="text" name="albumname" placeholder="Nom du village ou endroit" <?php echo $HTML['albumname']; ?>/>
 
                   <span>Commentaires:</span>
                   <textarea id="description" name="albumdesc" maxlength="500" placeholder="Description/Notes/Observations"><?php echo get_arr_value($CONFIG,'albumdesc'); ?></textarea>
@@ -105,31 +104,39 @@
             </div>
             <ul class="row border-up content">
               <li>
-                  <input id="allowupload" type="checkbox" name="allowupload" value="1" <?php echo $FORM['allowupload']; ?>/>
+                  <input id="allowupload" type="checkbox" name="allowupload" value="1" <?php echo $HTML['allowupload']; ?>/>
                   <span>Permetre aux utilisateurs de poster ses photos.</span>
               </li>
               <li>
-                <span>Du</span>
-                <input id="upload-from" type="text" name="upload-from" value="<?php echo $CONFIG['upload-from']; ?>" class="datepicker" />
+                <div class="indent">
+                  <span>Du</span>
+                  <input id="upload-from" type="text" name="upload-from" value="<?php echo $CONFIG['upload-from']; ?>" class="datepicker" />
 
-                <span>Au</span>
-                <input id="upload-to" type="text" name="upload-to" value="<?php echo $CONFIG['upload-to']; ?>" class="datepicker" />
+                  <span>Au</span>
+                  <input id="upload-to" type="text" name="upload-to" value="<?php echo $CONFIG['upload-to']; ?>" class="datepicker" />
+                </div>
               </li>
               <li>
-                <label>
-                  <span>Limite de t&eacute;l&eacute;chargements par personne:</span>
-                  <select id="uploadslimit" type="text" name="uploadslimit">
-                    <?php echo $FORM['uploadslimit']; ?>
-                    <option value="2">2</option>
-                    <option value="4">4</option>
-                    <option value="6">6</option>
-                    <option value="8">8</option>
-                    <option value="10">10</option>
-                    <option value="12">12</option>
-                    <option value="14">14</option>
-                    <option value="16">16</option>
-                  </select>
-                </label>
+                <span>Limite de t&eacute;l&eacute;chargements par personne:</span>
+                <select id="uploadslimit" type="text" name="uploadslimit">
+                  <?php echo $HTML['uploadslimit']; ?>
+                  <option value="2">2</option>
+                  <option value="4">4</option>
+                  <option value="6">6</option>
+                  <option value="8">8</option>
+                  <option value="10">10</option>
+                  <option value="12">12</option>
+                  <option value="14">14</option>
+                  <option value="16">16</option>
+                </select>
+              </li>
+              <li class="row border-up">
+                <span>Les photographes peuvent gerer ses photos</span>
+                <div class="indent">
+                  <span><input type="radio" name="user-photo-manag" value="0" <?php echo $HTML['allowphotomanag_0']; ?>/>Jamais</span><br />
+                  <span><input type="radio" name="user-photo-manag" value="1" <?php echo $HTML['allowphotomanag_1']; ?>/>Pendant la p&eacute;riode de t&eacute;l&eacute;chargements</span><br />
+                  <span><input type="radio" name="user-photo-manag" value="2" <?php echo $HTML['allowphotomanag_2']; ?>/>Oui et &aacute; tout moment</span>
+                </div>
               </li>
             </ul>
           </div>
@@ -137,52 +144,52 @@
           
           <!-- votes -->
           <div class="card">
-            <div class="row">
+            <div class="row border-down">
               <h2>Votations</h2>
             </div>
             
+            <ul class="row border-down content">
+              <li>
+                  <input id="allowvotes" type="checkbox" name="allowvotes" value="1" <?php echo $HTML['allowvotes']; ?>/>
+                  <span>Les membres peuvent voter pour les photos post&eacute;s.</span>
+              </li>
+              <li>
+                <div class="indent">
+                  <span class="datepicker">Du</span>
+                  <input id="vote-from" type="text" name="vote-from" value="<?php echo $CONFIG['vote-from']; ?>" class="datepicker" />
 
-            <ul class="row border-down content chbx_cascade">
-              <li>
-                  <input id="allowvotes" type="checkbox" name="allowvotes" value="1" <?php echo $FORM['allowvotes']; ?>/>
-                  <span>Permetre aux utilisateurs de voter parmi les photos post&eacute;s.</span>
+                  <span class="datepicker">Au</span>
+                  <input id="vote-to" type="text" name="vote-to" value="<?php echo $CONFIG['vote-to']; ?>" class="datepicker" />
+                </div>
               </li>
               <li>
-                <span class="datepicker">Du</span>
-                <input id="vote-from" type="text" name="vote-from" value="<?php echo $CONFIG['vote-from']; ?>" class="datepicker" />
-
-                <span class="datepicker">Au</span>
-                <input id="vote-to" type="text" name="vote-to" value="<?php echo $CONFIG['vote-to']; ?>" class="datepicker" />
-              </li>
-              <li>
-                  <input id="antitriche" type="checkbox" name="antitriche" value="1" <?php echo $FORM['antitriche']; ?>/>
-                  <span>&Eacute;viter que les utilisateurs puissent voter plusieurs fois par la m&ecirc;me photo.</span>
+                  <input id="antitriche" type="checkbox" name="antitriche" value="1" <?php echo $HTML['antitriche']; ?>/>
+                  <span>&Eacute;viter que les utilisateurs puissent voter plusieurs fois pour la m&ecirc;me photo.</span>
               </li>
               <li class="disabled">
-                  <input id="allowcomments" type="checkbox" name="allowcomments" value="0" />
-                  <span>Les photographes peuvent donner son avis lors du vote.</span>
+                  <input id="allowcomments" type="checkbox" name="allowcomments" value="1" <?php echo $HTML['allowcomments']; ?>/>
+                  <span>Les membres peuvent donner son avis lors du vote.</span>
               </li>
               <li class="disabled">
-                  <input id="allowrateview" type="checkbox" name="allowrateview" value="0" />
-                  <span>Les photographes peuvent regarder le classement pour ses photos en temps r&eacute;el.</span>
+                  <input id="allowrateview" type="checkbox" name="allowrateview" value="1" <?php echo $HTML['showrateforuploads']; ?>/>
+                  <span>Les membres peuvent regarder le classement pour ses photos en temps r&eacute;el.</span>
               </li>
               <li class="disabled">
-                  <input id="allowselfrating" type="checkbox" name="allowselfrating" value="0" />
-                  <span>Les photographes peuvent voter par ses propres photos.</span>
+                  <input id="allowselfrating" type="checkbox" name="allowselfrating" value="1" <?php echo $HTML['allowselfrating']; ?>/>
+                  <span>Les membres peuvent voter par ses propres photos.</span>
+              </li>
+              <li class="disabled">
+                  <input id="showranking" type="checkbox" name="showranking" value="1" <?php echo $HTML['showranking']; ?>/>
+                  <span>Montrer classement &agrave; la fin de la periode de votations.</span>
+              </li>
+              <li class="row">
+                <span>Syst&egrave;me de votes</span>
+                <div class="indent">
+                  <span><input id="ratemethod-like" type="radio" name="ratemethod" value="like" <?php echo $HTML['ratemethod_likes']; ?>/>Standard.</span><br />
+                  <span><input id="ratemethod-stars" type="radio" name="ratemethod" value="stars" <?php echo $HTML['ratemethod_stars']; ?>/>Par &eacute;toiles.</span>
+                </div>
               </li>
             </ul>
-            
-            <div class="row">
-              <h3>Syst&egrave;me de votes</h3>
-            </div>
-            <div class="row border-down">
-              <div class="content chbx_cascade">
-                <span><input id="ratemethod-like" type="radio" name="ratemethod" value="like" <?php echo $FORM['ratemethod_likes']; ?>/>
-                Standard.</span><br />
-                <span><input id="ratemethod-stars" type="radio" name="ratemethod" value="stars" <?php echo $FORM['ratemethod_stars']; ?>/>
-                Par &eacute;toiles.</span>
-              </div>
-            </div>
           </div>
           <!-- votes -->
           
@@ -191,31 +198,16 @@
             <div class="row">
               <h2>G&eacute;n&eacute;ralit&eacute;es</h2>
             </div>
-            <div class="row border-down">
-              <div class="content chbx_cascade">
-                <span class="disabled"><input id="watermark" type="checkbox" name="watermark" value="1" <?php echo $FORM['watermark']; ?>/>
-                Apliquer automatiquement une filigrane aux photos post&eacute;s.</span>
-              </div>
-            </div>
-            <div class="row border-down">
-              <h3>Les photographes peuvent gerer ses photos</h3>
-            </div>
-            <div class="row border-down">
-              <div class="content disabled">
-                <span><input id="ratemethod-like" type="radio" name="user-photo-del" value="never" />Jamais</span><br />
-                <span><input id="ratemethod-like" type="radio" name="user-photo-del" value="onuploadtime" />Pendant la p&eacute;riode de t&eacute;l&eacute;chargements</span><br />
-                <span><input id="ratemethod-like" type="radio" name="user-photo-del" value="always" />&Aacute; tout moment</span>
-              </div>
-            </div>
-            <div class="row">
+            <div class="row border-up">
               <div class="content">
-                
+                <span class="disabled"><input id="watermark" type="checkbox" name="watermark" value="1" <?php echo $HTML['watermark']; ?>/>
+                Apliquer automatiquement une filigrane aux photos post&eacute;s.</span>
               </div>
             </div>
           </div>
           <!-- /generalites -->
           
-          <!-- securite -->
+          <!-- securite -- 
           <div class="card">
             <div class="row">
               <h2>Securit&eacute;</h2>
@@ -231,19 +223,17 @@
               </div>
             </div>
           </div>
-          <!-- securite -->
+          !-- securite -->
           
           <!-- liens -->
           <div class="card">
-            <div class="row">
+            <div class="row border-down">
               <h2>Liens</h2>
             </div>
-            <div class="row">
-              <div class="content">
-                <label><span>Lien publique:</span><span class="link"><?php echo 'http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum; ?></span></label>
-                <label><span>Lien privil&eacute;gi&eacute;:</span><span class="link"><?php echo 'http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/?'.URI_QUERY_RIGHTS_KEY.'='.$CONFIG['RKEY']; ?></span></label>
-              </div>
-            </div>
+            <ul class="row content">
+                <li><span>Lien publique:</span><br /><span class="link"><?php echo 'http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum; ?></span></li>
+                <li><span>Lien privil&eacute;gi&eacute;:</span><br /><span class="link"><?php echo 'http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/?'.URI_QUERY_RIGHTS_KEY.'='.$CONFIG['RKEY']; ?></span></li>
+            </ul>
           </div>
           <!-- liens -->
 

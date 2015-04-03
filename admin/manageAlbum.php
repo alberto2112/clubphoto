@@ -54,22 +54,28 @@
     
     if($action=='new' || $action=='edit'){
 
-        $RKEY = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);
-        $ratemethod=clear_request_param(getRequest_param($VARLABELS['RATEMETHOD'], '0'),'a-z',8,false);
+      $RKEY = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);
+      $ratemethod=clear_request_param(getRequest_param($VARLABELS['RATEMETHOD'], '0'),'a-z',8,false);
 
-        $albumname = clear_request_param(getRequest_param($VARLABELS['ALBUMNAME'], date('d.m.Y')), false, 254, true);
-        $albumdesc = clear_request_param(getRequest_param($VARLABELS['ALBUMDESC'],''), false, 500, true);
+      $albumname    = clear_request_param(getRequest_param($VARLABELS['ALBUMNAME'], date('d.m.Y')), false, 254, true);
+      $albumdesc    = clear_request_param(getRequest_param($VARLABELS['ALBUMDESC'],''), false, 500, true);
 
-        $allowupload=clear_request_param(getRequest_param($VARLABELS['ALLOWUPLOAD'], '0'),'0-9',8,false);
-        $uploadslimit=clear_request_param(getRequest_param($VARLABELS['UPLOADSLIMIT'], '6'),'0-9',2,false);
-        $antitriche=clear_request_param(getRequest_param($VARLABELS['ANTITRICHE'], '0'),'0-9',8,false);
-        $allowvotes=clear_request_param(getRequest_param($VARLABELS['ALLOWVOTES'], '0'),'0-9',8,false);
-        $watermark=clear_request_param(getRequest_param($VARLABELS['WATERMARK'], '0'),'0-9',8,false);
+      $allowupload  = clear_request_param(getRequest_param($VARLABELS['ALLOWUPLOAD'], '0'),'0-9',2,false);
+      $uploadslimit = clear_request_param(getRequest_param($VARLABELS['UPLOADSLIMIT'], '6'),'0-9',2,false);
+      $antitriche   = clear_request_param(getRequest_param($VARLABELS['ANTITRICHE'], '0'),'0-9',2,false);
+      $allowvotes   = clear_request_param(getRequest_param($VARLABELS['ALLOWVOTES'], '0'),'0-9',2,false);
+      $watermark    = clear_request_param(getRequest_param($VARLABELS['WATERMARK'], '0'),'0-9',2,false);
+      
+      $showranking        = clear_request_param(getRequest_param('showranking', '1'),'0-9',2,false);
+      $allowphotomanag    = clear_request_param(getRequest_param('allowphotomanag', '1'),'0-9',2,false);
+      $showrateforuploads = clear_request_param(getRequest_param('showrateforuploads', '1'),'0-9',2,false);
+      $allowcomments      = clear_request_param(getRequest_param('allowcomments', '0'),'0-9',2,false);
+      $allowselfrating    = clear_request_param(getRequest_param('allowselfrating', '0'),'0-9',2,false);
 
-        $upload_from = clear_request_param(getRequest_param($VARLABELS['UPLOAD-FROM'], ''), '0-9\/', 10, false);
-        $upload_to = clear_request_param(getRequest_param($VARLABELS['UPLOAD-TO'], ''), '0-9\/', 10, false);
-        $vote_from = clear_request_param(getRequest_param($VARLABELS['VOTE-FROM'], ''), '0-9\/', 10, false);
-        $vote_to = clear_request_param(getRequest_param($VARLABELS['VOTE-TO'], ''), '0-9\/', 10, false);
+      $upload_from  = clear_request_param(getRequest_param($VARLABELS['UPLOAD-FROM'], ''), '0-9\/', 10, false);
+      $upload_to    = clear_request_param(getRequest_param($VARLABELS['UPLOAD-TO'], ''), '0-9\/', 10, false);
+      $vote_from    = clear_request_param(getRequest_param($VARLABELS['VOTE-FROM'], ''), '0-9\/', 10, false);
+      $vote_to      = clear_request_param(getRequest_param($VARLABELS['VOTE-TO'], ''), '0-9\/', 10, false);
     }
     
     switch($action){
@@ -146,7 +152,12 @@
                   .'"'.$VARLABELS['VOTE-TO'].'"=>"'.$vote_to.'",'
                   .'"'.$VARLABELS['RATEMETHOD'].'"=>"'.$ratemethod.'",'
                   .'"'.$VARLABELS['RKEY'].'"=>"'.$RKEY.'",'
-                  .'"'.$VARLABELS['ALBUMDESC'].'"=>"'.$albumdesc.'"';
+                  .'"'.$VARLABELS['ALBUMDESC'].'"=>"'.$albumdesc.'",'
+                  .'"showranking"=>"'.$showranking.'",'
+                  .'"allowphotomanag"=>"'.$allowphotomanag.'",'
+                  .'"showrateforuploads"=>"'.$showrateforuploads.'",'
+                  .'"allowcomments"=>"'.$allowcomments.'",'
+                  .'"allowselfrating"=>"'.$allowselfrating.'"';
 
         $AL_CONF->insert($confstr,false);
 
