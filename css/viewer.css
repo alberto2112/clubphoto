@@ -93,7 +93,7 @@ input[type=checkbox]:checked + label:before {
   min-width:16px;
   display:inline-block;
   text-align:center;
-  margin:0 4px;
+  margin:0 7px;
 }
 .toolbar>ul>li>a{
   width:16px;

@@ -30,11 +30,14 @@
 .basic-grey input[type="checkbox"]{
 	display:inline-block;
 }
-.basic-grey input[type="text"], .basic-grey input[type="password"], .basic-grey input[type="email"], .basic-grey textarea, .basic-grey select {
+.basic-grey input[type="text"], 
+.basic-grey input[type="password"], 
+.basic-grey input[type="email"], 
+.basic-grey textarea, 
+.basic-grey select {
     border: 1px solid #DADADA;
     color: #888;
     height: 30px;
-    margin-bottom: 16px;
     margin-right: 6px;
     margin-top: 2px;
     outline: 0 none;
@@ -80,4 +83,4 @@
     background: #CF7A7A
 }
 
-input.datepicker{display:inline-block !important;width:8em !important;}
+input.datepicker{display:inline-block !important;width:6.4em !important;}
