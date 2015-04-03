@@ -60,7 +60,9 @@
       'allowphotomanag_2'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowphotomanag'),'2' )
     );
 //DEBUG
+//echo '<pre>DEBUG';
 //print_r($CONFIG);
+//echo '</pre>';
 //DEBUG />
 ?>
 <html>
