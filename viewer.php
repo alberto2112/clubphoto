@@ -202,6 +202,12 @@
 ?>
     </div>
 <!-- / Content -->
+
+    
+<?php
+  include SYSTEM_ROOT.'footer.php';
+?>
+    
     <p class="footnote">Club photo &#64; <a href="http://www.mjcrodez.com/">MJC Rodez</a> | <a href="http://www.dropzonejs.com/">Dropzonejs</a> | 
 <?php
   if($_ISMEMBER && $_SHOWRANKING){

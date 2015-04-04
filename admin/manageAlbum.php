@@ -218,7 +218,7 @@
         // Enregistrer activitee
         $LOG->insert('[-] ['.$codalbum.'] - ALBUM DELETED by '.$ADMIN_NAME.'  - '.$IP, true);
 
-        header('Location: '.PUBLIC_ROOT.ADMIN_DIR.'list_albums.php'); exit;
+        header('Location: '.PUBLIC_ROOT.ADMIN_DIR); exit;
         break;
     }
 

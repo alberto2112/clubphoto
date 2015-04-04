@@ -53,6 +53,8 @@
   }
 ?>
   </div>
-  <p class="footnote">Club photo - MJC Rodez</p>
+<?php
+  include SYSTEM_ROOT.'footer.php';
+?>
 </body>
 </html>
