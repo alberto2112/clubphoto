@@ -38,14 +38,14 @@
   $max_uploads = get_arr_value($CONFIG,'uploadslimit','6');
 
   // Get private user RKEY
-  $USER_KEY = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, make_rkey(14,'012345679VWXYZ'));
-//$USER_KEY = (array_key_exists(COOKIE_USER_KEY.$codalbum, $_COOKIE))? $_COOKIE[COOKIE_USER_KEY.$codalbum] : make_rkey(14,'012345679VWXYZ');
+  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, make_rkey(14,'012345679VWXYZ'));
+//$USER_SESSION = (array_key_exists(COOKIE_USER_KEY.$codalbum, $_COOKIE))? $_COOKIE[COOKIE_USER_KEY.$codalbum] : make_rkey(14,'012345679VWXYZ');
 
   // Refresh/Create USER_KEY cookie
-  setcookie(COOKIE_USER_KEY.$codalbum, $USER_KEY, time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+  setcookie(COOKIE_USER_KEY.$codalbum, $USER_SESSION, time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
 
   // Get user name
-  $UNAME = (@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_KEY.'.uname')) ? file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_KEY.'.uname') : '';
+  $UNAME = (@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION.'.uname')) ? file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION.'.uname') : '';
   
 ?>
 <!DOCTYPE html>
@@ -63,7 +63,7 @@
         <form action="<?php echo PUBLIC_ROOT.RUN_DIR; ?>upload.php" class="dropzone" id="myDropzone"
               method="post" enctype="image/jpeg" accept="image/x-png, image/gif, image/jpeg">
 			<input type="hidden" name="<?php echo URI_QUERY_ALBUM; ?>" value="<?php echo $codalbum; ?>" />
-            <input type="hidden" name="<?php echo URI_QUERY_RIGHTS_KEY; ?>" value="<?php echo $USER_KEY; ?>" />
+            <input type="hidden" name="<?php echo URI_QUERY_RIGHTS_KEY; ?>" value="<?php echo $USER_SESSION; ?>" />
             <div class="form_items" id="frm-step-1">
               <p>Pour faciliter le tri vis-&agrave;-vis de l'administrateur, vous pouvez renseigner votre nom et pr&eacute;nom.<br />
               Cette information sera r&eacute;serv&eacute;e uniquement &agrave; l'administrateur</p>

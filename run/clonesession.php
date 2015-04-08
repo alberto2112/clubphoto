@@ -12,7 +12,7 @@
   $pincode  = clear_request_param(getRequest_param('pin', false), '0-9', 5, false);
   
 // Get other vars
-  $USER_KEY = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
+  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
   $IP       = getClient_ip();
   $LONGIP   = @sprintf("%u",ip2long($IP)) | '0';
   $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
@@ -118,10 +118,10 @@ if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
 
       case 'request':
       default:
-      if(!empty($USER_KEY) && !empty($LONGIP)){
+      if(!empty($USER_SESSION) && !empty($LONGIP)){
         
         $PIN = make_rkey(5, '0123456789');
-        file_put_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn', $USER_KEY.';'.md5($PIN));
+        file_put_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn', $USER_SESSION.';'.md5($PIN));
         echo $PIN;
       }
       break;

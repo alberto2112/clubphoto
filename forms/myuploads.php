@@ -36,7 +36,7 @@
     $CONFIG = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';// remplir l'array avec des parametres par defaut
 
 // NOTE: Revoir ça; pourquoi le renvoyer quand on peut lui montrer un bouton pour qu'il telecharge quelque chose?
-  //if($USER_KEY==false){
+  //if($USER_SESSION==false){
 // NOTE: Donc, on se fie au RKEY et pas au UKEY
   if(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($CONFIG, 'RKEY')){
     $ERRLOG->insert('EMPTY RKEY - '.$IP, true);
@@ -45,7 +45,7 @@
   }
 
 // Recuperer USER_KEY (Cookie)
-  $USER_KEY = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
+  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
 ?>
 <!DOCTYPE html>
 <html>
@@ -103,9 +103,9 @@
     $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php';
   }
   
-  if(!empty($USER_KEY) && is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_KEY)){
+  if(!empty($USER_SESSION) && is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION)){
     // Recuperer liste de photos telecharges
-    $lof_photos = explode( "\n", file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_KEY));
+    $lof_photos = explode( "\n", file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION));
     
     // Montrer a l'utilisateur ses propres photos
     $i=0;

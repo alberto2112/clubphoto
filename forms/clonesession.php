@@ -12,7 +12,7 @@
   $action   = clear_request_param(getRequest_param(URI_QUERY_ACTION, false), 'a-zA-Z0-9', 8, false);
   
 // Get other vars
-  $USER_KEY = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
+  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
   $IP       = getClient_ip();
   $LONGIP   = @sprintf("%u",ip2long($IP)) | '0';
 ?>

@@ -33,7 +33,7 @@
   $ERRLOG = new LOG(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/logs/errors.log');
 
 // Get User Rights Key
-  $USER_KEY = clear_request_param(
+  $USER_SESSION = clear_request_param(
                    getRequest_param(
                        URI_QUERY_RIGHTS_KEY, 
                        get_arr_value(
@@ -81,9 +81,9 @@
     $current_used_quota = 0;
 
   // Create USER_KEY if error
-    if($USER_KEY==false){
-      $USER_KEY=make_rkey(14,'012345679VWXYZ');
-      setcookie(COOKIE_USER_KEY.$codalbum, $USER_KEY, time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+    if($USER_SESSION==false){
+      $USER_SESSION=make_rkey(14,'012345679VWXYZ');
+      setcookie(COOKIE_USER_KEY.$codalbum, $USER_SESSION, time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
     }
 
   // Open upload log
@@ -93,11 +93,11 @@
       @mkdir(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR,0755);
 
   // Create proc file
-    $PROC = new LOG(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_KEY, false);
+    $PROC = new LOG(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION, false);
 
   // Save author name
     if(!empty($author)){
-      @file_put_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_KEY.'.uname', $author, LOCK_EX);
+      @file_put_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION.'.uname', $author, LOCK_EX);
     }
 
     // Get filesize and test with disk Quota
@@ -105,7 +105,7 @@
       if(file_exists(FILE_USED_QUOTA)){
         $current_used_quota = file_get_contents(FILE_USED_QUOTA,null,null,null,9); // in Ko
         if($current_used_quota > DISK_QUOTA){
-          $LOG->insert('[!] QUOTA DEPASEE - '.$IP.' - UKEY: '.$USER_KEY.' (/'.RUN_DIR.'upload.php)', false);
+          $LOG->insert('[!] QUOTA DEPASEE - '.$IP.' - UKEY: '.$USER_SESSION.' (/'.RUN_DIR.'upload.php)', false);
           $LOG->insert('    -> DISK LIMIT: '.DISK_QUOTA.'Ko - CURRENT USED DISK SPACE: '.$current_used_quota.'Ko');
           $LOG->close();
           exit;
@@ -140,7 +140,7 @@
     @mkdir($workspace,0777,true); // Dossier temporel base en adresse ip
 
     // Ajouter evenement au log d'activite
-    $LOG->insert('UPLOADED - ip='.$IP.' - UKEY='.$USER_KEY.' - uploaderid='.$UPLOADERID.' - msg=Temp file name: '.$_FILES['file']['tmp_name'].' (/'.RUN_DIR.'upload.php)');
+    $LOG->insert('UPLOADED - ip='.$IP.' - UKEY='.$USER_SESSION.' - uploaderid='.$UPLOADERID.' - msg=Temp file name: '.$_FILES['file']['tmp_name'].' (/'.RUN_DIR.'upload.php)');
 
     try{
       // Reserver memoire
@@ -174,7 +174,7 @@
       
       if(is_object($result)){
         // S'il y a une erreur logger celui-ci dans les archives
-        $LOG->insert('[!] INSTALL ERROR - ip='.$IP.' UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' photo='.$photo_basename.' (/'.RUN_DIR.'upload.php)'); //
+        $LOG->insert('[!] INSTALL ERROR - ip='.$IP.' UKEY='.$USER_SESSION.' uploaderid='.$UPLOADERID.' photo='.$photo_basename.' (/'.RUN_DIR.'upload.php)'); //
         $ERRLOG->insert('[!] INSTALL ERROR - photo='.$photo_basename.' file='.$e->getFile().' [@'.$e->getLine().'] msg='.$e->getMessage());
         
       }else{
@@ -186,8 +186,8 @@
         $PROC->insert($photo_basename, true); // Insert and close file
 
         // Ajouter auteur et identificateur dans le fichier d'informations relatives a la photo
-        #fwrite($CSV,';'.$title.';;;;'.$USER_KEY.';'.$author.';'.$UPLOADERID);
-        fwrite($CSV,';;;;;'.$USER_KEY.';'.$author.';'.$UPLOADERID);
+        #fwrite($CSV,';'.$title.';;;;'.$USER_SESSION.';'.$author.';'.$UPLOADERID);
+        fwrite($CSV,';;;;;'.$USER_SESSION.';'.$author.';'.$UPLOADERID);
 
         // Liberer et fermer fichier CSV
         flock($CSV, LOCK_UN);
@@ -216,21 +216,21 @@
         file_put_contents(FILE_USED_QUOTA, ($current_used_quota + $photo_filesize), LOCK_EX);
 
         // Creer et/ou ajouter au log d'activite
-        $LOG->insert('INSTALLED - ip='.$IP.' UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' photo='.$photo_basename);
+        $LOG->insert('INSTALLED - ip='.$IP.' UKEY='.$USER_SESSION.' uploaderid='.$UPLOADERID.' photo='.$photo_basename);
       }
     } catch (Exception $e){
       // Si une erreur est produite lors de l'installation de l'image l'enregistrer dans le log
-      $LOG->insert('[!] INSTALL ERROR - ip='.$IP.' UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' photo='.$photo_basename.' (/'.RUN_DIR.'upload.php)'); //
+      $LOG->insert('[!] INSTALL ERROR - ip='.$IP.' UKEY='.$USER_SESSION.' uploaderid='.$UPLOADERID.' photo='.$photo_basename.' (/'.RUN_DIR.'upload.php)'); //
       $ERRLOG->insert('[!] INSTALL ERROR - photo='.$photo_basename.' file='.$e->getFile().' @='.$e->getLine().' msg='.$e->getMessage());
     }
     
   // Effacer toute trace du dossier de travail temporel
     rmdir_recurse($workspace);
   }else{
-    if(empty($USER_KEY))
-      $USER_KEY = 'Unknown';
+    if(empty($USER_SESSION))
+      $USER_SESSION = 'Unknown';
     
-    $ERROR->insert('[!] UPLOAD ERROR - ip='.$IP.' - UKEY='.$USER_KEY.' uploaderid='.$UPLOADERID.' - msg=Telechargement vide (/'.RUN_DIR.'upload.php)');
+    $ERROR->insert('[!] UPLOAD ERROR - ip='.$IP.' - UKEY='.$USER_SESSION.' uploaderid='.$UPLOADERID.' - msg=Telechargement vide (/'.RUN_DIR.'upload.php)');
   }
   $LOG->close();
   $ERRLOG->close();

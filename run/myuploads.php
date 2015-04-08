@@ -41,14 +41,14 @@
     }
 
   // Recuperer USER_KEY (Cookie)
-    $USER_KEY = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
+    $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
 
     switch($action){
       case 'delete':
         // Leer fichero $photo_filename.csv
         $photo_info = read_csv(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.csv');
 
-        if($USER_KEY==$photo_info[PHOTOGRAPHE_UKEY]){
+        if($USER_SESSION==$photo_info[PHOTOGRAPHE_UKEY]){
           // Calculer used quota
           $file_album_size = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/album_size.txt';
 
