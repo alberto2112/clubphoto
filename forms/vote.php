@@ -122,11 +122,13 @@
         <h1><a href="<?php echo PUBLIC_ROOT.ALBUMS_DIR.$codalbum; ?>"><?php echo get_arr_value($AL_CONF, 'albumname'); ?></a> <span>&gt; <?php echo $photo_info[TITLE]; ?></span></h1>
     </div>
 <!-- /Header -->
+    
 <!-- Photo -->
     <div class="photo-wrapper" style="background-image: url('<?php echo PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/large/'.$photo_filename; ?>')">
       <img src="<?php echo PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/large/'.$photo_filename; ?>" class="handheld" />
     </div>
 <!-- /Photo -->
+
 <!-- Navigation -->
     <div class="nav">
 <?php
@@ -163,6 +165,7 @@
 ?>
     </div>
 <!-- /Navigation -->
+
 <!-- Info Photo -->
     <div class="photo-info">
       <h2>Informations</h2>
@@ -188,9 +191,10 @@
         <li class="flash">
           <span title="Flash"><?php echo $photo_info[FLASH]; ?></span>
         </li>
+        
 <?php
-
-  //if($codalbum=='phjvd'){
+  //<li><span id="showrules">Show rules</span></li>
+  
   if(strpos(get_arr_value($AL_CONF, 'albumdesc', ''), '[\d]') > 0){
     echo '<li class="download"><a href="'.PUBLIC_ROOT.RUN_DIR.'download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo_filename.'">T&eacute;l&eacute;charger</a></li>';
   }
@@ -199,8 +203,7 @@
       </ul>
     </div>
 <!-- / Info Photo -->
-    
-   
+
 <!-- Rating -->
 <?php
 // Print photo description if exists
@@ -256,7 +259,6 @@
 
 <!-- / Rating -->
 
-    <p class="footnote" style="display:none;">Club photo - MJC Rodez<br />Icons made by Freepik from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></p>
     <script type="text/javascript">
         var vote_points=0;
       
