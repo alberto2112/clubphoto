@@ -134,17 +134,29 @@ if(empty($codalbum)){
         }
   }
 
+// [!] NEW METHOD: IDENTIFIER PROPIETAIRE PHOTO
+if($AL_CONF['allowselfrating']=='0'){
+  $_PROPIETAIRE_PHOTO = array_search
+    (
+      $photo_filename, 
+      file(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)
+    ) !== false;
+
+  if($_PROPIETAIRE_PHOTO){
+    // Empecher de voter au propietaire de la photo
+    $vote_result   = 'PROPIETAIRE PHOTO';
+    $points_result = 'Dis donc! vous ne pouvez pas voter par vos propres photos. Ne trichez pas, eh oh!';
+    $AL_CONF['allowvotes']=='0';
+  }
+}
+// [!] NEW METHOD: IDENTIFIER PROPIETAIRE PHOTO />
+
   if($AL_CONF['antitriche']=='1' && array_key_exists($str_cookie, $_COOKIE)){
 // Mecanisme antitriche
     $sended_points = get_arr_value($_COOKIE, $str_cookie); // Récuperer points
-    if($sended_points=='-1'){
-      // TODO: Permetre aux photographes de voter par ses propres photos ??
-      $vote_result = 'PROPIETAIRE PHOTO';
-      $points_result = 'Dis donc! vous ne pouvez pas voter par vos propres photos. Ne trichez pas, eh oh!';
-    }else{
-      $vote_result = 'DEJA VOTE AUPARAVANT';
-      $points_result = 'Dis donc! vous avez d&eacute;j&egrave; donn&eacute; '.$sended_points.' points! Ne trichez pas, eh oh!';
-    }
+    $vote_result   = 'DEJA VOTE AUPARAVANT';
+    $points_result = 'Dis donc! vous avez d&eacute;j&egrave; donn&eacute; '.$sended_points.' points! Ne trichez pas, eh oh!';
+  
   }elseif($AL_CONF['allowvotes']=='1'){
     // Comptabiliser le vote
     $vote_result   = count_up($votes_filename, 1);
@@ -192,8 +204,7 @@ if(empty($codalbum)){
     $LOG->insert($IP.' - '.$photo_filename.' - '.$points .' points - SUCCESS', true); 
     
     // Set cookie
-    if($AL_CONF['antitriche']=='1')
-      setcookie($str_cookie,$points,time()+(3600 * 24 * 14), PUBLIC_ROOT);
+    setcookie($str_cookie,$points,time()+(3600 * 24 * 14), PUBLIC_ROOT);
 
     // Send result
     if($AL_CONF['ratemethod']=='stars')
@@ -201,7 +212,7 @@ if(empty($codalbum)){
     else
       echo '1';
   }else{
-    $LOG->insert($IP.' - '.$photo_filename.' - '.$points.' points - '.$vote_result, true);
+    $LOG->insert('ip='.$IP.' photo='.$photo_filename.' points='.$points.' result='.$vote_result, true);
     echo $points_result;
     /*
     if(is_readable($votes_filename) && is_readable($points_filename))
