@@ -32,7 +32,7 @@
 // Open error log
   $ERRLOG = new LOG(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/logs/errors.log');
 
-// Get User Rights Key
+// Get User session
   $USER_SESSION = clear_request_param(
                    getRequest_param(
                        URI_QUERY_RIGHTS_KEY, 
@@ -182,7 +182,7 @@
         $str_cookie = $codalbum.'_'.str_replace('.','_',$photo_basename);
         setcookie($str_cookie,'-1',time()+(3600 * 24 * 21), PUBLIC_ROOT); // For 21 days
 
-        // Ajouter photo au fichier proc
+        // Ajouter photo a user session
         $PROC->insert($photo_basename, true); // Insert and close file
 
         // Ajouter auteur et identificateur dans le fichier d'informations relatives a la photo
