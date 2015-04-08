@@ -6,29 +6,39 @@
     $_ISMEMBER = false;
 ?>
 <footer>
-  <div class="centered clearfix onecol">
+  <div class="centered clearfix">
     <ul>
-      <li><a href="http://www.mjcrodez.com/">MJC de Rodez</a></li>
-      <li>1 Rue Saint-Cyrice<br />12000 Rodez</li>
-      <li><a href="">Site officiel du Club photo</a></li>
+      <li class="title">Liens d'utilit&eacute;</li>
   <?php
-    if($_ISMEMBER && $_SHOWRANKING){
-      echo '<li><a href="'.PUBLIC_ROOT.'classement.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'">Voir classement</a></li>';
-    }
-
     if($_ISADMIN){
       echo '<li><a style="color:#E88" href="'.PUBLIC_ROOT.'logout.php">Se d&eacute;connecter</a></li>';
     } else {
       echo '<li><a href="'.PUBLIC_ROOT.'login.php">Administrer</a></li>';
     }
+
+    if($_ISMEMBER && $_SHOWRANKING){
+      echo '<li><a href="'.PUBLIC_ROOT.'classement.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'">Voir classement</a></li>';
+    }
   ?>
+      <li>Comment &eacute;valuer</li>
+      <li>FAQ</li>
     </ul>
+
     <ul>
-      <li class="carte"></li>
-    </ul>
-    <ul>
-      <li><h3>Autres infos</h3></li>
+      <li class="title">Autres infos</li>
+      <li><a href="http://www.mjcrodez.com/">MJC de Rodez</a></li>
+      <li><a href="http://photo.mjcrodez.com/">Site officiel du Club photo</a></li>      
       <li>Upload script: <a href="http://www.dropzonejs.com/">DropzoneJS</a></li>
+      <li>Icons made by Freepik from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></li>
+    </ul>
+
+    <ul class="noborder">
+      <li class="title">O&ugrave; sommes nous?</li>
+      <li>MJC de Rodez</li>
+      <li>1 Rue Saint-Cyrice</li>
+      <li>12000 Rodez</li>
+      <li><a href="https://www.google.fr/maps/place/Maison+des+Jeunes+et+de+la+Culture+de+Rodez/@44.352998,2.577991,17z/data=!3m1!4b1!4m2!3m1!1s0x0000000000000000:0x71ac842e7e08e3dc" class="carte"></a></li>
+      <li><a href="http://mjcrodez.fr/clubs/activit%C3%A9s/culture/multim%C3%A9dia/80-num%C3%A9rique.html">+ d'infos</a></li>
     </ul>
   </div>
 </footer>
