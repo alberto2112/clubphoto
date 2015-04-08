@@ -32,8 +32,8 @@
     .vote-form,
     .message,
     .comments {
-      /* width:235px; */
-      width:15.35em;
+      width:235px;
+      /* width:15.35em; */
     }
     
     .photo-info li{

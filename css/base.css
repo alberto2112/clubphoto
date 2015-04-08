@@ -11,44 +11,71 @@
     background-color:#2F302C;
     color:#fff;
   }
-  
+  footer{
+    color:#ccc;
+  }
   footer a{
     color:inherit;
   }
 
 /* FOOTER */
-  .footnote{
-    color:#828282;
-    padding:1em;
-    font-size:75%;
-    font-weight:400;
-    text-align: center;
-  }
+/*
+@media (max-width: 767px),
+       (min-width: 768px) {}
+*/
   footer{
     font-size:75%;
     padding:3em 0;
     line-height: 1.4em;
+    box-shadow: 0 0 3px rgba(0,0,0,1);
+/*
+    display:block;
+    width:100%;
+    position:absolute;
+    bottom:0;
+*/
   }
-  footer .onecol{
+  footer a{
+    text-decoration: none;
+  }
+  footer>div{
     width:89%;
-    margin:0 auto;
   }
   footer>div>ul{
     list-style: none;
-    margin:0;
-    padding:0;
+    margin:0 auto 1em;
+    padding:0 0 1em;
     text-align:left;
-    float:left;
-    width:33%;
+    width:220px;
+    border-bottom: 1px #555 solid;
   }
   footer li{
     padding:.3em 0;
   }
-  footer li.carte{
+  footer li.title{
+    text-transform: uppercase;
+    padding-bottom: .6em;
+    font-weight:700;
+    font-size:110%;
+  }
+  footer .carte{
     display:block;
-    width:90%;
-    height:300px;
+    height:120px;
     background:transparent url("../images/carte.jpg") no-repeat center;
+  }
+
+  @media (min-width: 992px) {
+    footer>div{
+      text-align:center;
+    }
+
+    footer>div>ul{
+      border:none;
+      width:24.63%;
+      text-align:left;
+      margin:0 2.47%;
+      float:right;
+    }
   }
 
 /* Card COLORS */
@@ -185,4 +212,7 @@
 ￼  clear: both;
 ￼  content: ".";
   */
+}
+.noborder{
+  border:none !important;
 }
