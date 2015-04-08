@@ -12,7 +12,7 @@
   $pincode  = clear_request_param(getRequest_param('pin', false), '0-9', 5, false);
   
 // Get other vars
-  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
+  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, false);
   $IP       = getClient_ip();
   $LONGIP   = @sprintf("%u",ip2long($IP)) | '0';
   $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
@@ -36,7 +36,7 @@ if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
           // Comprobar PIN
             if($NEW_USER_KEY[1]==$pincode){
             // SUCCESS: Refresh/Create USER_KEY cookie
-              setcookie(COOKIE_USER_KEY.$codalbum, $NEW_USER_KEY[0], time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+              setcookie(COOKIE_USER_SESSION.$codalbum, $NEW_USER_KEY[0], time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
 
             // Remove clone request
               unlink(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn');
@@ -65,7 +65,7 @@ if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
         if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn')){
 
         // Comprobar si existe sesion para el equipo actual
-          $CUR_SESSION_KEY = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
+          $CUR_SESSION_KEY = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, false);
 
           if(!empty($CUR_SESSION_KEY)){
             $CUR_SESSION = '';
@@ -86,7 +86,7 @@ if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
                   }
                 }
                 // Clonar cookie de sesion
-                setcookie(COOKIE_USER_KEY.$codalbum, $NEW_USER_KEY[0], time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+                setcookie(COOKIE_USER_SESSION.$codalbum, $NEW_USER_KEY[0], time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
 
                 // Eliminar peticion de clonado
                 unlink(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn');

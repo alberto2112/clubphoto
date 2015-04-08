@@ -38,11 +38,11 @@
   $max_uploads = get_arr_value($CONFIG,'uploadslimit','6');
 
   // Get private user RKEY
-  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, make_rkey(14,'012345679VWXYZ'));
-//$USER_SESSION = (array_key_exists(COOKIE_USER_KEY.$codalbum, $_COOKIE))? $_COOKIE[COOKIE_USER_KEY.$codalbum] : make_rkey(14,'012345679VWXYZ');
+  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, make_rkey(14,'012345679VWXYZ'));
+//$USER_SESSION = (array_key_exists(COOKIE_USER_SESSION.$codalbum, $_COOKIE))? $_COOKIE[COOKIE_USER_SESSION.$codalbum] : make_rkey(14,'012345679VWXYZ');
 
   // Refresh/Create USER_KEY cookie
-  setcookie(COOKIE_USER_KEY.$codalbum, $USER_SESSION, time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+  setcookie(COOKIE_USER_SESSION.$codalbum, $USER_SESSION, time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
 
   // Get user name
   $UNAME = (@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION.'.uname')) ? file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION.'.uname') : '';

@@ -45,7 +45,7 @@
   }
 
 // Recuperer USER_KEY (Cookie)
-  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_KEY.$codalbum, false);
+  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, false);
 ?>
 <!DOCTYPE html>
 <html>

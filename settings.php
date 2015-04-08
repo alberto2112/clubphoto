@@ -43,7 +43,7 @@
   define('URI_QUERY_COMMENTS','C');
   define('URI_QUERY_FINGERPRINT','fp');
 
-  define('COOKIE_USER_KEY','USRKY');
+  define('COOKIE_USER_SESSION','USRKY'); //[!] MODIFIED
   define('COOKIE_RIGHTS_KEY','RKEY');
   define('COOKIE_FINGERPRINT','JSFPSESSID');
 
