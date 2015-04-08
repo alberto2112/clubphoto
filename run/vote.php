@@ -5,7 +5,7 @@
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
-  //include SYSTEM_ROOT.LIB_DIR.'csv.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'rate.lib.php';
   
 // -------------------------------------------------------
   //Function to check if the request is an AJAX request
@@ -13,7 +13,7 @@
     return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
   }
 // -------------------------------------------------------
-  function vote_up($filename, $points_up=1){
+  function vote_up($filename, $points_up=1){ // DEPRECATED
     if(!is_numeric($points_up))
         $points_up = 1;
 
@@ -113,7 +113,7 @@ if(empty($codalbum)){
   }
 
   if($AL_CONF['allowvotes']=='1'){
-      // Calculer droit de vote par raport de la date limite
+      // Calculer droit de vote par raport la date limite
       $VOTE_FROM = (@array_key_exists('vote-from', $AL_CONF))? explode('/', $AL_CONF['vote-from'],3):false;
       $VOTE_TO   = (@array_key_exists('vote-to', $AL_CONF))? explode('/', $AL_CONF['vote-to'],3):false;
 
@@ -147,12 +147,12 @@ if(empty($codalbum)){
     }
   }elseif($AL_CONF['allowvotes']=='1'){
     // Comptabiliser le vote
-    $vote_result   = vote_up($votes_filename, 1);
-    $points_result = vote_up($points_filename, $points);
+    $vote_result   = count_up($votes_filename, 1);
+    $points_result = count_up($points_filename, $points);
     
     // Comptabiliser qualite de vote
     if($AL_CONF['ratemethod']=='stars')
-      vote_up(substr($points_filename, 0, -3).$points.'.txt', 1);
+      count_up(substr($points_filename, 0, -3).$points.'.txt', 1);
     
     // Enregistrement du commentaire
     if(!empty($comments)){
