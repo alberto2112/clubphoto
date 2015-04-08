@@ -5,7 +5,7 @@
   *    celui-ci declare la variable $_CODALBUM
   **/
 
-  if(!defined('SYSTEM_ROOT')) 
+  if(!defined('SYSTEM_ROOT'))
     require_once __DIR__.'/settings.php';
 
   if(!isset($_CODALBUM)){
@@ -14,7 +14,7 @@
   }
 
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
-  
+
 // Voir s'il y a une demande de clonage de sesion et rediriger utilisateur vers le formulaire correspondant
   $IP       = getClient_ip();
   $LONGIP   = @sprintf("%u",ip2long($IP)) | '0';
@@ -43,7 +43,7 @@
 
   if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php')===true){
     $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php';
-    
+
     // Determiner si cette personne es un des adherents
     if(!empty($RKEY) && get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY) == $RKEY){
       // Est un adherent: Permettre a cette personne de voter ou telecharger ses photos pendant 2 heures
@@ -74,12 +74,12 @@
         if(time()-(3600 * 24) >= mktime(0,0,0, $UPLOAD_TO[1], $UPLOAD_TO[0], $UPLOAD_TO[2])) // Si la periode est depasee
           $AL_CONF['allowupload']='0';
     }
-    
+
     // Determiner droit a voir le classement
     if($AL_CONF['allowvotes']=='1'){
       $VOTE_FROM = (@array_key_exists('vote-from', $AL_CONF))? explode('/', $AL_CONF['vote-from'],3):false;
       $VOTE_TO   = (@array_key_exists('vote-to', $AL_CONF))? explode('/', $AL_CONF['vote-to'],3):false;
-        
+
       if(!empty($VOTE_TO) && time()-(3600 * 24) >= mktime(0,0,0, $VOTE_TO[1], $VOTE_TO[0], $VOTE_TO[2])) // Si la periode de votes est depasee
         {
           $_SHOWRANKING=true;
@@ -110,9 +110,11 @@
     <script src="<?php echo PUBLIC_ROOT; ?>js/fingerprint.js"></script>
 
     <script type="text/javascript">
-      var fgrpt = new Fingerprint({screen_resolution: true}).get();
-      $.post(<?php echo '"'.((SYS_HTTPS_AVAILABLE==true)?'https://':'http://').SITE_DOMAIN.PUBLIC_ROOT.RUN_DIR.'fingerprint.php", {'.URI_QUERY_ACTION.':"refresh", '.URI_QUERY_FINGERPRINT.':'; ?>fgrpt});
-      
+      if(!window.navigator.doNotTrack){
+        var fgrpt = new Fingerprint({screen_resolution: true}).get();
+        $.post(<?php echo '"'.((SYS_HTTPS_AVAILABLE==true)?'https://':'http://').SITE_DOMAIN.PUBLIC_ROOT.RUN_DIR.'fingerprint.php", {'.URI_QUERY_ACTION.':"refresh", '.URI_QUERY_FINGERPRINT.':'; ?>fgrpt});
+      }
+
       $(window).load(function () {
           $(document).ready(function(){
               collage();
@@ -163,7 +165,7 @@
     if($_ISADMIN){
       // Incluire les dialogs modales s'il est un administrateur
       include SYSTEM_ROOT.FORMS_DIR.'viewer_modalboxes.inc';
-    } 
+    }
   }
 ?>
 
@@ -171,7 +173,7 @@
   <div class="Collage effect-parent">
 
 <?php
-  if($AL_CONF['allowupload']=='1'){    
+  if($AL_CONF['allowupload']=='1'){
     echo '
       <div class="Image_Wrapper" data-caption="<u>Ajouter</u> photos">
           <a href="http://'.SITE_DOMAIN.PUBLIC_ROOT.FORMS_DIR.'upload.php?'.URI_QUERY_ALBUM."=$_CODALBUM".'"><img src="'.PUBLIC_ROOT.'images/tile_ajouter_photos.png" /></a>
@@ -198,28 +200,14 @@
       echo '<div class="Image_Wrapper"><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_PHOTO.'='.$file.'&'.URI_QUERY_ALBUM.'='.$_CODALBUM.'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$_CODALBUM.'/photos/medium/'.$file.'" /></a></div>'."\n";
     }
   }
-  
+
 ?>
     </div>
 <!-- / Content -->
 
-    
+
 <?php
   include SYSTEM_ROOT.'footer.php';
 ?>
-    
-    <p class="footnote">Club photo &#64; <a href="http://www.mjcrodez.com/">MJC Rodez</a> | <a href="http://www.dropzonejs.com/">Dropzonejs</a> | 
-<?php
-  if($_ISMEMBER && $_SHOWRANKING){
-    echo '<a href="'.PUBLIC_ROOT.'classement.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'">Voir classement</a> | ';
-  }
-
-  if($_ISADMIN){
-    echo '<a style="color:#E88" href="'.PUBLIC_ROOT.'logout.php">Se d&eacute;connecter</a>';
-  } else {
-    echo '<a style="color:#a5a5a5;"href="'.PUBLIC_ROOT.'login.php">Administrer</a>';
-  }
-?>
-      </p>
   </body>
 </html>
