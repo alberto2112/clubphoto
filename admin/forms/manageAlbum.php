@@ -170,7 +170,7 @@
                   <input id="antitriche" type="checkbox" name="antitriche" value="1" <?php echo $HTML['antitriche']; ?>/>
                   <span>&Eacute;viter que les utilisateurs puissent voter plusieurs fois pour la m&ecirc;me photo.</span>
               </li>
-              <li class="disabled">
+              <li>
                   <input id="allowcomments" type="checkbox" name="allowcomments" value="1" <?php echo $HTML['allowcomments']; ?>/>
                   <span>Les membres peuvent donner son avis lors du vote.</span>
               </li>

@@ -2,7 +2,7 @@
 .button-wrapper {display:block;margin:.8em 0;}
 .button-wrapper a,
 .button-wrapper span{
-  font-weight: 200;
+  font-weight: 500;
   -webkit-border-radius: 3;
   -moz-border-radius: 3;
   border-radius: 3px;

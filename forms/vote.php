@@ -234,9 +234,12 @@
       echo '<input type="checkbox" id="chk-vote" points="1" /><label>Voter pour cette photo</label>';
     }
     
-    echo "\n".'        <textarea placeholder="Vos impressions (factultatif, max 500 chars)" id="comments" maxlength="500"></textarea>
-        <div class="button-wrapper at-center"><a class="green hidden" id="send-vote" href="'.RUN_DIR.'vote.php?'.URI_QUERY_PHOTO.'='.$photo_filename.'&amp;'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_POINTS.'=1">Confirmer vote</a></div>
-        </div>';
+    if($AL_CONF['allowcomments']=='1'){
+      echo "\n".'        <textarea placeholder="Vos impressions (factultatif, max 500 chars)" id="comments" maxlength="500"></textarea>';
+    }
+    
+    echo "\n".'          <div class="button-wrapper at-center"><a class="green hidden" id="send-vote" href="'.RUN_DIR.'vote.php?'.URI_QUERY_PHOTO.'='.$photo_filename.'&amp;'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_POINTS.'=1">Confirmer vote</a></div>
+          </div>';
   }
 
 // Afficher les messages s'il y en a
