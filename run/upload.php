@@ -24,7 +24,7 @@
 // Variable codalbum non especifie
   if($codalbum==false){
     $E = new LOG(SYSTEM_ROOT.ADMIN_DIR.'logs/events.log');
-    $E->insert('UNKNOWN ALBUM CODE - '.$IP.' - [/'.RUN_DIR.'upload.php] - REFERER: '.get_arr_value($_SERVER, 'HTTP_REFERER', 'UNKNOWN'));
+    $E->insert('[*] UNKNOWN ALBUM CODE - ip='.$IP.' file=/'.RUN_DIR.'upload.php referer='.get_arr_value($_SERVER, 'HTTP_REFERER', 'UNKNOWN'));
     $E->close();
     exit;
   }
@@ -67,9 +67,17 @@
     // Empecher de telecharger des photos a tout personne externe au club photo
     if(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($CONFIG, COOKIE_RIGHTS_KEY)){
       // Add log line if not album_rkey cookie founded
-      $ERRLOG->insert('RKEY NOT FOUND - ip='.$IP.' uploaderid='.$UPLOADERID.' - referer='.get_arr_value($_SERVER, 'HTTP_REFERER', 'UNKNOWN'));
+      $ERRLOG->insert('[!] NOT A MEMBER - ip='.$IP.' uploaderid='.$UPLOADERID.' referer='.get_arr_value($_SERVER, 'HTTP_REFERER', 'UNKNOWN'));
       $ERRLOG->close();
       exit;
+    }
+    
+    // Determiner si la periode de telechargement est en cours
+    if(out_of_date(get_arr_value($CONFIG, 'upload-from',false), get_arr_value($CONFIG,'upload-to',false))){
+      // Add log line 
+      $ERRLOG->insert('[*] UPLOAD OUT OF DATE - ip='.$IP.' uploaderid='.$UPLOADERID.' referer='.get_arr_value($_SERVER, 'HTTP_REFERER', 'UNKNOWN'));
+      $ERRLOG->close();
+      exit; 
     }
 
   // Get and clean other request vars
@@ -140,7 +148,7 @@
     @mkdir($workspace,0777,true); // Dossier temporel base en adresse ip
 
     // Ajouter evenement au log d'activite
-    $LOG->insert('UPLOADED - ip='.$IP.' - UKEY='.$USER_SESSION.' - uploaderid='.$UPLOADERID.' - msg=Temp file name: '.$_FILES['file']['tmp_name'].' (/'.RUN_DIR.'upload.php)');
+    $LOG->insert('UPLOADED - ip='.$IP.' UKEY='.$USER_SESSION.' uploaderid='.$UPLOADERID.' msg=Temp file name: '.$_FILES['file']['tmp_name'].' (/'.RUN_DIR.'upload.php)');
 
     try{
       // Reserver memoire
