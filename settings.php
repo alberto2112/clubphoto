@@ -22,7 +22,7 @@
   define('DISK_QUOTA',307200); // 300Mo - Determine l'espace maxi d'usage de disque
   define('FILE_USED_QUOTA', SYSTEM_ROOT.ALBUMS_DIR.'used_quota.txt');
 
-  define('SYS_MEMORY_LIMIT', '256M');
+  define('SYS_MEMORY_LIMIT', '4G');
   define('SYS_HTTPS_AVAILABLE', false);
 
   define('CHARSET','ISO-8859-15');

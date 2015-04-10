@@ -4,6 +4,7 @@
 
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'datetime.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'photo.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
 
