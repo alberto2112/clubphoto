@@ -4,7 +4,7 @@
 
   include(SYSTEM_ROOT.LIB_DIR.'system.lib.php');
 
-  $codalbum = getRequest_param('codalbum', false);
+  $codalbum = getRequest_param(URI_QUERY_ALBUM, false);
   $E = getRequest_param(URI_QUERY_ERROR, false);
   $error_title = '';
   $error_msg = '';
@@ -17,6 +17,11 @@
     case 'PWD_FILE_NOT_FOUND':
       $error_title = 'FICHER DE MOTS DE PASSE NON TROUVE';
       $error_msg = 'Le fichier de mots de passe n\'a pas &eacute;t&eacute; trouv&eacute;. Contactez le d&eacute;veloppeur du site pour arranger ce petit contretemps';
+      break;
+    
+    case 'UPLOAD_LIMIT':
+      $error_title = 'Limite de t&eacute;l&eacute;chargements ateinte';
+      $error_msg = 'Vous avez ateint la limite de t&eacute;l&eacute;chargements pour cet album. <a href="http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'">Retour &agrave; l\'album</a>';
       break;
     
     default:

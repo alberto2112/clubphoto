@@ -18,7 +18,7 @@
       'vote-from'=>$_dfac_VF,
       'vote-to'=>$_dfac_VT,
       'showranking'=>'1', // 0=Never, 1=After rating periode, 2=Allways
-      'watermark'=>'1',
+      'watermark'=>'0',
       'antitriche'=>'1',
       'ratemethod'=>'stars',
       'RKEY'=>''

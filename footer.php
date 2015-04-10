@@ -20,14 +20,16 @@
       echo '<li><a href="'.PUBLIC_ROOT.'classement.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'">Voir classement</a></li>';
     }
   ?>
-      <li>Comment &eacute;valuer</li>
-      <li>FAQ</li>
+      <li class="disabled">Comment &eacute;valuer</li>
+      <li class="disabled">FAQ</li>
+      <li class="disabled">Mises &agrave; jour</li>
+      <li class="disabled">Signaler un probl&egrave;me</li>
     </ul>
 
     <ul>
       <li class="title">Autres infos</li>
-      <li><a href="http://www.mjcrodez.com/">MJC de Rodez</a></li>
-      <li><a href="http://photo.mjcrodez.com/">Site officiel du Club photo</a></li>      
+      <li><a href="http://photo.mjcrodez.com/">Site officiel du Club photo</a></li> 
+      <li><a href="http://www.mjcrodez.com/">Site officiel de la MJC (Rodez)</a></li>     
       <li>Upload script: <a href="http://www.dropzonejs.com/">DropzoneJS</a></li>
       <li>Icons made by Freepik from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></li>
     </ul>

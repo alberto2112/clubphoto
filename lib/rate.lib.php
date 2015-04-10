@@ -1,5 +1,10 @@
 <?php
   function count_up($filename, $n=1){
+    /**
+     * @param $filename (String) - Absolute file name
+     * @param $n (Integer)
+     * @return (Integer) Total counter for $filename | (String) 'error' if error
+     */ 
     if(!is_numeric($n))
         $n = 1;
     
@@ -48,6 +53,11 @@
 //-----------------------------------------------
 
   function count_down($filename, $n=1){
+    /**
+     * @param $filename (String) - Absolute file name
+     * @param $n (Integer)
+     * @return (Integer) Total counter for $filename | (String) 'error' if error
+     */ 
     if(!is_numeric($n))
         $n = 1;
     
@@ -86,4 +96,5 @@
       }
     }
   }
+
 ?>

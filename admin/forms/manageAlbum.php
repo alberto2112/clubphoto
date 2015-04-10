@@ -53,7 +53,9 @@
       'ratemethod_stars' => getHTML4CheckBoxState( get_arr_value($CONFIG,'ratemethod'), 'stars' ),
       'allowselfrating'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowselfrating') ),
       'allowcomments'    => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowcomments') ),
-      'showranking'        => getHTML4CheckBoxState( get_arr_value($CONFIG,'showranking') ),
+      'showranking_0'      => getHTML4CheckBoxState( get_arr_value($CONFIG,'showranking'),'0' ),
+      'showranking_1'      => getHTML4CheckBoxState( get_arr_value($CONFIG,'showranking'),'1' ),
+      'showranking_2'      => getHTML4CheckBoxState( get_arr_value($CONFIG,'showranking'),'2' ),
       'showrateforuploads' => getHTML4CheckBoxState( get_arr_value($CONFIG,'showrateforuploads') ),
       'allowphotomanag_0'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowphotomanag'),'0' ),
       'allowphotomanag_1'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowphotomanag'),'1' ),
@@ -137,7 +139,7 @@
                 <div class="indent">
                   <span><input type="radio" name="allowphotomanag" value="0" <?php echo $HTML['allowphotomanag_0']; ?>/>Jamais</span><br />
                   <span><input type="radio" name="allowphotomanag" value="1" <?php echo $HTML['allowphotomanag_1']; ?>/>Pendant la p&eacute;riode de t&eacute;l&eacute;chargements</span><br />
-                  <span><input type="radio" name="allowphotomanag" value="2" <?php echo $HTML['allowphotomanag_2']; ?>/>Oui et &aacute; tout moment</span>
+                  <span><input type="radio" name="allowphotomanag" value="2" <?php echo $HTML['allowphotomanag_2']; ?>/>&Aacute; tout moment</span>
                 </div>
               </li>
             </ul>
@@ -178,11 +180,15 @@
               </li>
               <li class="disabled">
                   <input id="allowselfrating" type="checkbox" name="allowselfrating" value="1" <?php echo $HTML['allowselfrating']; ?>/>
-                  <span>Les membres peuvent voter par ses propres photos.</span>
+                  <span>Les membres peuvent voter pour ses propres photos.</span>
               </li>
               <li class="disabled">
-                  <input id="showranking" type="checkbox" name="showranking" value="1" <?php echo $HTML['showranking']; ?>/>
-                  <span>Montrer classement &agrave; la fin de la periode de votations.</span>
+                  <span>Montrer classement aux membres:</span>
+                <div class="indent">
+                  <span><input type="radio" name="showranking" value="0" <?php echo $HTML['showranking_0']; ?>/>Jamais</span><br />
+                  <span><input type="radio" name="showranking" value="1" <?php echo $HTML['showranking_1']; ?>/>Apr&egrave;s la periode de votes</span><br />
+                  <span><input type="radio" name="showranking" value="2" <?php echo $HTML['showranking_2']; ?>/>Tout le temps</span>
+                </div>
               </li>
               <li class="row">
                 <span>Syst&egrave;me de votes</span>

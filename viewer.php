@@ -31,14 +31,18 @@
 
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'datetime.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
   include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
 
   $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
   $RKEY     = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);
-  $_ISADMIN = is_admin();
-  $_ISMEMBER = false;
+
+  $_ISADMIN     = is_admin();
+  $_ISMEMBER    = false;
   $_SHOWRANKING = false;
+  $_CAN_UPLOAD  = false;
+
   $ERROR    = new LOG(SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/logs/error.log');
 
   if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php')===true){
@@ -52,43 +56,24 @@
     }elseif(array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) && get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) == get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY)){
       // Est un adherent
       $_ISMEMBER = true;
-    }else{
-      // N'est pas un adherent: Empecher de telecharger des photos a toute personne externe au club photo
-      $AL_CONF['allowupload']='0';
     }
 
-  // Determiner droit de telechargement par raport de la date limite
-    if($AL_CONF['allowupload']=='1'){
-      $UPLOAD_FROM = (@array_key_exists('upload-from', $AL_CONF))? explode('/', $AL_CONF['upload-from'],3):false;
-      $UPLOAD_TO = (@array_key_exists('upload-to', $AL_CONF))? explode('/', $AL_CONF['upload-to'],3):false;
-
-      if($UPLOAD_FROM==false)
-        $AL_CONF['allowupload']='0';
-      else
-        if(time() <= mktime(0,0,0, $UPLOAD_FROM[1], $UPLOAD_FROM[0], $UPLOAD_FROM[2])) // Si la periode n'a pas commence
-          $AL_CONF['allowupload']='0';
-
-      if($UPLOAD_TO==false)
-        $AL_CONF['allowupload']='0';
-      else
-        if(time()-(3600 * 24) >= mktime(0,0,0, $UPLOAD_TO[1], $UPLOAD_TO[0], $UPLOAD_TO[2])) // Si la periode est depasee
-          $AL_CONF['allowupload']='0';
-    }
+    // Determiner droit de telechargement 
+    if(get_arr_value($AL_CONF,'allowupload',false)=='1')
+      $_CAN_UPLOAD = !out_of_date(get_arr_value($AL_CONF,'upload-from',false), get_arr_value($AL_CONF,'upload-to',false));
 
     // Determiner droit a voir le classement
-    if($AL_CONF['allowvotes']=='1'){
-      $VOTE_FROM = (@array_key_exists('vote-from', $AL_CONF))? explode('/', $AL_CONF['vote-from'],3):false;
-      $VOTE_TO   = (@array_key_exists('vote-to', $AL_CONF))? explode('/', $AL_CONF['vote-to'],3):false;
-
-      if(!empty($VOTE_TO) && time()-(3600 * 24) >= mktime(0,0,0, $VOTE_TO[1], $VOTE_TO[0], $VOTE_TO[2])) // Si la periode de votes est depasee
-        {
-          $_SHOWRANKING=true;
-        }
+    if(get_arr_value($AL_CONF,'showranking',false)=='2'){
+     // Show ranking always
+      $_SHOWRANKING=true; 
+    }elseif(get_arr_value($AL_CONF,'showranking',false)=='1' && get_arr_value($AL_CONF,'allowvotes',false)=='1'){
+      // Show ranking after rating period
+      $_SHOWRANKING = !out_of_date(get_arr_value($AL_CONF,'vote-from',false), get_arr_value($AL_CONF,'vote-to',false));
     }
-  } else{
+  }else{
     $ERROR->insert('ALBUM CONFIG NOT FOUND AT: '.SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php', true);
     $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';
-    $AL_CONF['allowupload']='0';
+    $AL_CONF['allowupload']='0'; // empecher de telecharger des photos deliberement
   }
 ?>
 <!DOCTYPE html>
@@ -173,7 +158,7 @@
   <div class="Collage effect-parent">
 
 <?php
-  if($AL_CONF['allowupload']=='1'){
+  if($_CAN_UPLOAD){
     echo '
       <div class="Image_Wrapper" data-caption="<u>Ajouter</u> photos">
           <a href="http://'.SITE_DOMAIN.PUBLIC_ROOT.FORMS_DIR.'upload.php?'.URI_QUERY_ALBUM."=$_CODALBUM".'"><img src="'.PUBLIC_ROOT.'images/tile_ajouter_photos.png" /></a>

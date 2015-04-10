@@ -192,6 +192,13 @@
     font-size:90%;
     color:#313131;
   }
+/* OTHER */
+.disabled{
+  text-decoration:line-through;
+}
+.noborder{
+  border:none !important;
+}
 
 /* FIXIES */
 .centered{
@@ -212,7 +219,4 @@
 ￼  clear: both;
 ￼  content: ".";
   */
-}
-.noborder{
-  border:none !important;
 }

@@ -4,11 +4,14 @@
 
   include SYSTEM_ROOT.LIB_DIR.'system.lib.php';
   include SYSTEM_ROOT.ETC_DIR.'versions.php';
+  include SYSTEM_ROOT.LIB_DIR.'datetime.lib.php';
 
   $codalbum = getRequest_param(URI_QUERY_ALBUM, false);
 
-  if(empty($codalbum))
+  if(empty($codalbum)){
+    header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT);
     exit;
+  }
 
   // Charger les parametres de l'album
   // Si le fichier config.php n'existe pas
@@ -24,12 +27,18 @@
     exit;
   }
 
+  // Determiner si la periode de telechargement est en cours
+  if(out_of_date($CONFIG['upload-from'], $CONFIG['upload-to'])){
+    header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum);
+    exit; 
+  }
+
   // Get filesize and test with disk Quota
   if(DISK_QUOTA > 0){
     if(file_exists(FILE_USED_QUOTA)){
       $current_used_quota = file_get_contents(FILE_USED_QUOTA,null,null,null,9); // in Ko
       if($current_used_quota > DISK_QUOTA){
-        header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.'error.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&E=QUOTA');
+        header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.'error.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&'.URI_QUERY_ERROR.'=QUOTA');
         exit;
       }
     }
@@ -37,12 +46,29 @@
 
   $max_uploads = get_arr_value($CONFIG,'uploadslimit','6');
 
-  // Get private user RKEY
+  // Get private user session
   $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, make_rkey(14,'012345679VWXYZ'));
 //$USER_SESSION = (array_key_exists(COOKIE_USER_SESSION.$codalbum, $_COOKIE))? $_COOKIE[COOKIE_USER_SESSION.$codalbum] : make_rkey(14,'012345679VWXYZ');
 
-  // Refresh/Create USER_KEY cookie
+  // Refresh/Create USER_SESSION cookie
   setcookie(COOKIE_USER_SESSION.$codalbum, $USER_SESSION, time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+
+  // Get number of uploads for this user
+  if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION)){
+    
+    $count = 0;
+    foreach(file(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $k => $f){
+      if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$f)){
+        $count++;
+      }
+    }
+    
+    // Redirect user if N uploads >= max uploads authorized
+    if($max_uploads > 0 && $count >= $max_uploads){
+        header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.'error.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&'.URI_QUERY_ERROR.'=UPLOAD_LIMIT');
+        exit;
+    }
+  }
 
   // Get user name
   $UNAME = (@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION.'.uname')) ? file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION.'.uname') : '';
@@ -118,7 +144,7 @@
 			  maxFiles: <?php echo $max_uploads; ?>,
 			  init: function() {
 				//this.on("addedfile", function(file) { alert("Added file."); });
-				this.on("maxfilesexceeded", function(file) { alert("Vous avez d&eacute;j&agrave; t&eacute;l&eacute;charg&eacute; beaucoup trop de fichiers."); });
+				this.on("maxfilesexceeded", function(file) { alert("Vous avez d&eacute;j&agrave; t&eacute;l&eacute;charg&eacute; assez de photos."); });
                 this.on("canceled", function(file, messageOrDataFromServer, myEvent){
                   ++other_counter;
                   if(uploaded_files + other_counter==added_files){
