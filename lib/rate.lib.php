@@ -97,4 +97,12 @@
     }
   }
 
+//-----------------------------------------------
+  function get_rate_for($search, $haystack){
+    /**
+     * @param $search (String)
+     * @param $haystak (Array | CSV file name)
+     * @return N of points | 0 if not found
+     */ 
+  }
 ?>

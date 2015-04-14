@@ -44,7 +44,7 @@
     // Construir code html parametres formulaire
     $HTML = array(
       'albumname'        =>(get_arr_value($CONFIG,'albumname')!='')?'value="'.$CONFIG['albumname'].'" ':'',
-      'watermark'        => getHTML4CheckBoxState( get_arr_value($CONFIG,'watermark') ), 
+      'watermark'        => getHTML4CheckBoxState( get_arr_value($CONFIG,'watermark') ),
       'allowupload'      => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowupload') ),
       'uploadslimit'     =>'<option selected>'.get_arr_value($CONFIG,'uploadslimit','6').' (actuellement)</option>',
       'allowvotes'       => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowvotes') ),
@@ -84,7 +84,7 @@
           <input type="hidden" name="<?php echo URI_QUERY_ALBUM; ?>" value="<?php echo $codalbum; ?>" />
           <input type="hidden" name="<?php echo URI_QUERY_ACTION; ?>" value="<?php echo $action; ?>" />
           <input type="hidden" name="<?php echo URI_QUERY_RIGHTS_KEY; ?>" value="<?php echo $CONFIG['RKEY']; ?>" />
-          
+
           <div class="card">
             <div class="row title red">
               <h1><?php echo ($action=='new')?'Nouvel album':'Modifier album'; ?></h1>
@@ -96,11 +96,11 @@
 
                   <span>Commentaires:</span>
                   <textarea id="description" name="albumdesc" maxlength="500" placeholder="Description/Notes/Observations"><?php echo get_arr_value($CONFIG,'albumdesc'); ?></textarea>
-                
+
               </div>
             </div>
           </div>
-          
+
           <!-- telechargements -->
           <div class="card">
             <div class="row">
@@ -145,13 +145,13 @@
             </ul>
           </div>
           <!-- /telechargements -->
-          
+
           <!-- votes -->
           <div class="card">
             <div class="row border-down">
               <h2>Votations</h2>
             </div>
-            
+
             <ul class="row border-down content">
               <li>
                   <input id="allowvotes" type="checkbox" name="allowvotes" value="1" <?php echo $HTML['allowvotes']; ?>/>
@@ -176,7 +176,7 @@
               </li>
               <li class="disabled">
                   <input id="allowrateview" type="checkbox" name="allowrateview" value="1" <?php echo $HTML['showrateforuploads']; ?>/>
-                  <span>Les membres peuvent regarder le classement pour ses photos en temps r&eacute;el.</span>
+                  <span>Les membres peuvent regarder les points attribu&eacute;s &agrave; ses photos en temps r&eacute;el.</span>
               </li>
               <li class="disabled">
                   <input id="allowselfrating" type="checkbox" name="allowselfrating" value="1" <?php echo $HTML['allowselfrating']; ?>/>
@@ -200,7 +200,7 @@
             </ul>
           </div>
           <!-- votes -->
-          
+
           <!-- generalites -->
           <div class="card">
             <div class="row">
@@ -214,8 +214,8 @@
             </div>
           </div>
           <!-- /generalites -->
-          
-          <!-- securite -- 
+
+          <!-- securite --
           <div class="card">
             <div class="row">
               <h2>Securit&eacute;</h2>
@@ -232,7 +232,7 @@
             </div>
           </div>
           !-- securite -->
-          
+
           <!-- liens -->
           <div class="card">
             <div class="row border-down">
@@ -247,7 +247,7 @@
 
           <input type="submit" class="button" value="<?php echo $send_caption ?>" />
       </form>
-        
+
     </div>
     <script type="text/javascript">
       $(function() {
