@@ -44,6 +44,8 @@
     exit;
   }
 
+  $_SHOW_RATES = (get_arr_value($CONFIG, 'showrateforuploads','0')=='1');
+
 // Recuperer USER_KEY (Cookie)
   $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, false);
 ?>
@@ -95,6 +97,9 @@
     <div class="header">
       <h1 style="font-weight: 100; padding: .35em;">Mes t&eacute;l&eacute;chargements</h1>
     </div>
+
+    <!-- PHOTO WRAPPER -->
+    <div class="photo-wrapper">
 <?php
 
   $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
@@ -125,11 +130,25 @@
           $PHOTOINFO[DESCRIPTION] = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.dsc.txt', false, null, -1, 500); // Limited to 128 chars
         }
         
-        echo '<div class="photo-card" style="background-image:url('.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo_filename.')">
+        echo '
+      <div class="photo-card" style="background-image:url('.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo_filename.')">
         <input type="hidden" id="photo-filename-'.$i.'" value="'.$photo_filename.'" />
         <input type="hidden" id="photo-lbl-'.$i.'" value="'.get_arr_value($PHOTOINFO, TITLE).'" />
-        <input type="hidden" id="photo-dsc-'.$i.'" value="'.get_arr_value($PHOTOINFO, DESCRIPTION).'" />
+        <input type="hidden" id="photo-dsc-'.$i.'" value="'.get_arr_value($PHOTOINFO, DESCRIPTION).'" />'."\n";
         
+        if($_SHOW_RATES){
+          // Get points for photo
+          if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt')){
+            $P = filesize(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt');
+          }else{
+            $P = 0;
+          }
+          
+          // Show points
+          echo '<div class="photo-rate"><span>'.$P.'</span></div>';
+        }
+        
+        echo '
         <div class="photo-tools">
           <a href="#" onclick="javascript:dlgDelete(\''.$photo_filename.'\')" title="Supprimer" class="delete">Supprimer</a>
         </div>
@@ -152,9 +171,12 @@
     </div>';
   }else{
     echo '<p>Vous n\'avez toujours rien t&eacute;l&eacute;charg&eacute;</p>';
-    echo '<div class="button-wrapper"><a class="green" href="'.PUBLIC_ROOT.FORMS_DIR.'upload.php?'.URI_QUERY_ALBUM.'='.$codalbum.'">T&eacute;l&eacute;charger maintenant</a></div>';
+    echo '<div class="button-wrapper at-center"><a class="green" href="'.PUBLIC_ROOT.FORMS_DIR.'upload.php?'.URI_QUERY_ALBUM.'='.$codalbum.'">T&eacute;l&eacute;charger maintenant</a></div>';
   }
 ?>
+    </div> 
+    <!-- /PHOTO WRAPPER -->
+
     <script type="text/javascript">
       //var photo_to_delete; // <---- Peut s'effacer
       var cur_modal_box_id;
