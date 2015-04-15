@@ -68,7 +68,7 @@
       $_SHOWRANKING=true; 
     }elseif(get_arr_value($AL_CONF,'showranking',false)=='1' && get_arr_value($AL_CONF,'allowvotes',false)=='1'){
       // Show ranking after rating period
-      $_SHOWRANKING = !out_of_date(get_arr_value($AL_CONF,'vote-from',false), get_arr_value($AL_CONF,'vote-to',false));
+      $_SHOWRANKING = (out_of_date(get_arr_value($AL_CONF,'vote-from',false), get_arr_value($AL_CONF,'vote-to',false), true) == 1);
     }
   }else{
     $ERROR->insert('ALBUM CONFIG NOT FOUND AT: '.SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php', true);
