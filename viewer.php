@@ -59,7 +59,7 @@
     }
 
     // Determiner droit de telechargement 
-    if(get_arr_value($AL_CONF,'allowupload',false)=='1')
+    if($_ISMEMBER && get_arr_value($AL_CONF,'allowupload',false)=='1')
       $_CAN_UPLOAD = !out_of_date(get_arr_value($AL_CONF,'upload-from',false), get_arr_value($AL_CONF,'upload-to',false));
 
     // Determiner droit a voir le classement
