@@ -87,10 +87,10 @@
         echo '></div>';
 */
         echo '<ul class="album-tools">';
-          echo '<li><a class="tool-view" href="http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$fname.'" title="Regarder album">Regarder album</a></li>';
-          echo '<li><a class="tool-logs" href="'.PUBLIC_ROOT.ADMIN_DIR.FORMS_DIR.'journal.php?'.URI_QUERY_ALBUM.'='.$fname.'" title="Voir journaux">Journaux</a></li>';
           echo '<li><a class="tool-settings" href="'.PUBLIC_ROOT.ADMIN_DIR.FORMS_DIR.'manageAlbum.php?'.URI_QUERY_ALBUM.'='.$fname.'" title="Parametrage">Parametrage</a></li>';
+          echo '<li><a class="tool-view" href="http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$fname.'" title="Regarder album">Regarder album</a></li>';
           echo '<li><a class="tool-ranking" href="'.PUBLIC_ROOT.ADMIN_DIR.'stats.php?'.URI_QUERY_ALBUM.'='.$fname.'" title="Voir votes">Votes</a></li>';
+          echo '<li><a class="tool-logs" href="'.PUBLIC_ROOT.ADMIN_DIR.FORMS_DIR.'journal.php?'.URI_QUERY_ALBUM.'='.$fname.'" title="Voir journaux">Journaux</a></li>';
           echo '<li><a class="tool-trash" href="#" title="Envoyer &aacute; la corbeille">Envoyer &agrave; la corbeille</a></li>';
           echo '<li><a class="tool-delete" href="#" title="Suprimer album">Suprimer</a></li>';
 /*

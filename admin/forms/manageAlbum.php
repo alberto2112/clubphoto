@@ -135,7 +135,7 @@
                 </select>
               </li>
               <li class="row border-up">
-                <span>Les photographes peuvent gerer ses photos</span>
+                <span>Les photographes peuvent supprimer ses photos</span>
                 <div class="indent">
                   <span><input type="radio" name="allowphotomanag" value="0" <?php echo $HTML['allowphotomanag_0']; ?>/>Jamais</span><br />
                   <span><input type="radio" name="allowphotomanag" value="1" <?php echo $HTML['allowphotomanag_1']; ?>/>Pendant la p&eacute;riode de t&eacute;l&eacute;chargements</span><br />
@@ -174,15 +174,15 @@
                   <input id="allowcomments" type="checkbox" name="allowcomments" value="1" <?php echo $HTML['allowcomments']; ?>/>
                   <span>Les membres peuvent donner son avis lors du vote.</span>
               </li>
-              <li class="disabled">
-                  <input id="allowrateview" type="checkbox" name="allowrateview" value="1" <?php echo $HTML['showrateforuploads']; ?>/>
+              <li>
+                  <input id="allowrateview" type="checkbox" name="showrateforuploads" value="1" <?php echo $HTML['showrateforuploads']; ?>/>
                   <span>Les membres peuvent regarder les points attribu&eacute;s &agrave; ses photos en temps r&eacute;el.</span>
               </li>
               <li class="disabled">
                   <input id="allowselfrating" type="checkbox" name="allowselfrating" value="1" <?php echo $HTML['allowselfrating']; ?>/>
                   <span>Les membres peuvent voter pour ses propres photos.</span>
               </li>
-              <li class="disabled">
+              <li>
                   <span>Montrer classement aux membres:</span>
                 <div class="indent">
                   <span><input type="radio" name="showranking" value="0" <?php echo $HTML['showranking_0']; ?>/>Jamais</span><br />

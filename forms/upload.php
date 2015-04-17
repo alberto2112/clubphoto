@@ -87,7 +87,7 @@
     </head>
     <body>
         <form action="<?php echo PUBLIC_ROOT.RUN_DIR; ?>upload.php" class="dropzone" id="myDropzone"
-              method="post" enctype="image/jpeg" accept="image/x-png, image/gif, image/jpeg">
+              method="post" enctype="image/jpeg" accept="image/*" capture>
 			<input type="hidden" name="<?php echo URI_QUERY_ALBUM; ?>" value="<?php echo $codalbum; ?>" />
             <input type="hidden" name="<?php echo URI_QUERY_RIGHTS_KEY; ?>" value="<?php echo $USER_SESSION; ?>" />
             <div class="form_items" id="frm-step-1">

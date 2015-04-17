@@ -33,6 +33,8 @@ body{
   display:block;
   text-decoration: none;
   color:inherit;
+  word-wrap: break-word;
+  overflow: hidden;
 }
 .nphotos{
   background:transparent url(../images/ico_photos_b_16x16.png) no-repeat left 3px;

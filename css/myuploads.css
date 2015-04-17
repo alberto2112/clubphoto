@@ -1,3 +1,7 @@
+.photo-wrapper{
+  padding:8px;
+  text-align:center;
+}
 /* Card, Dialog */
 .photo-card {
   position: relative;
@@ -35,13 +39,24 @@ text-indent:-9999px;
 
 .photo-form .photo-label{
   border:0;
-  background:#4DB6AC url("../images/ico_pencil_w_20x20.png") no-repeat 161px center;
+  background:transparent url("../images/ico_pencil_w_20x20.png") no-repeat 161px center;
   padding:0 28px .47em .35em;
   display:block;
   height:25px;
   overflow: hidden;
   line-height: 150%;
   font-weight:300;
+  word-wrap: break-word;
+}
+
+.photo-card .photo-rate{
+  position:absolute;
+  margin:-1.5em 0 0;
+  padding:0 0 0 20px;
+  color:#fafafa;
+  right:5px;
+  text-shadow: 1px 1px 2px #000;
+  background:transparent url(../images/ico_star_w_16x16.png) no-repeat left center;
 }
 
 #mbupdate-photo-thumb{

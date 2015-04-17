@@ -6,6 +6,7 @@
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
   include_once SYSTEM_ROOT.LIB_DIR.'csv.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'datetime.lib.php';
   include_once SYSTEM_ROOT.ETC_DIR.'photoinfo.csv.conf.php';
   include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
 
@@ -44,7 +45,18 @@
     exit;
   }
 
-  $_SHOW_RATES = (get_arr_value($CONFIG, 'showrateforuploads','0')=='1');
+  $_SHOW_RATES   = (get_arr_value($CONFIG, 'showrateforuploads','0')=='1');
+  $_ALLOW_DELETE = get_arr_value($CONFIG, 'allowphotomanag','0');
+  $_CAN_UPLOAD   = !out_of_date(get_arr_value($CONFIG,'upload-from',false), get_arr_value($CONFIG,'upload-to',false));
+
+// Determiner si le photographe peut effacer ses photos
+  if($_ALLOW_DELETE=='2'){
+    $_ALLOW_DELETE=true;
+  }elseif($_ALLOW_DELETE=='1'){
+    $_ALLOW_DELETE = $_CAN_UPLOAD;
+  }else{
+    $_ALLOW_DELETE = false;
+  }
 
 // Recuperer USER_KEY (Cookie)
   $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, false);
@@ -108,6 +120,7 @@
     $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php';
   }
   
+// Determiner si le membre a deja poste des photos
   if(!empty($USER_SESSION) && is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION)){
     // Recuperer liste de photos telecharges
     $lof_photos = explode( "\n", file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION));
@@ -148,10 +161,15 @@
           echo '<div class="photo-rate"><span>'.$P.'</span></div>';
         }
         
-        echo '
+        // Montrer bouton pour supprimer la photo
+        if($_ALLOW_DELETE){
+          echo '
         <div class="photo-tools">
           <a href="#" onclick="javascript:dlgDelete(\''.$photo_filename.'\')" title="Supprimer" class="delete">Supprimer</a>
-        </div>
+        </div>';
+        }
+        
+        echo '
         <div class="photo-form">
           <a href="#" onclick="javascript:dlgUpdate(\''.$i.'\');" class="photo-label">'.get_arr_value($PHOTOINFO, LIBELLE).'</a>
         </div>
@@ -160,10 +178,10 @@
     }
     echo '<div class="button-wrapper at-center">';
     
-    if($i < $AL_CONF['uploadslimit']){
+    // Montrer bouton pour telecharger plus de photos s'il n'a pas ateint la limite
+    if($_CAN_UPLOAD && $i < $CONFIG['uploadslimit']){
       echo '
-    <a class="green" href="'.PUBLIC_ROOT.FORMS_DIR.'upload.php?'.URI_QUERY_ALBUM.'='.$codalbum.'">Rajouter des photos</a>
-    <span class="btn-spacing">&nbsp;</span>';
+    <a class="green" href="'.PUBLIC_ROOT.FORMS_DIR.'upload.php?'.URI_QUERY_ALBUM.'='.$codalbum.'">Rajouter des photos</a>';
     }
     
     echo '
