@@ -66,9 +66,7 @@ if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
 
         // Comprobar si existe sesion para el equipo actual
           $CUR_SESSION_KEY = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, false);
-
-          if(!empty($CUR_SESSION_KEY)){
-            $CUR_SESSION = '';
+          $CUR_SESSION = '';
 
           // Comprobar sesion a clonar
             $NEW_USER_KEY = explode( ';', file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn'), 3);
@@ -78,7 +76,7 @@ if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
               if($NEW_USER_KEY[1]==$pincode){
                 // SUCCESS: 
                 // Recuperar sesion actual
-                if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$CUR_SESSION_KEY)){
+                if(!empty($CUR_SESSION_KEY) && file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$CUR_SESSION_KEY)){
                   $CUR_SESSION = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$CUR_SESSION_KEY);
                   if(is_writable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$NEW_USER_KEY[0])){
                   // Volcar sesion actual en sesion a clonar
@@ -100,13 +98,14 @@ if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
                 echo '<h1>PIN incorrect</h1>';
               }
           // Redirect user to album
-            header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum);
+              header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum);
+              exit;
             }else{
                 // ERROR: Session not found on clone request
                 // TODO: Error: Session not found
               }
           }
-        }
+        
       break;
       
       case 'cancel':
@@ -114,6 +113,7 @@ if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
         @unlink(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn');
       // Redirect user to album
         header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum);
+        exit;
         break;
 
       case 'request':
