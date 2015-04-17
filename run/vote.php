@@ -80,6 +80,7 @@
   $IP          = getClient_ip();
   $vote_result = '';
   $_CAN_RATE   = false;
+  $_PROPIETAIRE_PHOTO = false;
 
   if(empty($codalbum)){
   // Open ERROR LOG
@@ -134,11 +135,20 @@
 
     // [!] NEW METHOD: IDENTIFIER PROPIETAIRE PHOTO
       if($_CAN_RATE && $AL_CONF['allowselfrating']=='0'){
-        $_PROPIETAIRE_PHOTO = array_search
-          (
+        if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION)){
+          $_PROPIETAIRE_PHOTO = in_array(
             $photo_filename, 
-            file(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)
-          ) !== false;
+            file(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES),
+            true
+          );
+/*
+            array_search
+            (
+              $photo_filename, 
+              file(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)
+            ) !== false;
+*/
+        }
 
         if($_PROPIETAIRE_PHOTO){
           // Empecher de voter au propietaire de la photo

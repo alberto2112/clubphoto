@@ -5,6 +5,7 @@
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
+  include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
 
 // Get IP address
   $IP = getClient_ip();
@@ -43,7 +44,7 @@ if(OPT_DEVELOPPING){
 //------------------------------
 // Get rights key
   if(!empty($RKEY) && get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY) == $RKEY){
-    setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + (3600 * 2), PUBLIC_ROOT); // Permettre a cette personne de regarder le classement pendant 2 heures
+    setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + (3600 * 2), PUBLIC_ROOT); // Renouveller la cle pendant 2 heures
   }elseif(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY)){
     // Empecher de regarder le classement a toute personne externe au club photo
     header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT);
@@ -51,7 +52,23 @@ if(OPT_DEVELOPPING){
   }
 
 DEBUG:
-  echo '<h2>Classement approximatif pour l\'album: '.get_arr_value($AL_CONF, 'albumname').'</h2>';
+  echo '
+<html>
+<head>
+    <title>Club photo - MJC Rodez</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" media="screen" href="'.PUBLIC_ROOT.'css/reset.css?v='.VERSION_CSS.'" type="text/css" />
+    <link rel="stylesheet" media="screen" href="'.PUBLIC_ROOT.'css/base.css?v='.VERSION_CSS.'" type="text/css" />
+    <link rel="stylesheet" media="screen" href="'.PUBLIC_ROOT.'css/ranking.css?v='.VERSION_CSS.'" type="text/css" />
+</head> 
+<body>
+
+<!-- Header -->
+    <div class="header">
+        <h1>Classement approximatif pour l\'album: '.get_arr_value($AL_CONF, 'albumname').'</h1>
+    </div>
+<!-- / Header -->
+<div class="ranking">';
   if($action != 'nocache' && $action != 'redocache' && is_readable($RANKING_FILENAME)){
     include $RANKING_FILENAME;
   }else{
@@ -87,13 +104,13 @@ DEBUG:
     // Array sort
     array_multisort($aPoints, SORT_DESC, $aVotes, SORT_ASC, $LoP);
     
-    if($action != 'nocache'){
+    if($action != 'nocache' || $action == 'redocache'){
       // Create and open cache file
-      $ranking_cache = new LOG($RANKING_FILENAME, false);
+      $ranking_cache = new LOG($RANKING_FILENAME, false, true);
       // Print result to cache file
       foreach($LoP as $photo){
         $i++;
-        $ranking_cache->insert('<p>['.$i.']<a href="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/large/'.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /></a> votes='.$photo[1].', points='.$photo[2].', moyenne='.round($photo[2] / $photo[1], 1).'</p>', false);
+        $ranking_cache->insert('<div class="photo"><span class="pos">'.$i.'</span><span class="votes">'.$photo[1].'</span><span class="points">'.$photo[2].'</span><span class="avg">'.round($photo[2] / $photo[1], 1).'</span><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /></a></div>', false);
       }
 
       // Close cache file
@@ -108,8 +125,11 @@ DEBUG:
       // Print result
       foreach($LoP as $photo){
         $i++;
-        echo '<p>['.$i.']<a href="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/large/'.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /></a> votes='.$photo[1].', points='.$photo[2].', moyenne='.round($photo[2] / $photo[1], 1).'</p>', false;
+        echo '<div class="photo"><span class="pos">'.$i.'</span><span class="votes">'.$photo[1].'</span><span class="points">'.$photo[2].'</span><span class="avg">'.round($photo[2] / $photo[1], 1).'</span><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /></a></div>'."\n", false;
       }
     }
   }
+  echo '</div>
+  </body>
+</html>';
 ?>

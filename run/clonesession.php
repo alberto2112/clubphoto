@@ -17,6 +17,7 @@
   $LONGIP   = @sprintf("%u",ip2long($IP)) | '0';
   $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
 
+// TODO: Add LOGs
 
 if(!empty($pincode))
   $pincode = md5($pincode);

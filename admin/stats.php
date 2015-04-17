@@ -61,6 +61,35 @@
     if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
       $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
     
+  // Make sorted list of photos
+    $i=0;
+    $LoP = array();
+    $aPoints = array();
+    $aVotes = array();
+    
+    foreach(glob($ALBUM_ROOT.'votes/*') as $file){
+      if($file!='.' && $file!='..'){
+        if(substr($file,-7)=='jpg.txt'){
+          $votes_fname = $file;
+          $thumb_fname = substr($file, strrpos($file,DIRECTORY_SEPARATOR)+1,-4);
+          $points_fname = $ALBUM_ROOT.'votes/'.$thumb_fname.'.pts.txt';
+          //$thumb_fname = PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$thumb_fname;
+          $votes = filesize($votes_fname);
+          $points = filesize($points_fname);
+
+          // Leer fichero $photo_filename.csv
+          //$photo_info = read_csv($ALBUM_ROOT.'photos/'.$thumb_fname.'.csv');
+          $LoP[] = array($thumb_fname, $votes, $points);
+          $aPoints[] = $points;
+          $aVotes[] = $votes;
+
+        }
+      }
+    }
+    
+    // Sort array of photos
+    array_multisort($aPoints, SORT_DESC, $aVotes, SORT_ASC, $LoP);
+    
 ?>
 <html>
   <head>
@@ -94,11 +123,18 @@
       table,td{
         border:1px solid #333;
       }
-      
+      .selection{
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:2em;
+        background-color:#555;
+      }
     </style>
   </head>
   <body>
-    
+    <div class="selection"></div>
 <?php
     echo '<div class="button-wrapper at-center">';
       if($action=='defsort'){
@@ -111,42 +147,52 @@
     echo '</div>';
     if($action=='defsort'){
       print_table_header($AL_CONF['ratemethod']);
-      foreach(glob($ALBUM_ROOT.'votes/*') as $file){
-        if($file!='.' && $file!='..'){
-          if(substr($file,-7)=='jpg.txt'){
-            $votes_fname = $file;
-            $thumb_fname = substr($file, strrpos($file,DIRECTORY_SEPARATOR)+1,-4);
-            $points_fname = $ALBUM_ROOT.'votes/'.$thumb_fname.'.pts.txt';
+      foreach($LoP as $photo){
+            //$votes_fname = $file;
+            //$thumb_fname = substr($file, strrpos($file,DIRECTORY_SEPARATOR)+1,-4);
+            //$points_fname = $ALBUM_ROOT.'votes/'.$thumb_fname.'.pts.txt';
             //$thumb_fname = PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$thumb_fname;
-            $votes = filesize($votes_fname);
-            $points = filesize($points_fname);
+            $votes = $photo[1];//filesize($votes_fname);
+            $points = $photo[2]; //filesize($points_fname);
 
             // Leer fichero $photo_filename.csv
-            $photo_info = read_csv($ALBUM_ROOT.'photos/'.$thumb_fname.'.csv');
+            $photo_info = read_csv($ALBUM_ROOT.'photos/'.$photo[0].'.csv');
 
             echo '<tr>';
-              echo '<td><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$thumb_fname.'" alt="'.$thumb_fname.'" /></td>';
+              echo '<td><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" alt="'.$photo[0].'" /></a></td>';
               echo '<td>'.$photo_info[AUTHOR].'</td>';
               echo '<td>'.$votes.'</td>';
               if($AL_CONF['ratemethod']=='stars'){
                 echo '<td>'.$points.'</td>';
                 echo '<td>'.round($points / $votes, 1).'/5</td>';
               }
-              echo '<td><a href="download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$thumb_fname.'">T&eacute;l&eacute;charger</a></td>';
+              echo '<td><a href="#">Choisir</a><br /><a href="download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'">T&eacute;l&eacute;charger</a></td>';
             echo '</tr>';
-          }
-        }
       }
       print_table_footer();
     }elseif($action=='group'){
       
 // GROUPING UPLOADERS
-      $LoP = array();
+      $g_LoP = array();
       //TODO: Add groupping methods: by PHOTOGRAPHE_UKEY | by UPLOADERID
       $idx2group=PHOTOGRAPHE_UKEY;
       //$idx2group=UPLOADERID;
-      
+
       // Create grouped photos array
+      foreach($LoP as $photo){
+
+        $votes = $photo[1];
+        $points = $photo[2];
+
+        // Leer fichero $photo_filename.csv
+        $photo_info = read_csv($ALBUM_ROOT.'photos/'.$photo[0].'.csv');
+
+        if(!array_key_exists($photo_info[$idx2group], $g_LoP)){
+          $g_LoP[$photo_info[$idx2group]] = array();
+        }
+        array_push($g_LoP[$photo_info[$idx2group]], array($photo[0], $votes, $points, $photo_info[AUTHOR]));
+      }
+/*
       foreach(glob($ALBUM_ROOT.'votes/*') as $file){
         if($file!='.' && $file!='..'){
           if(substr($file,-7)=='jpg.txt'){
@@ -167,21 +213,21 @@
           }
         }
       }
-      
+*/
       // Render array
-      foreach($LoP as $uploader){
+      foreach($g_LoP as $uploader){
         
         print_table_header($AL_CONF['ratemethod']);
         foreach($uploader as $photo){
           echo '<tr>';
-            echo '<td><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" alt="'.$photo[0].'" /></td>';
+            echo '<td><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" alt="'.$photo[0].'" /></a></td>';
             echo '<td>'.$photo[3].'</td>';
             echo '<td>'.$photo[1].'</td>';
             if($AL_CONF['ratemethod']=='stars'){
               echo '<td>'.$photo[2].'</td>';
               echo '<td>'.round($photo[2] / $photo[1], 1).'/5</td>';
             }
-            echo '<td><a href="download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'">T&eacute;l&eacute;charger</a></td>';
+            echo '<td><a href="#">Choisir</a><br /><a href="download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'">T&eacute;l&eacute;charger</a></td>';
           echo '</tr>';
         }
         print_table_footer();
