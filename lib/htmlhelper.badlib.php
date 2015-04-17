@@ -13,11 +13,9 @@
 //-------------------------------------------------------
   function getHTML4CheckBoxState($var, $equals='1'){
     $str2Return = '';
-    if(!empty($var)){
       if($var==$equals){
         $str2Return = 'checked="checked" ';
       }
-    }
     return $str2Return;
   }
 //-------------------------------------------------------
