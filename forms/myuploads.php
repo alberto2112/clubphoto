@@ -178,7 +178,7 @@
     }
     echo '<div class="button-wrapper at-center">';
     
-    // Montrer bouton pour telecharger plus de photos s'il n'a pas ateint la limite
+    // Montrer bouton pour telecharger plus de photos s'il n'a pas atteint la limite
     if($_CAN_UPLOAD && $i < $CONFIG['uploadslimit']){
       echo '
     <a class="green" href="'.PUBLIC_ROOT.FORMS_DIR.'upload.php?'.URI_QUERY_ALBUM.'='.$codalbum.'">Rajouter des photos</a>';
