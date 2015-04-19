@@ -11,7 +11,7 @@
   switch($E){
     case 'QUOTA':
       $error_title = 'DISQUE PLEIN';
-      $error_msg = 'La limite d\'utilisation d\'espace en disque est ateinte ('.DISK_QUOTA.'Ko). Veuillez contacter l\'administrateur pour r&eacute;soudre le probl&egrave;me';
+      $error_msg = 'La limite d\'utilisation d\'espace en disque est atteinte ('.DISK_QUOTA.'Ko). Veuillez contacter l\'administrateur pour r&eacute;soudre le probl&egrave;me';
       break;
     
     case 'PWD_FILE_NOT_FOUND':
@@ -20,8 +20,8 @@
       break;
     
     case 'UPLOAD_LIMIT':
-      $error_title = 'Limite de t&eacute;l&eacute;chargements ateinte';
-      $error_msg = 'Vous avez ateint la limite de t&eacute;l&eacute;chargements pour cet album. <a href="http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'">Retour &agrave; l\'album</a>';
+      $error_title = 'Limite de t&eacute;l&eacute;chargements atteinte';
+      $error_msg = 'Vous avez atteint la limite de t&eacute;l&eacute;chargements pour cet album. <a href="http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'">Retour &agrave; l\'album</a>';
       break;
     
     default:
