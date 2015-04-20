@@ -111,11 +111,11 @@
 <?php
 
 // Make twitter metatags
-  echo '    <meta name="twitter:card" content="summary">
+  echo '    <meta name="twitter:card" content="photo">
     <meta name="twitter:url" content="http://'.SITE_DOMAIN.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_PHOTO.'='.$photo_filename.'&'.URI_QUERY_ALBUM.'='.$codalbum.'">
     <meta name="twitter:title" content="'.get_arr_value($AL_CONF, 'albumname').' &gt; '.$photo_info[TITLE].'">
     <meta name="twitter:description" content="'.$photo_info[DESCRIPTION].'">
-    <meta name="twitter:image" content="http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo_filename.'">'."\n";
+    <meta name="twitter:image" content="http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/medium/'.$photo_filename.'">'."\n";
 ?>
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/reset.css" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/base.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
