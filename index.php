@@ -8,6 +8,7 @@
 <head>
     <title>Club photo - MJC Rodez</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include SYSTEM_ROOT.ETC_DIR.'metatags.html'; ?>
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/reset.css?v='.VERSION_CSS; ?>" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/base.css?v='.VERSION_CSS; ?>" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/buttons.css?v='.VERSION_CSS; ?>" type="text/css" />
