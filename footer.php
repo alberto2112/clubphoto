@@ -11,7 +11,7 @@
       <li class="title">Liens d'utilit&eacute;</li>
   <?php
     if($_ISADMIN){
-      echo '<li><a style="color:#E88" href="'.PUBLIC_ROOT.'logout.php">Se d&eacute;connecter</a></li>';
+      echo '<li><a href="'.PUBLIC_ROOT.ADMIN_DIR.'">Administrer</a></li>';
     } else {
       echo '<li><a href="'.PUBLIC_ROOT.'login.php">Administrer</a></li>';
     }
@@ -19,11 +19,17 @@
     if($_ISMEMBER && $_SHOWRANKING){
       echo '<li><a href="'.PUBLIC_ROOT.'classement.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'">Voir classement</a></li>';
     }
+
   ?>
       <li class="disabled">Comment &eacute;valuer</li>
       <li class="disabled">FAQ</li>
       <li class="disabled">Mises &agrave; jour</li>
       <li class="disabled">Signaler un probl&egrave;me</li>
+<?php
+  if($_ISADMIN){
+      echo '<li><a style="color:#E88" href="'.PUBLIC_ROOT.'logout.php">Se d&eacute;connecter</a></li>';
+    }
+?>
     </ul>
 
     <ul>
