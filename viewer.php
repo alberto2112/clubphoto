@@ -81,6 +81,7 @@
   <head>
     <title><?php echo get_arr_value($AL_CONF, 'albumname'); ?> - MJC ClubPhoto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include SYSTEM_ROOT.ETC_DIR.'metatags.html'; ?>
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/reset.css" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/base.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/modalboxes.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
