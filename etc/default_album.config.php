@@ -14,6 +14,7 @@
       'allowvotes'=>'1',
       'allowselfrating'=>'0',
       'allowcomments'=>'1',
+      'hidecammodelonrate'=>'1',
       'showrateforuploads'=>'1',
       'vote-from'=>$_dfac_VF,
       'vote-to'=>$_dfac_VT,

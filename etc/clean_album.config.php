@@ -10,6 +10,7 @@
       'vote-from'=>'',
       'vote-to'=>'',
       'allowselfrating'=>'',
+      'hidecammodelonrate'=>'',
       'allowcomments'=>'',
       'showrateforuploads'=>'',
       'showranking'=>'',

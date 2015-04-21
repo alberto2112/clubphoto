@@ -71,6 +71,7 @@
       $showrateforuploads = clear_request_param(getRequest_param('showrateforuploads', '0'),'0-9',2,false);
       $allowcomments      = clear_request_param(getRequest_param('allowcomments', '0'),'0-9',2,false);
       $allowselfrating    = clear_request_param(getRequest_param('allowselfrating', '0'),'0-9',2,false);
+      $hidecammodelonrate = clear_request_param(getRequest_param('hidecammodelonrate', '0'),'0-9',2,false);
 
       $upload_from  = clear_request_param(getRequest_param($VARLABELS['UPLOAD-FROM'], ''), '0-9\/', 10, false);
       $upload_to    = clear_request_param(getRequest_param($VARLABELS['UPLOAD-TO'], ''), '0-9\/', 10, false);
@@ -157,6 +158,7 @@
                   .'"allowphotomanag"=>"'.$allowphotomanag.'",'
                   .'"showrateforuploads"=>"'.$showrateforuploads.'",'
                   .'"allowcomments"=>"'.$allowcomments.'",'
+                  .'"hidecammodelonrate"=>"'.$hidecammodelonrate.'",'
                   .'"allowselfrating"=>"'.$allowselfrating.'"';
 
         $AL_CONF->insert($confstr,false);

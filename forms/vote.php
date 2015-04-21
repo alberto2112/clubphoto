@@ -179,9 +179,15 @@
     <div class="photo-info">
       <h2>Informations</h2>
       <ul>
+<?php
+
+    if( ($AL_CONF['allowvotes']=='1' && $AL_CONF['hidecammodelonrate']!='1') || $AL_CONF['allowvotes']=='0'){
+      echo '
         <li class="camera">
-          <span title="Boitier"><?php echo $photo_info[MODEL]; ?></span>
-        </li>
+          <span title="Boitier">'.$photo_info[MODEL].'</span>
+        </li>'."\n";
+    }
+?>
         <li class="aperture">
           <span title="Ouverture"><?php echo $photo_info[OUVERTURE]; ?></span>
         </li>

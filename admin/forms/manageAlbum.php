@@ -59,7 +59,8 @@
       'showrateforuploads' => getHTML4CheckBoxState( get_arr_value($CONFIG,'showrateforuploads') ),
       'allowphotomanag_0'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowphotomanag'),'0' ),
       'allowphotomanag_1'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowphotomanag'),'1' ),
-      'allowphotomanag_2'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowphotomanag'),'2' )
+      'allowphotomanag_2'  => getHTML4CheckBoxState( get_arr_value($CONFIG,'allowphotomanag'),'2' ),
+      'hidecammodelonrate'    => getHTML4CheckBoxState( get_arr_value($CONFIG,'hidecammodelonrate') ),
     );
 //DEBUG
 //echo '<pre>DEBUG';
@@ -173,6 +174,10 @@
               <li>
                   <input id="allowcomments" type="checkbox" name="allowcomments" value="1" <?php echo $HTML['allowcomments']; ?>/>
                   <span>Les membres peuvent donner son avis lors du vote.</span>
+              </li>
+              <li>
+                  <input type="checkbox" name="hidecammodelonrate" value="1" <?php echo $HTML['hidecammodelonrate']; ?>/>
+                  <span>Oculter mod&egrave;le d'appareil photo pendant la p&eacute;riode de votations.</span>
               </li>
               <li>
                   <input id="allowrateview" type="checkbox" name="showrateforuploads" value="1" <?php echo $HTML['showrateforuploads']; ?>/>
