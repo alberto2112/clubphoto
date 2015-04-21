@@ -92,7 +92,7 @@
   // Create USER_KEY if error
     if($USER_SESSION==false){
       $USER_SESSION=make_rkey(14,'012345679VWXYZ');
-      setcookie(COOKIE_USER_SESSION.$codalbum, $USER_SESSION, time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+      setcookie(COOKIE_USER_SESSION.$codalbum, $USER_SESSION, time() + SESSION_LIFE_MEMBER, PUBLIC_ROOT); //Cookie for 10 Days
     }
 
   // Open upload log

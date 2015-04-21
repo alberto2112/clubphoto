@@ -10,5 +10,5 @@
   $action      = clear_request_param(getRequest_param(URI_QUERY_ACTION, false), 'a-zA-Z0-9', 8, false);
 
 if($fingerprint)
-  setcookie(COOKIE_FINGERPRINT, $fingerprint,time()+(3600*24*30), PUBLIC_ROOT, SYS_HTTPS_AVAILABLE);
+  setcookie(COOKIE_FINGERPRINT, $fingerprint,time()+SESSION_LIFE_FINGERPRINT, PUBLIC_ROOT, SYS_HTTPS_AVAILABLE);
 ?>

@@ -109,7 +109,7 @@
     $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';
 
   if(!empty($RKEY) && get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY) == $RKEY){
-    setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + (3600 * 2), PUBLIC_ROOT); // Permettre a cette personne de voter ou telecharger ses photos pendant 2 heures
+    setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT); // Permettre a cette personne de voter ou telecharger ses photos pendant 2 heures
   }elseif(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY)){
     // Empecher les votes a toute personne externe au club photo
     $AL_CONF['allowvotes']='0';

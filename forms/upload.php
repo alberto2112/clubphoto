@@ -51,7 +51,7 @@
 //$USER_SESSION = (array_key_exists(COOKIE_USER_SESSION.$codalbum, $_COOKIE))? $_COOKIE[COOKIE_USER_SESSION.$codalbum] : make_rkey(14,'012345679VWXYZ');
 
   // Refresh/Create USER_SESSION cookie
-  setcookie(COOKIE_USER_SESSION.$codalbum, $USER_SESSION, time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+  setcookie(COOKIE_USER_SESSION.$codalbum, $USER_SESSION, time() + SESSION_LIFE_MEMBER, PUBLIC_ROOT); //Cookie for X Days
 
   // Get number of uploads for this user
   if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION)){

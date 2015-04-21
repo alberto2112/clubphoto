@@ -59,7 +59,7 @@
       $AL_CONF['allowvotes']='0';
     }else{
       // Renouveler temps de vie du cookie
-      setcookie(COOKIE_RIGHTS_KEY, $USER_RKEY, time() + 3600, PUBLIC_ROOT); 
+      setcookie(COOKIE_RIGHTS_KEY, $USER_RKEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT); 
     }
     
     // Empecher de voter si:

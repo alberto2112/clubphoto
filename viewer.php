@@ -50,8 +50,8 @@
 
     // Determiner si cette personne es un des adherents
     if(!empty($RKEY) && get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY) == $RKEY){
-      // Est un adherent: Permettre a cette personne de voter ou telecharger ses photos pendant 2 heures
-      setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + (3600 * 2), PUBLIC_ROOT);
+      // Est un adherent: Permettre a cette personne de voter ou telecharger ses photos pendant X heures
+      setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT);
       $_ISMEMBER = true;
     }elseif(array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) && get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) == get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY)){
       // Est un adherent

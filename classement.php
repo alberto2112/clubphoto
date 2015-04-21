@@ -44,7 +44,7 @@ if(OPT_DEVELOPPING){
 //------------------------------
 // Get rights key
   if(!empty($RKEY) && get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY) == $RKEY){
-    setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + (3600 * 2), PUBLIC_ROOT); // Renouveller la cle pendant 2 heures
+    setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT); // Renouveller la cle pendant 2 heures
   }elseif(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY)){
     // Empecher de regarder le classement a toute personne externe au club photo
     header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT);

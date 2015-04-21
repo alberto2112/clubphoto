@@ -37,7 +37,7 @@ if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
           // Comprobar PIN
             if($NEW_USER_KEY[1]==$pincode){
             // SUCCESS: Refresh/Create USER_KEY cookie
-              setcookie(COOKIE_USER_SESSION.$codalbum, $NEW_USER_KEY[0], time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+              setcookie(COOKIE_USER_SESSION.$codalbum, $NEW_USER_KEY[0], time() + SESSION_LIFE_MEMBER, PUBLIC_ROOT); //Cookie for 10 Days
 
             // Remove clone request
               unlink(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn');
@@ -85,7 +85,7 @@ if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
                   }
                 }
                 // Clonar cookie de sesion
-                setcookie(COOKIE_USER_SESSION.$codalbum, $NEW_USER_KEY[0], time() + (3600 * 24 * 10), PUBLIC_ROOT); //Cookie for 10 Days
+                setcookie(COOKIE_USER_SESSION.$codalbum, $NEW_USER_KEY[0], time() + SESSION_LIFE_MEMBER, PUBLIC_ROOT); //Cookie for 10 Days
 
                 // Eliminar peticion de clonado
                 unlink(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn');

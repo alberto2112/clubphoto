@@ -47,10 +47,15 @@
   define('COOKIE_RIGHTS_KEY','RKEY');
   define('COOKIE_FINGERPRINT','JSFPSESSID');
 
+  define('SESSION_LIFE_RKEY', 3600*3);     //3 HOURS #[!] NEW
+  define('SESSION_LIFE_MEMBER', 3600*24*15);  //15 DAYS #[!] NEW
+  define('SESSION_LIFE_FINGERPRINT', 3600*24*30);  //30 DAYS #[!] NEW
+
   define('USER_LEVEL_SUPERADMIN','1');
   define('USER_LEVEL_ADMIN','2');
   define('USER_LEVEL_EXPO','5');
   define('USER_LEVEL_GUEST','9');
+
 # ======================================================= #
   if(function_exists('date_default_timezone_set'))
     date_default_timezone_set("Europe/Paris");
