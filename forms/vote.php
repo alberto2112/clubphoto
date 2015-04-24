@@ -11,25 +11,36 @@
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'datetime.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'photo.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'rate.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'csv.lib.php';
   include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
   include_once SYSTEM_ROOT.ETC_DIR.'photoinfo.csv.conf.php';
   
 
-  //Clear request vars
+  //Get $codalbum
   $codalbum       = clear_request_param(getRequest_param(URI_QUERY_ALBUM,''), 'a-zA-Z0-9', 8, false);
-  $photo_filename = clear_request_param(getRequest_param(URI_QUERY_PHOTO,''), 'a-zA-Z0-9\.', 42, false);
-  $str_cookie     = $codalbum.'_'.str_replace('.','_',$photo_filename);
-  $AL_CONF        = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
-  $USER_RKEY      = get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY);
-  $_ISADMIN       = is_admin();
-  $str_message    = '';
-  //$votes_filename = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.txt';
-  $comments_filename = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.cmts.csv';
 
   // Ne rien faire s'il n'y a pas de codalbum
   if(empty($codalbum))
     exit;
+
+  //Get n clear request vars
+  $photo_filename = clear_request_param(getRequest_param(URI_QUERY_PHOTO,''), 'a-zA-Z0-9\.', 42, false);
+  $str_cookie     = $codalbum.'_'.str_replace('.','_',$photo_filename);
+  $AL_CONF        = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
+  $RIGHTS_KEY     = get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY);
+  $USER_SESSION   = 'NotAMember';
+  $_CAN_RATE      = false;
+  $_HAS_RATED     = false;
+  $_RATED_POINTS  = '';
+  $_ISADMIN       = is_admin();
+  $_IS_AUTHOR     = false;
+  $str_message    = '';
+  //$votes_filename = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.txt';
+  $comments_filename = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.cmts.csv';
+
 
   // Leer fichero $photo_filename.csv
   $photo_info = read_csv(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.csv');
@@ -53,48 +64,79 @@
   if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true){
     $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
 
-    // Empecher de voter a toute personne externe au club photo
-    
-    if(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || ($USER_RKEY != get_arr_value($AL_CONF, 'RKEY')) ){
-      $AL_CONF['allowvotes']='0';
+//===========================================================================
+    // Get RIGHTS_KEY or cookie RIGHTS_KEY
+    if(empty($RIGHTS_KEY) || !array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || ($RIGHTS_KEY != get_arr_value($AL_CONF, 'RKEY')) ){
+      // Si la cookie n'existe pas et il n'apporte pas le RIGHT_KEY nier les droits de voter
+      $_CAN_RATE = false;
     }else{
+      // RIGHT_KEY a ete trouve
+      $_CAN_RATE = ( get_arr_value($AL_CONF, 'allowvotes')=='1' );
       // Renouveler temps de vie du cookie
-      setcookie(COOKIE_RIGHTS_KEY, $USER_RKEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT); 
+      setcookie(COOKIE_RIGHTS_KEY, $RIGHTS_KEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT);
+      // Recuperer session
+      $USER_SESSION   = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, make_rkey(14,'012345679VWXYZ'));
+      // Refresh/Create USER_SESSION cookie
+      setcookie(COOKIE_USER_SESSION.$codalbum, $USER_SESSION, time() + SESSION_LIFE_MEMBER, PUBLIC_ROOT); //Cookie for X Days
     }
-    
-    // Empecher de voter si:
-    if(array_key_exists($str_cookie, $_COOKIE)){
-      $sended_points = get_arr_value($_COOKIE, $str_cookie, '0'); // Chercher et lire cookie pour cette photo
-      
-      if($sended_points=='-1'){
-        // Il est le proprietaire de la photo
-        // TODO: si c'est configure comme ça
-        $str_message = 'Vous &ecirc;tes le proprietaire de cette photo.';
-        $AL_CONF['allowvotes']='0';
-      }elseif($AL_CONF['antitriche']=='1' && $AL_CONF['allowvotes']=='1'){
-        // Il a deja vote et l'antitriche a ete active
-        $str_message = 'Vous avez d&eacute;j&agrave; vot&eacute; pour cette photo avec '.$sended_points.' points.';
-        $AL_CONF['allowvotes']='0';
-      }
-    }
-    
-    if($AL_CONF['allowvotes']=='1'){
-      // Calculer droit de vote par raport de la date limite
-      $VOTE_FROM = (@array_key_exists('vote-from', $AL_CONF))? explode('/', $AL_CONF['vote-from'],3):false;
-      $VOTE_TO   = (@array_key_exists('vote-to', $AL_CONF))? explode('/', $AL_CONF['vote-to'],3):false;
 
-      if(!empty($VOTE_FROM) && time() <= mktime(0,0,0, $VOTE_FROM[1], $VOTE_FROM[0], $VOTE_FROM[2])) // Si la periode n'a pas commence
-        {
-          $AL_CONF['allowvotes']='0';
+    if($_CAN_RATE){
+      $_IS_AUTHOR    = is_author($photo_filename, SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION);
+      // Determiner si le membre a deja vote
+      $_RATED_POINTS = get_rate_for($photo_filename, SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION.'.rates');
+      $_HAS_RATED    = ($_RATED_POINTS > 0);
+      $str_message   = ($_IS_AUTHOR) ? 'Vous &ecirc;tes le proprietaire de cette photo.' : '';
+/*
+      if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION.'.rates')){
+        foreach(file(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION.'.rates', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line){
+          $item = explode(';',$line,3);
+          if($item[2]==$photo_filename){
+            $_HAS_RATED    = true;
+            $_RATED_POINTS = $item[1];
+          }
+        }
+      }
+*/
+      
+    // Anti triche
+      if($_HAS_RATED && $AL_CONF['antitriche']=='1'){
+        $_CAN_RATE    = false;
+        $str_message  = 'Vous avez d&eacute;j&agrave attribu&eacute; '.$_RATED_POINTS.' points &agrave; cette photo.';
+      }else{
+      // Periode de votations
+        $ood_result = out_of_date($AL_CONF['vote-from'], $AL_CONF['vote-to'], true);
+        $_CAN_RATE  = ($ood_result=='0');
+        
+        if($ood_result==1){
+          // Periode terminee
+          $str_message = 'La p&eacute;riode de votes est termin&eacute; le '.$AL_CONF['vote-to'];
+        }elseif($ood_result==-1){
+          // La periode n'a pas commence
           $str_message = 'La p&eacute;riode de votes d&eacute;bute le '.$AL_CONF['vote-from'];
         }
-        
-      if(!empty($VOTE_TO) && time()-(3600 * 24) >= mktime(0,0,0, $VOTE_TO[1], $VOTE_TO[0], $VOTE_TO[2])) // Si la periode est depasee
-        {
-          $AL_CONF['allowvotes']='0';
-          $str_message = 'La p&eacute;riode de votes est termin&eacute; le '.$AL_CONF['vote-to'];
-        }
-    }
+      }
+    
+    
+    // Self rating
+      if($_CAN_RATE && $AL_CONF['allowselfrating']=='0'){
+          // Determiner si le membre est l'auteur de la photo
+//          $_IS_AUTHOR = is_author($photo_filename, SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION);
+          $_CAN_RATE  = !$_IS_AUTHOR;
+  /*
+          if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION)){
+            $_IS_AUTHOR = in_array(
+              $photo_filename, 
+              file(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES),
+              true
+            );
+
+            $_CAN_RATE = !$_IS_AUTHOR;
+          }
+  */
+      }
+  } //EOC >> if($_CAN_RATE)
+//===========================================================================
+
   }else{
     //$str_message = 'Le fichier de parametrage n\'existe pas: '.SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
     $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';
@@ -181,7 +223,7 @@
       <ul>
 <?php
 
-    if( ($AL_CONF['allowvotes']=='1' && $AL_CONF['hidecammodelonrate']!='1') || $AL_CONF['allowvotes']=='0'){
+    if( ($_CAN_RATE && $AL_CONF['hidecammodelonrate']!='1') || !$_CAN_RATE){
       echo '
         <li class="camera">
           <span title="Boitier">'.$photo_info[MODEL].'</span>
@@ -231,8 +273,13 @@
 //$AL_CONF['ratemethod']='likes';
 //DEBUG />
 
+// Afficher les messages s'il y en a
+  if(!empty($str_message)){
+    echo '<div class="message"><h2>Messages</h2><p>'.$str_message.'</p></div>';
+  }
+
 // Print vote form
-  if($AL_CONF['allowvotes']=='1'){ // Montrer le bouton uniquement si la periode de votes est ouverte
+  if($_CAN_RATE){ // Montrer le bouton uniquement si la periode de votes est ouverte
     echo '<div class="vote-form" id="vote-counter"><h2>Votations</h2>';
     if($AL_CONF['ratemethod']=='stars'){
       // Vote par etoiles
@@ -255,11 +302,6 @@
     
     echo "\n".'          <div class="button-wrapper at-center"><a class="green hidden" id="send-vote" href="'.RUN_DIR.'vote.php?'.URI_QUERY_PHOTO.'='.$photo_filename.'&amp;'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_POINTS.'=1">Confirmer vote</a></div>
           </div>';
-  }
-
-// Afficher les messages s'il y en a
-  if(!empty($str_message)){
-    echo '<div class="message"><h2>Messages</h2><p>'.$str_message.'</p></div>';
   }
 
 // Afficher commentaires

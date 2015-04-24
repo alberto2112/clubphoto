@@ -4,12 +4,15 @@
 .ranking>div{
   position: relative;
   display: inline-block;
+  height:186px;
+  width:242px;
+/*
   width: 186px;
   height:214px;
-  /*vertical-align: top;*/
+*/
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   margin:8px;
-  background-color:#555;
+  background-color:#00BBD3;
 }
 
 .ranking .photo a{
@@ -31,13 +34,13 @@
   position:absolute;
   color:white;
   z-index:99;
-  font-size:16px;
 }
 
 .ranking .photo .pos{
   left:0;
   top:3px;
   background-color:#3B3;
+  font-size:16px;
   font-weight:700;
   width:25px;
   height:22px;
@@ -48,19 +51,25 @@
 .ranking .photo .votes,
 .ranking .photo .points,
 .ranking .photo .avg{
-  padding-left:19px;
-  bottom:5px;
+  font-size:14px;
+  padding-left:16px;
+  /* bottom:5px; */
+  left:192px;
+  width:28px;
+  text-align:center;
 }
 .ranking .photo .votes{
-  left:4px;
+  /* left:4px; */
+  top:4px;
   background:transparent url("../images/ico_thumb_up_w_16x16.png") no-repeat left center;
-  
 }
 .ranking .photo .points{
-  left:72px;
+  /* left:72px; */
+  top:32px;
   background:transparent url("../images/ico_star_w_16x16.png") no-repeat left center;
 }
 .ranking .photo .avg{
-  right:4px;
+  /* right:4px; */
+  top:60px;
   background:transparent url("../images/ico_calculator_w_16x16.png") no-repeat 3px center;
 }

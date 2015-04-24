@@ -5,6 +5,7 @@
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'photo.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'rate.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'datetime.lib.php';
   
@@ -67,10 +68,11 @@
   $points     = clear_request_param(getRequest_param(URI_QUERY_POINTS, 1), '0-9', 1, false);
   $photo_filename = clear_request_param(getRequest_param(URI_QUERY_PHOTO, false), 'a-zA-Z0-9\.', 42, false);
   $comments   = clear_request_param(getRequest_param(URI_QUERY_COMMENTS, false), false, 500, true);
-  $RKEY       = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);  // Album rights key (TOKEN)
+  $RIGHTS_KEY = get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY);
+  //$RIGHTS_KEY = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);  // Album rights key (TOKEN)
 
 // Recuperer $USER_SESSION (Cookie)
-  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, false);
+  $USER_SESSION = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, false); //make_rkey(14,'012345679VWXYZ')
 
   $votes_filename    = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.txt';
   $points_filename   = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt';
@@ -80,7 +82,8 @@
   $IP          = getClient_ip();
   $vote_result = '';
   $_CAN_RATE   = false;
-  $_PROPIETAIRE_PHOTO = false;
+  $_IS_AUTHOR  = false;
+  $_HAS_RATED  = false;
 
   if(empty($codalbum)){
   // Open ERROR LOG
@@ -108,66 +111,76 @@
   else
     $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';
 
-  if(!empty($RKEY) && get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY) == $RKEY){
-    setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT); // Permettre a cette personne de voter ou telecharger ses photos pendant 2 heures
+//RIGHTS_KEY
+
+    // Get RIGHTS_KEY or cookie RIGHTS_KEY
+    if(empty($RIGHTS_KEY) || !array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || ($RIGHTS_KEY != get_arr_value($AL_CONF, 'RKEY')) ){
+      // Si la cookie n'existe pas et il n'apporte pas le RIGHT_KEY nier les droits de voter
+      $_CAN_RATE     = false;
+      $vote_result   = 'VOTE REJETE. CE N\'EST PAS UN MEMBRE';
+      $points_result = 'Vous n\'avez pas assez de privil&egrave;ges pour voter. Contactez l\'administrateur';
+    }else{
+      // RIGHT_KEY a ete trouve
+      $_CAN_RATE = ( get_arr_value($AL_CONF, 'allowvotes')=='1' );
+      // Renouveler temps de vie du cookie
+      setcookie(COOKIE_RIGHTS_KEY, $RIGHTS_KEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT);
+      // Recuperer session
+      $USER_SESSION   = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, make_rkey(14,'012345679VWXYZ'));
+      // Refresh/Create USER_SESSION cookie
+      setcookie(COOKIE_USER_SESSION.$codalbum, $USER_SESSION, time() + SESSION_LIFE_MEMBER, PUBLIC_ROOT); //Cookie for X Days
+    }
+/*
+  if(!empty($RIGHTS_KEY) && get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY) == $RIGHTS_KEY){
+    // Refresh cookie
+    setcookie(COOKIE_RIGHTS_KEY, $RIGHTS_KEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT); // Permettre a cette personne de voter ou telecharger ses photos pendant X heures
   }elseif(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY)){
     // Empecher les votes a toute personne externe au club photo
     $AL_CONF['allowvotes']='0';
     $vote_result   = 'VOTE REJETE. CE N\'EST PAS UN MEMBRE';
     $points_result = 'Vous n\'avez pas assez de privil&egrave;ges pour voter. Contactez l\'administrateur';
   }
-
-  if($AL_CONF['allowvotes']=='1'){
-      // Calculer droit de vote par raport la date limite
-      $_CAN_RATE = false;
-      $ood_result = out_of_date($AL_CONF['vote-from'], $AL_CONF['vote-to'], true);
-    
-      if($ood_result==1){
-        $vote_result   = 'VOTE TROP TARD';
-        $points_result = 'La periode de votes a termin&eacute;';
-      }elseif($ood_result==-1){
-        $vote_result   = 'VOTE PREMATURE';
-        $points_result = 'La periode de votes n\'a toujours pas d&eacute;but&eacute;';
-      }else{
-        $_CAN_RATE = true;
-      }
-  
-
-    // [!] NEW METHOD: IDENTIFIER PROPIETAIRE PHOTO
-      if($_CAN_RATE && $AL_CONF['allowselfrating']=='0'){
-        if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION)){
-          $_PROPIETAIRE_PHOTO = in_array(
-            $photo_filename, 
-            file(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES),
-            true
-          );
-/*
-            array_search
-            (
-              $photo_filename, 
-              file(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)
-            ) !== false;
 */
+  if($_CAN_RATE){
+    
+    // Determiner si le membre a deja vote
+      $_RATED_POINTS = get_rate_for($photo_filename, SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION.'.rates');
+      $_HAS_RATED    = ($_RATED_POINTS > 0);
+    
+    // Anti triche
+      if($_HAS_RATED && $AL_CONF['antitriche']=='1'){
+        $_CAN_RATE     = false;
+        $vote_result   = 'DEJA VOTE AUPARAVANT';
+        $points_result = 'Dis donc! vous avez d&eacute;j&egrave; donn&eacute; '.$_RATED_POINTS.' points! Ne trichez pas, eh oh!';
+      }else{
+      // Periode de votations
+        $ood_result = out_of_date($AL_CONF['vote-from'], $AL_CONF['vote-to'], true);
+        $_CAN_RATE  = ($ood_result=='0');
+        
+        if($ood_result==1){
+          // Periode terminee
+          $vote_result   = 'VOTE TROP TARD';
+          $points_result = 'La periode de votes a termin&eacute;';
+        }elseif($ood_result==-1){
+          // La periode n'a pas commence
+          $vote_result   = 'VOTE PREMATURE';
+          $points_result = 'La periode de votes n\'a toujours pas d&eacute;but&eacute;';
         }
+      }
+    
+    // Self rating
+      if($_CAN_RATE && $AL_CONF['allowselfrating']=='0'){
+        // Determiner si le membre est l'auteur de la photo
+        $_IS_AUTHOR = is_author($photo_filename, SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION);
+        $_CAN_RATE  = !$_IS_AUTHOR;
 
-        if($_PROPIETAIRE_PHOTO){
-          // Empecher de voter au propietaire de la photo
+        if($_IS_AUTHOR){
           $vote_result   = 'PROPIETAIRE PHOTO';
           $points_result = 'Dis donc! vous ne pouvez pas voter par vos propres photos. Ne trichez pas, eh oh!';
-          $_CAN_RATE     = false;
-          //$AL_CONF['allowvotes']=='0';
         }
       }
-    // [!] NEW METHOD: IDENTIFIER PROPIETAIRE PHOTO />
 
-      if($_CAN_RATE && $AL_CONF['antitriche']=='1' && array_key_exists($str_cookie, $_COOKIE)){
-    // Mecanisme antitriche
-        $sended_points = get_arr_value($_COOKIE, $str_cookie); // Récuperer points
-        $vote_result   = 'DEJA VOTE AUPARAVANT';
-        $points_result = 'Dis donc! vous avez d&eacute;j&egrave; donn&eacute; '.$sended_points.' points! Ne trichez pas, eh oh!';
-        $_CAN_RATE     = false;
-
-      }elseif($_CAN_RATE){
+    // Rating
+      if($_CAN_RATE){
         // Comptabiliser le vote
         $vote_result   = count_up($votes_filename, 1);
         $points_result = count_up($points_filename, $points);
@@ -195,25 +208,25 @@
           $comments = str_replace('&Atilde;&macr;', '&uml;', $comments);
           $comments = str_replace('&Atilde;&sect;', '&ccedil;', $comments);
 
-        // Enregistrer traçabilite du vote
-          if($USER_SESSION && is_numeric($points_result)){
-            $V= new LOG(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION.'.votes', false);
-            $V->insert(date('d.m.Y H:i:s').';'.$points.';'.$photo_filename);
-            $V->close();
-          }
-
         // Enregistrer commentaire    
           $C = new LOG($comments_filename, false);
           $C->insert(date('d.m.Y H:i:s').';;;'.$comments); // Pour l'instant on n'enregistre pas l'adresse IP
           $C->close();
         }
+
+        // Enregistrer traçabilite du vote
+        if($USER_SESSION && is_numeric($points_result)){
+          $V= new LOG(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.$USER_SESSION.'.rates', false);
+          $V->insert(date('d.m.Y H:i:s').';'.$points.';'.$photo_filename);
+          $V->close();
+        }
       }
 
-}
+  } // EOC >> if($_CAN_RATE)
 
   if(is_numeric($vote_result)){
     // Log result
-    $LOG->insert($IP.' - '.$photo_filename.' - '.$points .' points - SUCCESS', true); 
+    $LOG->insert('ip='.$IP.' session='.$USER_SESSION.' photo='.$photo_filename.' points='.$points .' res=SUCCESS', true); 
     
     // Set cookie
     setcookie($str_cookie,$points,time()+(3600 * 24 * 14), PUBLIC_ROOT);
@@ -224,7 +237,7 @@
     else
       echo '1';
   }else{
-    $LOG->insert('ip='.$IP.' photo='.$photo_filename.' points='.$points.' result='.$vote_result, true);
+    $LOG->insert('ip='.$IP.' session='.$USER_SESSION.' photo='.$photo_filename.' points='.$points.' result='.$vote_result, true);
     echo $points_result;
     /*
     if(is_readable($votes_filename) && is_readable($points_filename))

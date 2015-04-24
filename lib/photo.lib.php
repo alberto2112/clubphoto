@@ -272,4 +272,25 @@
   {
     return uninstall_photo($album_path, $photo_filename, $delete_from_trash);
   }
+
+// -----------------------------------------------------------------
+  function is_author($photo_basename, $uploads_filename){
+    /**
+     * @param (String) $photo_basename
+     * @param (String) $uploads_filename - CSV filename
+     * 
+     * @return (Boolean) True | False
+     */
+    $R = false;
+    
+    if(!empty($photo_basename) && is_readable($uploads_filename)){
+      $R = in_array(
+        $photo_basename, 
+        file($uploads_filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES),
+        true
+      );
+    }
+    
+    return $R;
+  }
 ?>

@@ -15,7 +15,7 @@
         <li><a href="#" class="tb-dots-w" id="tgl-toolbar">More</a>
           <ul id="sub-toolbar" class="submenu_ico">
             <li class="tb-myrates-g disabled"><a href="'.PUBLIC_ROOT.FORMS_DIR.'myrates.php?'.URI_QUERY_ACTION.'=view&amp;'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Gerer mes votes">Mes &eacute;valuations</a></li>
-            <li class="tb-clonesession-g"><a href="'.PUBLIC_ROOT.FORMS_DIR.'clonesession.php?'.URI_QUERY_ACTION.'=request&amp;'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Clonner session">Clonner sesion</a></li>';
+            <li class="tb-clonesession-g"><a href="'.PUBLIC_ROOT.FORMS_DIR.'clonesession.php?'.URI_QUERY_ACTION.'=request&amp;'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Cloner session">Clonner sesion</a></li>';
 
   if(!$_ISADMIN && $_SHOWRANKING){
     echo '

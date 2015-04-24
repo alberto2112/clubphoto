@@ -93,8 +93,9 @@
 ?>
 <html>
   <head>
-    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/base.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
-    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/buttons.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
+    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/base.css?v='.VERSION_CSS; ?>" type="text/css" />
+    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/buttons.css?v='.VERSION_CSS; ?>" type="text/css" />
+    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/ranking.css?v='.VERSION_CSS; ?>" type="text/css" />
     <script src="<?php echo PUBLIC_ROOT; ?>js/jquery.1.10.1.min.js"></script>
     <script src="<?php echo PUBLIC_ROOT; ?>js/stupidtable.min.js"></script>
     <style>
@@ -192,28 +193,6 @@
         }
         array_push($g_LoP[$photo_info[$idx2group]], array($photo[0], $votes, $points, $photo_info[AUTHOR]));
       }
-/*
-      foreach(glob($ALBUM_ROOT.'votes/*') as $file){
-        if($file!='.' && $file!='..'){
-          if(substr($file,-7)=='jpg.txt'){
-            $votes_fname = $file;
-            $thumb_fname = substr($file, strrpos($file,DIRECTORY_SEPARATOR)+1,-4);
-            $points_fname = $ALBUM_ROOT.'votes/'.$thumb_fname.'.pts.txt';
-            //$thumb_fname = PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$thumb_fname;
-            $votes = filesize($votes_fname);
-            $points = filesize($points_fname);
-
-            // Leer fichero $photo_filename.csv
-            $photo_info = read_csv($ALBUM_ROOT.'photos/'.$thumb_fname.'.csv');
-            if(!array_key_exists($photo_info[$idx2group], $LoP)){
-              $LoP[$photo_info[$idx2group]] = array();
-            }
-            array_push($LoP[$photo_info[$idx2group]], array($thumb_fname, $votes, $points, $photo_info[AUTHOR]));
-            
-          }
-        }
-      }
-*/
       // Render array
       foreach($g_LoP as $uploader){
         

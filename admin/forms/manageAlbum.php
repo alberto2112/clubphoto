@@ -177,13 +177,13 @@
               </li>
               <li>
                   <input type="checkbox" name="hidecammodelonrate" value="1" <?php echo $HTML['hidecammodelonrate']; ?>/>
-                  <span>Oculter mod&egrave;le d'appareil photo pendant la p&eacute;riode de votations.</span>
+                  <span>Occulter mod&egrave;le d'appareil photo pendant la p&eacute;riode de votations.</span>
               </li>
               <li>
                   <input id="allowrateview" type="checkbox" name="showrateforuploads" value="1" <?php echo $HTML['showrateforuploads']; ?>/>
                   <span>Les membres peuvent regarder les points attribu&eacute;s &agrave; ses photos en temps r&eacute;el.</span>
               </li>
-              <li class="disabled">
+              <li>
                   <input id="allowselfrating" type="checkbox" name="allowselfrating" value="1" <?php echo $HTML['allowselfrating']; ?>/>
                   <span>Les membres peuvent voter pour ses propres photos.</span>
               </li>

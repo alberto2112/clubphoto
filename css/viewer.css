@@ -123,12 +123,14 @@ input[type=checkbox]:checked + label:before {
   padding:.4em 0;
 }
 .toolbar ul.submenu_ico li{
-  padding-left:24px;
   text-align:left;
 }
 .toolbar ul.submenu_ico a,
 .toolbar ul.submenu a{
   color:inherit;
+}
+.toolbar ul.submenu_ico a{
+  padding-left:24px;
 }
 .header .toolbar-home{
   display:inline-block;

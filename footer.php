@@ -4,6 +4,9 @@
 
   if(!isset($_ISMEMBER))
     $_ISMEMBER = false;
+
+  if(!isset($_SHOWRANKING))
+    $_SHOWRANKING = false;
 ?>
 <footer>
   <div class="centered clearfix">
@@ -16,7 +19,7 @@
       echo '<li><a href="'.PUBLIC_ROOT.'login.php">Administrer</a></li>';
     }
 
-    if($_ISMEMBER && $_SHOWRANKING){
+    if($_SHOWRANKING){ //$_ISMEMBER && $_SHOWRANKING
       echo '<li><a href="'.PUBLIC_ROOT.'classement.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'">Voir classement</a></li>';
     }
 

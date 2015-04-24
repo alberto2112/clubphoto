@@ -1,9 +1,10 @@
 <?php
   return array(
+      'albumcode'=>'',
       'albumname'=>'',
       'allowupload'=>'',
       'allowphotomanag'=>'',
-      'uploadslimit'=>'0',
+      'uploadslimit'=>'1',
       'upload-from'=>'',
       'upload-to'=>'',
       'allowvotes'=>'',

@@ -5,6 +5,7 @@
   $_dfac_VT = date('d/m/Y',time() + (14 * 24 * 3600));  //VOTE TO
 
   return array(
+      'albumcode'=>'',
       'albumname'=>date('d.m.Y'),
       'allowupload'=>'1',
       'allowphotomanag'=>'1', // 0=Never, 1=On upload periode, 2=Allways

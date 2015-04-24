@@ -98,11 +98,24 @@
   }
 
 //-----------------------------------------------
-  function get_rate_for($search, $haystack){
+  function get_rate_for($photo_basename, $rating_filename){
     /**
-     * @param $search (String)
-     * @param $haystak (Array | CSV file name)
-     * @return N of points | 0 if not found
+     * @param $photo_basename (String)
+     * @param $rating_filename (CSV file name)
+     * @return N of points | 0 if no rates
      */ 
+    $R = 0;
+    
+    if(!empty($photo_basename) && is_readable($rating_filename)){
+      foreach(file($rating_filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line){
+        $item = explode(';',$line,3);
+        if($item[2]==$photo_basename){
+          //$_HAS_RATED    = true;
+          $R = $item[1];
+        }
+      }
+    }
+    
+    return $R;
   }
 ?>

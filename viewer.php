@@ -165,6 +165,13 @@
           <a href="http://'.SITE_DOMAIN.PUBLIC_ROOT.FORMS_DIR.'upload.php?'.URI_QUERY_ALBUM."=$_CODALBUM".'"><img src="'.PUBLIC_ROOT.'images/tile_ajouter_photos.png" /></a>
       </div>';
   }
+
+  if($_SHOWRANKING){
+    echo '
+      <div class="Image_Wrapper" data-caption="Classement">
+          <a href="http://'.SITE_DOMAIN.PUBLIC_ROOT.'classement.php?'.URI_QUERY_ALBUM."=$_CODALBUM".'"><img src="'.PUBLIC_ROOT.'images/tile_stats_album.png" /></a>
+      </div>';
+  }
 /*
       <div class="Image_Wrapper" data-caption="<u>Comparer</u> plusieurs photos">
           <a href="#"><img src="<?php echo PUBLIC_ROOT; ?>images/tile_compare_photos.png" /></a>

@@ -11,6 +11,9 @@
     background-color:#2F302C;
     color:#fff;
   }
+  .header>h1{
+    padding:.3em 0 .45em .5em;
+  }
   footer{
     color:#ccc;
   }

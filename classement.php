@@ -13,7 +13,7 @@
 
 // Get and clean request vars
   $codalbum = clear_request_param(getRequest_param(URI_QUERY_ALBUM, false), 'a-zA-Z0-9', 8, false);
-  $action   = clear_request_param(getRequest_param(URI_QUERY_ACTION, ''), 'a-z', 8, false); // redocache | nocache
+  $action   = clear_request_param(getRequest_param(URI_QUERY_ACTION, ''), 'a-z', 9, false); // redocache | nocache
 
   if($codalbum==false){
     // Open error log
@@ -36,12 +36,15 @@
   if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true){
     $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
   }
+
+/*
 //------------------------------
 if(OPT_DEVELOPPING){
   print "DEBUG!";
   goto DEBUG;
 }
 //------------------------------
+
 // Get rights key
   if(!empty($RKEY) && get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY) == $RKEY){
     setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT); // Renouveller la cle pendant 2 heures
@@ -50,7 +53,7 @@ if(OPT_DEVELOPPING){
     header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT);
     exit;
   }
-
+*/
 DEBUG:
   echo '
 <html>
@@ -69,6 +72,7 @@ DEBUG:
     </div>
 <!-- / Header -->
 <div class="ranking">';
+
   if($action != 'nocache' && $action != 'redocache' && is_readable($RANKING_FILENAME)){
     include $RANKING_FILENAME;
   }else{
@@ -103,14 +107,14 @@ DEBUG:
     
     // Array sort
     array_multisort($aPoints, SORT_DESC, $aVotes, SORT_ASC, $LoP);
-    
+
     if($action != 'nocache' || $action == 'redocache'){
       // Create and open cache file
       $ranking_cache = new LOG($RANKING_FILENAME, false, true);
       // Print result to cache file
       foreach($LoP as $photo){
         $i++;
-        $ranking_cache->insert('<div class="photo"><span class="pos">'.$i.'</span><span class="votes">'.$photo[1].'</span><span class="points">'.$photo[2].'</span><span class="avg">'.round($photo[2] / $photo[1], 1).'</span><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /></a></div>', false);
+        $ranking_cache->insert('<div class="photo"><span class="pos">'.$i.'</span><span class="votes">'.$photo[1].'</span><span class="points">'.$photo[2].'</span><span class="avg" title="Moyenne">'.round($photo[2] / $photo[1], 1).'</span><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /></a></div>', false);
       }
 
       // Close cache file
@@ -125,7 +129,7 @@ DEBUG:
       // Print result
       foreach($LoP as $photo){
         $i++;
-        echo '<div class="photo"><span class="pos">'.$i.'</span><span class="votes">'.$photo[1].'</span><span class="points">'.$photo[2].'</span><span class="avg">'.round($photo[2] / $photo[1], 1).'</span><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /></a></div>'."\n", false;
+        echo '<div class="photo"><span class="pos">'.$i.'</span><span class="votes">'.$photo[1].'</span><span class="points">'.$photo[2].'</span><span class="avg" title="Moyenne">'.round($photo[2] / $photo[1], 1).'</span><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" /></a></div>'."\n", false;
       }
     }
   }
