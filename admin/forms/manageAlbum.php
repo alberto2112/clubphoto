@@ -213,7 +213,7 @@
             </div>
             <div class="row border-up">
               <div class="content">
-                <span class="disabled"><input id="watermark" type="checkbox" name="watermark" value="1" <?php echo $HTML['watermark']; ?>/>
+                <span><input id="watermark" type="checkbox" name="watermark" value="1" <?php echo $HTML['watermark']; ?>/>
                 Apliquer automatiquement une filigrane aux photos post&eacute;s.</span>
               </div>
             </div>

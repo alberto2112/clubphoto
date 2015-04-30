@@ -17,10 +17,14 @@
             <li class="tb-myrates-g disabled"><a href="'.PUBLIC_ROOT.FORMS_DIR.'myrates.php?'.URI_QUERY_ACTION.'=view&amp;'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Gerer mes votes">Mes &eacute;valuations</a></li>
             <li class="tb-clonesession-g"><a href="'.PUBLIC_ROOT.FORMS_DIR.'clonesession.php?'.URI_QUERY_ACTION.'=request&amp;'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Cloner session">Clonner sesion</a></li>';
 
-  if(!$_ISADMIN && $_SHOWRANKING){
+  if(!$_ISADMIN){
     echo '
+            <li class="tb-settings-g"><a href="'.PUBLIC_ROOT.'login.php" title="Administrer">Administrer</a></li>';
+    if($_SHOWRANKING){
+      echo '
             <li class="tb-stats-g"><a href="'.PUBLIC_ROOT.'classement.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Voir classement">Classement</a></li>';
-  }elseif($_ISADMIN){
+    }
+  }else{
     echo '
             <li class="tb-stats-g"><a href="'.PUBLIC_ROOT.ADMIN_DIR.'stats.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Voir classement">Classement</a></li>
             <li class="tb-settings-g"><a href="'.PUBLIC_ROOT.ADMIN_DIR.FORMS_DIR.'manageAlbum.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Editer album">Param&egrave;tres</a></li>

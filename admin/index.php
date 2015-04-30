@@ -161,6 +161,24 @@
     </div>
     <!-- </Administrateur> -->
 
+    <!-- <Flickr> -->
+<?php
+      if($_SESSION['ULEVEL']==USER_LEVEL_SUPERADMIN){
+        echo '
+    <div class="card">
+      <div class="row">
+        <h2>Flickr</h2>
+      </div>
+      <div class="row border-up">
+        <ul class="content">
+          <li><a href="'.FORMS_DIR.'flickrauth.php">Administrer token</a></li>
+        </ul>
+      </div>
+    </div>'."\n";
+      }
+?>
+    <!-- </Flickr> -->
+    
     <!-- <Journal> -->
     <div class="card">
       <div class="row">

@@ -168,7 +168,8 @@
       $dim = explode('x',$large_size,2);
       $photo->readImage($image_filename);
       $photo->scaleImage($dim[0],$dim[1],true);
-      // Do watermark
+      
+    // Do watermark
       if(!empty($watermark_filename) && is_readable($watermark_filename)){
         $wm = new Imagick($watermark_filename);
 
@@ -185,8 +186,8 @@
         }
 
         // calculer position
-        $x = ($iWidth - $wWidth) - 25;
-        $y = ($iHeight - $wHeight) - 15;
+        $x = ($iWidth - $wWidth) - 18;
+        $y = ($iHeight - $wHeight) - 30;
 
         $photo->compositeImage($wm, imagick::COMPOSITE_OVER, $x, $y);
       }

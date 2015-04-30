@@ -177,9 +177,13 @@
       
       // Ecrire le fichier CSV pour la photo
       fwrite($CSV, $exif_infos);
-      
-      // Installer photo et creer fichier d'information
-      $result = install_photo($tempFile, $targetAlbum, false, DIM_THUMB, DIM_MEDIUM, DIM_LARGE );
+
+    // INSTALLER PHOTO
+      if(get_arr_value($CONFIG, 'watermark')=='1'){
+        $result = install_photo($tempFile, $targetAlbum, SYSTEM_ROOT.'images/watermark.png', DIM_THUMB, DIM_MEDIUM, DIM_LARGE );
+      }else{
+        $result = install_photo($tempFile, $targetAlbum, false, DIM_THUMB, DIM_MEDIUM, DIM_LARGE );
+      }
       
       if(is_object($result)){
         // S'il y a une erreur logger celui-ci dans les archives

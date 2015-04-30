@@ -7,6 +7,7 @@ class Imagick{
   public $image_in_height=0;
   
   const COMPOSITE_OVER = 0;
+  const COMPOSITE_OPACITY = 50;
 # --------------------------------------------------------
   function __construct($im_filename=''){
 	$this->readImage($im_filename);
@@ -118,7 +119,17 @@ class Imagick{
   }
 # --------------------------------------------------------
   function compositeImage($composite_object, $composite_operator, $x, $y, $channel = 0){
-	imagecopymerge($this->image_temp, $composite_object, $x, $y, 0, 0, $composite_object->getImageWidth, $composite_object->getImageHeight, 50);
+    // creating a cut resource 
+    $cut = imagecreatetruecolor($composite_object->getImageWidth(), $this->getImageHeight()); 
+
+    // copying relevant section from background to the cut resource 
+    imagecopy($cut, $this->image_temp, 0, 0, $x, $y, $this->getImageWidth(), $this->getImageHeight()); 
+
+    // copying relevant section from watermark to the cut resource 
+    imagecopy($cut, $composite_object->image_temp, 0, 0, 0, 0, $composite_object->getImageWidth(), $composite_object->getImageHeight()); 
+    
+    // insert cut resource to destination image 
+	imagecopymerge($this->image_temp, $cut, $x, $y, 0, 0, $composite_object->getImageWidth(), $composite_object->getImageHeight(), $this::COMPOSITE_OPACITY);
   }
 # --------------------------------------------------------
   function writeImage($out_filename){

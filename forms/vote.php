@@ -55,9 +55,9 @@
     $photo_info[TITLE] = $photo_filename;
   }
 
-  // Load photo label
+  // Load photo description
   if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.dsc.txt')){
-    $photo_info[DESCRIPTION] = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.dsc.txt', false, null, -1, 128); // Limited to 128 chars
+    $photo_info[DESCRIPTION] = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo_filename.'.dsc.txt', false, null, -1, 512); // Limited to 512 chars
   }
 
   // Lire fichier de configuation de l'album

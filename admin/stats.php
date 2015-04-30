@@ -27,12 +27,36 @@
     }
 
     echo '
+          <th>Choisir</th>
           <th>&nbsp;</th>
         </tr>
       </thead>
-      <tbody>';
+      <tbody>'."\n";
   }
-//-------------------------------
+//-----------------------------------------------------
+  function print_row($codalbum, &$photo, $nline, $ratemethod='stars', $selected=false){
+    /**
+     * @param $codalbum
+     * @param $photo (Array)
+     * @param $nline (Integer)
+     */
+    
+      $votes = $photo[1];//filesize($votes_fname);
+      $points = $photo[2]; //filesize($points_fname);
+    
+      echo '<tr>';
+        echo '<td><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" alt="'.$photo[0].'" /></a></td>';
+        echo '<td>'.$photo[3].'</td>';
+        echo '<td>'.$votes.'</td>';
+        if($ratemethod=='stars'){
+          echo '<td>'.$points.'</td>';
+          echo '<td>'.round($points / $votes, 1).'/5</td>';
+        }
+        echo '<td><input type="checkbox" id="p['.$nline.']" name="p['.$nline.']" value="'.$photo[0].'" onclick="javascript:countChecked();" '.(($selected)?'checked="checked" ':'').'/></td>';
+        echo '<td><a href="download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'">T&eacute;l&eacute;charger</a></td>';
+      echo '</tr>'."\n";
+  }
+//-----------------------------------------------------
   function print_table_footer(){
     echo '
       </tbody>
@@ -96,9 +120,15 @@
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/base.css?v='.VERSION_CSS; ?>" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/buttons.css?v='.VERSION_CSS; ?>" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/ranking.css?v='.VERSION_CSS; ?>" type="text/css" />
+    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/modalboxes.css?v='.VERSION_CSS; ?>" type="text/css" />
     <script src="<?php echo PUBLIC_ROOT; ?>js/jquery.1.10.1.min.js"></script>
     <script src="<?php echo PUBLIC_ROOT; ?>js/stupidtable.min.js"></script>
+    <script src="<?php echo PUBLIC_ROOT; ?>js/modalboxes.js"></script>
     <style>
+      body{
+        padding-top:2.75em;
+      }
+      
       table{
         width:75%;
         margin:6px auto;
@@ -132,10 +162,33 @@
         height:2em;
         background-color:#555;
       }
+      .selection p{
+        margin:0;
+        padding:.25em 0 .3em .5em;
+        font-size:85%;
+        color:#aaa;
+      }
+      
+      .selection a{
+        color:#aaa;
+      }
     </style>
   </head>
   <body>
-    <div class="selection"></div>
+<!-- Modal boxes -->
+    <div class="modal_layer_bg" id="modal-layer-bg">
+      <!-- Modal box - Photos to flickr -->
+      <div class="modal_box" id="mb-snd-flickr">
+        <p>Envoyer les photos s&eacute;lection&eacute;es &agrave; Flickr</p>
+        <div class="btn_wraper">
+          <a href="#" class="button gray" onClick="HideModalBoxes('mb-snd-flickr');">Annuler</a>
+          <a href="#" class="button red" onClick="sndSelectedPhotos();">Continuer</a>
+        </div>
+      </div>
+      <!-- Modal box - Photos to flickr -->
+    </div>
+<!-- / Modal boxes -->
+    <div class="selection"><p>Photos s&eacute;lection&eacute;es: <span id="chkbox_counter">0</span> <a href="#" onclick="javascript:ShowModalBox('mb-snd-flickr')" class="button flickr">Les envoyer &agrave; flickr</a></p></div>
 <?php
     echo '<div class="button-wrapper at-center">';
       if($action=='defsort'){
@@ -146,29 +199,20 @@
         echo '<a class="blue" href="?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_ACTION.'=defsort">Ne pas grouper photos</a>';
       }
     echo '</div>';
+    
+    $i=0;
     if($action=='defsort'){
       print_table_header($AL_CONF['ratemethod']);
       foreach($LoP as $photo){
-            //$votes_fname = $file;
-            //$thumb_fname = substr($file, strrpos($file,DIRECTORY_SEPARATOR)+1,-4);
-            //$points_fname = $ALBUM_ROOT.'votes/'.$thumb_fname.'.pts.txt';
-            //$thumb_fname = PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$thumb_fname;
-            $votes = $photo[1];//filesize($votes_fname);
-            $points = $photo[2]; //filesize($points_fname);
+            
 
-            // Leer fichero $photo_filename.csv
-            $photo_info = read_csv($ALBUM_ROOT.'photos/'.$photo[0].'.csv');
+          // Leer fichero $photo_filename.csv
+          $photo_info = read_csv($ALBUM_ROOT.'photos/'.$photo[0].'.csv');
 
-            echo '<tr>';
-              echo '<td><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" alt="'.$photo[0].'" /></a></td>';
-              echo '<td>'.$photo_info[AUTHOR].'</td>';
-              echo '<td>'.$votes.'</td>';
-              if($AL_CONF['ratemethod']=='stars'){
-                echo '<td>'.$points.'</td>';
-                echo '<td>'.round($points / $votes, 1).'/5</td>';
-              }
-              echo '<td><a href="#">Choisir</a><br /><a href="download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'">T&eacute;l&eacute;charger</a></td>';
-            echo '</tr>';
+          $i++;
+          $photo[3]=$photo_info[AUTHOR];
+        
+          print_row($codalbum, $photo, $i, $AL_CONF['ratemethod'], ($i<16));
       }
       print_table_footer();
     }elseif($action=='group'){
@@ -197,7 +241,14 @@
       foreach($g_LoP as $uploader){
         
         print_table_header($AL_CONF['ratemethod']);
+        $i++;
+        $j=0;
         foreach($uploader as $photo){
+
+          $j++;
+        
+          print_row($codalbum, $photo, 'g'.$i.'p'.$j, $AL_CONF['ratemethod'], ($j==1));
+/*
           echo '<tr>';
             echo '<td><a href="'.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'"><img src="'.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$photo[0].'" alt="'.$photo[0].'" /></a></td>';
             echo '<td>'.$photo[3].'</td>';
@@ -208,6 +259,7 @@
             }
             echo '<td><a href="#">Choisir</a><br /><a href="download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'">T&eacute;l&eacute;charger</a></td>';
           echo '</tr>';
+*/
         }
         print_table_footer();
       }
@@ -218,6 +270,19 @@
       $(function(){
           $("table").stupidtable();
       });
+      
+      function countChecked(){
+        $("#chkbox_counter").text($("input[type=checkbox]:checked").length) ;
+      }
+      
+      function sndSelectedPhotos(){
+        var selectedPhotos = $('input:checkbox:checked').map(function() {
+              return this.value;
+            }).get();
+        
+        //alert( selectedPhotos );
+        document.location.href="<?php echo PUBLIC_ROOT.ADMIN_DIR.RUN_DIR.'flickr.php?'.URI_QUERY_ACTION.'=send&'.URI_QUERY_ALBUM.'='.$codalbum.'&'.URI_QUERY_PHOTO.'='  ?>"+selectedPhotos ;
+      }
     </script>
   </body>
 </html>

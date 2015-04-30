@@ -84,6 +84,8 @@
 /* Card COLORS */
   .card, .dialog {
     background-color: #f4f4f4;
+    /* color:#313131; */
+    color:#888;
   }
 
   .card .row,
@@ -193,7 +195,6 @@
   .card .row .content,
   .card ul.row li{
     font-size:90%;
-    color:#313131;
   }
 /* OTHER */
 .disabled{
