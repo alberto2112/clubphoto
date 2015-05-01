@@ -60,7 +60,7 @@
       if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo.'.dsc.txt')){
         $photo_info[DESCRIPTION] = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo.'.dsc.txt', false, null, -1, 512)."\n\n"; // Limited to 512 chars
       }
-      $photo_info[DESCRIPTION] .= '&Eacute;toiles: '.$points.' Moyenne:'.$avg;
+      $photo_info[DESCRIPTION] .= '&#201;toiles: '.$points.' Moyenne:'.$avg;
       
       // Telecharger photos sur flickr
       $id = $flickr->sync_upload(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/large/'.$photo, $photo_info[TITLE], $photo_info[DESCRIPTION], $tags);

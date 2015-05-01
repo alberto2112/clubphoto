@@ -22,7 +22,7 @@
    .photo-wrapper{
       position: absolute;
       top: 2.9em;
-      bottom: 3.5em;
+      bottom: 60px;
       background-repeat: no-repeat;
       background-size: contain;
       background-position: center;
@@ -42,7 +42,7 @@
 
     .nav{
       position:absolute;
-      height:3.5em;
+      height:48px;
       bottom: 0;
       right:1em;
       text-align: center;

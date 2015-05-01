@@ -186,8 +186,8 @@
         }
 
         // calculer position
-        $x = ($iWidth - $wWidth) - 18;
-        $y = ($iHeight - $wHeight) - 30;
+        $x = 18; //($iWidth - $wWidth) - 18;
+        $y = ($iHeight - $wHeight) - 24;
 
         $photo->compositeImage($wm, imagick::COMPOSITE_OVER, $x, $y);
       }

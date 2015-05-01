@@ -45,7 +45,7 @@
       <h2 class="title green">Token OK</h2>
     </div>
     <div class="row">
-      <p class="content">Le token a bien &eacute;t&eacute; enregistr&eacute;. <a href="'.PUBLIC_ROOT.ADMIN_DIR.'">Retour</a></p>
+      <p class="content">Le token a &eacute;t&eacute; bien enregistr&eacute;. <a href="'.PUBLIC_ROOT.ADMIN_DIR.'">Retour</a></p>
     </div>    
 </div>';
   }
