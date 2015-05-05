@@ -96,17 +96,18 @@
         if(substr($file,-7)=='jpg.txt'){
           $votes_fname = $file;
           $thumb_fname = substr($file, strrpos($file,DIRECTORY_SEPARATOR)+1,-4);
-          $points_fname = $ALBUM_ROOT.'votes/'.$thumb_fname.'.pts.txt';
-          //$thumb_fname = PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$thumb_fname;
-          $votes = filesize($votes_fname);
-          $points = filesize($points_fname);
+          if(file_exists($ALBUM_ROOT.'photos/thumbs/'.$thumb_fname)){
+            $points_fname = $ALBUM_ROOT.'votes/'.$thumb_fname.'.pts.txt';
+            //$thumb_fname = PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$thumb_fname;
+            $votes = filesize($votes_fname);
+            $points = filesize($points_fname);
 
-          // Leer fichero $photo_filename.csv
-          //$photo_info = read_csv($ALBUM_ROOT.'photos/'.$thumb_fname.'.csv');
-          $LoP[] = array($thumb_fname, $votes, $points);
-          $aPoints[] = $points;
-          $aVotes[] = $votes;
-
+            // Leer fichero $photo_filename.csv
+            //$photo_info = read_csv($ALBUM_ROOT.'photos/'.$thumb_fname.'.csv');
+            $LoP[] = array($thumb_fname, $votes, $points);
+            $aPoints[] = $points;
+            $aVotes[] = $votes;
+          }
         }
       }
     }
@@ -276,7 +277,9 @@
       }
       
       function sndSelectedPhotos(){
-        var selectedPhotos = $('input:checkbox:checked').map(function() {
+        $('#mb-snd-flickr').html("<p>Envoi des photos en cours...</p>");
+        
+        var selectedPhotos = $("input:checkbox:checked").map(function() {
               return this.value;
             }).get();
         

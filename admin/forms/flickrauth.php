@@ -2,9 +2,10 @@
     if(!defined('SYSTEM_ROOT'))
       include __DIR__.'/../../settings.php';
 
-    include SYSTEM_ROOT.LIB_DIR.'system.lib.php';
-    include SYSTEM_ROOT.LIB_DIR.'login.lib.php';
-    include SYSTEM_ROOT.LIB_DIR.'htmlhelper.badlib.php';
+    include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
+    include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
+    include_once SYSTEM_ROOT.LIB_DIR.'htmlhelper.badlib.php';
+    include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
 
     // Forcer administrateur
     if(!is_admin()){

@@ -151,14 +151,18 @@
         
         if($_SHOW_RATES){
           // Get points for photo
+          $V = (file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.txt'))? filesize(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.txt') : 0;
+          $P = (file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt'))? filesize(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt') : 0;
+          $M = ($V>0)? round($P / $V, 1) : $P ;
+/*
           if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt')){
             $P = filesize(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt');
           }else{
             $P = 0;
           }
-          
+*/        
           // Show points
-          echo '<div class="photo-rate"><span>'.$P.'</span></div>';
+          echo '<div class="photo-rate" title="Moyenne"><span>'.$M.'</span></div>';
         }
         
         // Montrer bouton pour supprimer la photo

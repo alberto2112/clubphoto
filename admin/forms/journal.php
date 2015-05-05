@@ -2,8 +2,9 @@
   if(!defined('SYSTEM_ROOT'))
     include __DIR__.'/../../settings.php';
 
-  include SYSTEM_ROOT.LIB_DIR.'system.lib.php';
-  include SYSTEM_ROOT.LIB_DIR.'login.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
+  include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
 
   // Forcer administrateur
   if(!is_admin()){
@@ -15,7 +16,7 @@
     exit();
   }
 
-  include SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
 
 // Get vars
   $action   = clear_request_param(getRequest_param(URI_QUERY_ACTION, false), 'a-z', 8, false);

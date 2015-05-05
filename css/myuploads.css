@@ -56,7 +56,8 @@ text-indent:-9999px;
   color:#fafafa;
   right:5px;
   text-shadow: 1px 1px 2px #000;
-  background:transparent url(../images/ico_star_w_16x16.png) no-repeat left center;
+  background:transparent url("../images/ico_calculator_w_16x16.png") no-repeat left center;
+  
 }
 
 #mbupdate-photo-thumb{
