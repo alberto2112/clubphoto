@@ -20,9 +20,13 @@
       <a href="login.php" class="link-login">Administrer</a>
   </div>
   
-  <div class="medi-section" style="background-image: url(<?php echo PUBLIC_ROOT.'images/ms_background.jpg?v='.VERSION_HOME_BG; ?>);">
-    <div class="ms-title">Photo la plus &eacute;toil&eacute; pour la sortie: Le canyon de Bozouls</div>
-  </div>
+<?php
+  if(is_readable(SYSTEM_ROOT.ETC_DIR.'medisection.html')){
+    print file_get_contents(SYSTEM_ROOT.ETC_DIR.'medisection.html');
+  }else{
+    echo '<div class="medi-section"></div>';
+  }
+?>
   
   <div class="albums">
 <?php

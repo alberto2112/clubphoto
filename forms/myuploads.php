@@ -154,6 +154,16 @@
           $V = (file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.txt'))? filesize(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.txt') : 0;
           $P = (file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt'))? filesize(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt') : 0;
           $M = ($V>0)? round($P / $V, 1) : $P ;
+          
+          echo '<div class="photo-rate-details" id="rate-details-'.$i.'"><h4>D&eacute;tail du vote</h4>'."\n";
+          for($stars=1;$stars<6;$stars++){
+            $Pp = (file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.'.$stars.'.txt'))?
+              filesize(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.'.$stars.'.txt')
+              : 0;
+            
+            echo '<span class="stars-'.$stars.'">'.$Pp.'</span>'."\n";
+          }
+          echo '<span onclick="javascript:DetailsOf('.$i.');" class="close-details">Fermer</span></div>'."\n";
 /*
           if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt')){
             $P = filesize(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt');
@@ -162,7 +172,7 @@
           }
 */        
           // Show points
-          echo '<div class="photo-rate" title="Moyenne"><span>'.$M.'</span></div>';
+          echo '<div class="photo-rate" title="Moyenne" onclick="javascript:DetailsOf('.$i.');"><span>'.$M.'</span></div>';
         }
         
         // Montrer bouton pour supprimer la photo
@@ -216,14 +226,16 @@
         }
       }
       
+      function DetailsOf(LayerID){
+        $("#rate-details-"+LayerID).toggle();
+      }
+      
       function dlgDelete(Photo2Del){
-        //this.photo_to_delete = Photo2Del; // <---- Peut s'effacer
         $("#mbox-btn-delete").attr("href", "<?php echo PUBLIC_ROOT.RUN_DIR. 'myuploads.php?'.URI_QUERY_ACTION.'=delete&'.URI_QUERY_ALBUM.'='.$codalbum.'&'.URI_QUERY_PHOTO.'='; ?>"+Photo2Del);
         ShowModalBox('mb-delete-photo');
       }
       
       function dlgUpdate(photoID){
-        //this.photo_to_delete = Photo2Del; // <---- Peut s'effacer
         var photo_filename = $('#photo-filename-'+photoID).val();
         
         $("#mbupdate-photo-thumb").attr("src", "<?php echo PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/medium/';?>"+photo_filename);

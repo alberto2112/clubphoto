@@ -57,7 +57,55 @@ text-indent:-9999px;
   right:5px;
   text-shadow: 1px 1px 2px #000;
   background:transparent url("../images/ico_calculator_w_16x16.png") no-repeat left center;
-  
+  cursor: pointer;
+}
+
+.photo-card .photo-rate-details{
+  display:none;
+  position:absolute;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  background-color:rgba(0,0,0,.75);
+  padding:5px 8px;
+}
+.photo-card .photo-rate-details h4{
+  background-color:#333;
+  color:#eee;
+  text-align:left;
+  font-size:20px;
+  font-weight:300;
+  margin:-5px -8px 8px;
+  padding:3px 0 5px 14px;
+}
+.photo-card .photo-rate-details>span{
+  display:block;
+  padding:3px 0 5px 70px;
+  color:#fff;
+}
+.photo-card .photo-rate-details .stars-1,
+.photo-card .photo-rate-details .stars-2,
+.photo-card .photo-rate-details .stars-3,
+.photo-card .photo-rate-details .stars-4,
+.photo-card .photo-rate-details .stars-5{
+  background-position: 6px 4px;
+  background-repeat: no-repeat;
+}
+.photo-card .photo-rate-details .stars-1{  background-image: url(../images/ico_stars_w_1_5.png); }
+.photo-card .photo-rate-details .stars-2{  background-image: url(../images/ico_stars_w_2_5.png); }
+.photo-card .photo-rate-details .stars-3{  background-image: url(../images/ico_stars_w_3_5.png); }
+.photo-card .photo-rate-details .stars-4{  background-image: url(../images/ico_stars_w_4_5.png); }
+.photo-card .photo-rate-details .stars-5{  background-image: url(../images/ico_stars_w_5_5.png); }
+
+.photo-card .photo-rate-details .close-details{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  text-align:center;
+  cursor: pointer;
+  padding:3px 0;
 }
 
 #mbupdate-photo-thumb{
@@ -94,6 +142,7 @@ text-indent:-9999px;
 
 /* FONT SIZES & COLORS */
 .photo-form .photo-label,
+.photo-card .photo-rate-details .close-details,
 #mb-update-photo input[type="text"],
 #mb-update-photo textarea{
   background-color:#10ADF5;
@@ -101,4 +150,9 @@ text-indent:-9999px;
   font-family: "Lato", sans-serif;
   font-size:127%;
   text-decoration: none;
+}
+
+/* Z-INDEX */
+.photo-card .photo-rate-details{
+  z-index: 99;
 }
