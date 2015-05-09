@@ -26,7 +26,7 @@
   ?>
       <li class="disabled">Comment &eacute;valuer</li>
       <li class="disabled">FAQ</li>
-      <li class="disabled">Mises &agrave; jour</li>
+      <li><a href="<?php echo PUBLIC_ROOT; ?>maj.php">Mises &agrave; jour</a></li>
       <li class="disabled">Signaler un probl&egrave;me</li>
 <?php
   if($_ISADMIN){
@@ -40,7 +40,8 @@
       <li><a href="http://photo.mjcrodez.com/">Site officiel du Club photo</a></li> 
       <li><a href="http://www.mjcrodez.com/">Site officiel de la MJC (Rodez)</a></li>     
       <li>Upload script: <a href="http://www.dropzonejs.com/">DropzoneJS</a></li>
-      <li>Icons made by Freepik from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></li>
+      <li>Icons made by Freepik from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
+      <li><a href="https://github.com/lsolesen/pel">PEL</a> (PHP Exif Library) by <a href="https://github.com/weberhofer">Martin Geisler</a></li>
     </ul>
 
     <ul class="noborder">

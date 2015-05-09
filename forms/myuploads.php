@@ -107,7 +107,7 @@
     </div>
 <!-- /Modal boxes -->
     <div class="header">
-      <h1 style="font-weight: 100; padding: .35em;">Mes t&eacute;l&eacute;chargements</h1>
+      <h1>Mes t&eacute;l&eacute;chargements</h1>
     </div>
 
     <!-- PHOTO WRAPPER -->

@@ -78,7 +78,7 @@
   $points_filename   = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.pts.txt';
   $comments_filename = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/votes/'.$photo_filename.'.cmts.csv';
 
-  $str_cookie  = $codalbum.'_'.str_replace('.','_',$photo_filename);
+  //$str_cookie  = $codalbum.'_'.str_replace('.','_',$photo_filename);
   $IP          = getClient_ip();
   $vote_result = '';
   $_CAN_RATE   = false;
@@ -229,7 +229,7 @@
     $LOG->insert('ip='.$IP.' session='.$USER_SESSION.' photo='.$photo_filename.' points='.$points .' res=SUCCESS', true); 
     
     // Set cookie
-    setcookie($str_cookie,$points,time()+(3600 * 24 * 14), PUBLIC_ROOT);
+    //setcookie($str_cookie,$points,time()+(3600 * 24 * 14), PUBLIC_ROOT);
 
     // Send result
     if($AL_CONF['ratemethod']=='stars')

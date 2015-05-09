@@ -1,4 +1,4 @@
-@import "http://fonts.googleapis.com/css?family=Lato:700,400,300,200";
+@import "https://fonts.googleapis.com/css?family=Lato:700,400,300,200";
 /* Colors */
   body{
     background-color: #F3F4EE;
@@ -18,8 +18,49 @@
     color:#ccc;
   }
   footer a{
-    color:inherit;
+    color:#cea;
   }
+
+/* HEADER */
+.header{
+    padding:.75em .33em;
+}
+.header h1{
+    font-size: 215%;
+    color: #cdd3dd;
+    display:inline-block;
+    font-weight:100;
+    margin:0;
+    padding:.15em 0 .1em .25em;
+}
+.header h1 a{
+    color:inherit;
+}
+.header h1 a:hover{
+    color:#09F;
+}
+
+h1.instance-header{
+    font-size: 14px;
+    padding:20px;
+    margin-bottom:10px;
+    margin-top: 30px;
+}
+
+/* HEADER BUTTONS */
+.header-button{
+  display:inline-block;
+  background-color:transparent;
+  text-decoration: none;
+  opacity: .8;
+  
+  padding-left:35px;
+  padding-right:.3em;
+  margin-right:.3em;
+  border-right:1px #cdd3dd solid;
+}
+.header-button.notext{min-height:32px; min-width:32px; padding-left: 0;}
+.header-button.ico-home{ background: transparent url("../images/toolbar_home_32x32.png") no-repeat left center; }
 
 /* FOOTER */
 /*
@@ -196,12 +237,16 @@
   .card ul.row li{
     font-size:90%;
   }
+
 /* OTHER */
 .disabled{
   text-decoration:line-through;
 }
 .noborder{
   border:none !important;
+}
+.notext{
+  text-indent:-9999px;
 }
 
 /* FIXIES */

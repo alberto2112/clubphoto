@@ -3,7 +3,7 @@
     </div>
   <div class="form-pincode">
     <span>Saisissez le code PIN</span>
-    <input type="text" id="txt-pincode" name="pincode" maxlength="5" />
+    <input type="text" id="txt-pincode" name="pincode" maxlength="5" inputmode="numeric" pattern="[0-9]*" />
   </div>
   <div class="button-wrapper at-center">
   <?php

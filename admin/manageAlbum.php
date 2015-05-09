@@ -15,8 +15,10 @@
     exit;
   }
 
-  include SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
-  include SYSTEM_ROOT.LIB_DIR.'log.class.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'instapush.class.php';
+  include_once SYSTEM_ROOT.ETC_DIR.'instapush.php';
 
   $VARLABELS = array(
     'ALBUMNAME'=>'albumname',
@@ -132,6 +134,13 @@
         // Enregistrer activitee
         $LOG->insert('[+] ['.$codalbum.'] - ALBUM CREATED by '.$ADMIN_NAME.'  - '.$IP);
         $AL_LOG->insert('[+] - ALBUM CREATED by '.$ADMIN_NAME.'  - '.$IP);
+
+        // Send push notification
+        $push = InstaPush::getInstance(INSTAPUSH_APPLICATION_ID, INSTAPUSH_APPLICATION_SECRET);
+        $push->track('NewAlbum', array( 
+                'AdminName'=> $ADMIN_NAME,
+                'AlbumName'=> $albumname
+        ));
 
         // !! Ne pas ajouter -> break;
 

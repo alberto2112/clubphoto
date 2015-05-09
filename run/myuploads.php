@@ -63,8 +63,6 @@
           // Delete photo
           $used_disk = delete_photo(SYSTEM_ROOT.ALBUMS_DIR.$codalbum, $photo_filename, false);
           
-          //TODO: Delete photo stats
-          
           // Convert $used_disk to Ko
           if(!empty($used_disk)){
             $used_disk = round($used_disk / 1024);

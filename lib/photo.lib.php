@@ -255,11 +255,19 @@
       @unlink($album_path.'/photos/large/'.$photo_filename);
 
       //Delete photo stats
-      foreach (glob($album_path.'/photos/votes/'.$photo_filename.'*') as $file2del) {
+      foreach(array('txt','pts','pts.5.txt','pts.4.txt','pts.3.txt','pts.2.txt','pts.1.txt','cmts.csv') as $sufix){
+        if(file_exists($album_path.'/votes/'.$photo_filename.'.'.$sufix))
+          @unlink($album_path.'/votes/'.$photo_filename.'.'.$sufix);
+      }
+/*
+      # Doesn't work
+      foreach (glob($album_path.'/photos/votes/'.$photo_filename.'.*') as $file2del) {
         @unlink($file2del);
       }
+*/
       //Delete photo infos
-      //@unlink($album_path.'/photos/'.$photo_filename.'.csv'); // Ne pas supprimer ce fichier
+      //@unlink($album_path.'/photos/'.$photo_filename.'.csv'); // Ne pas supprimer ce fichier car il pourrait avoir
+                                                                // un conflict de photos et sessions d'utilisateurs aux prochains telechargements
     
       return $used_disk;
   }

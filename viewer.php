@@ -135,7 +135,7 @@
   <body>
 <!-- Header -->
     <div class="header">
-        <h1><a class="toolbar-home" href="<?php echo PUBLIC_ROOT; ?>">Home</a><?php echo get_arr_value($AL_CONF, 'albumname'); ?></h1>
+        <h1><a class="header-button ico-home notext" href="<?php echo PUBLIC_ROOT; ?>">Home</a><?php echo get_arr_value($AL_CONF, 'albumname'); ?></h1>
 
         <div class="album-infos">
           <p><?php echo get_arr_value($AL_CONF, 'albumdesc'); ?></p>

@@ -1,11 +1,13 @@
 <?php
   if(!defined('SYSTEM_ROOT'))
-    include __DIR__.'/settings.php';
+    include_once __DIR__.'/settings.php';
 
-  include SYSTEM_ROOT.LIB_DIR.'system.lib.php';
-  include SYSTEM_ROOT.ETC_DIR.'versions.php';
-  include SYSTEM_ROOT.LIB_DIR.'login.lib.php';
-  include SYSTEM_ROOT.LIB_DIR.'log.class.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'instapush.class.php';
+  include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
+  include_once SYSTEM_ROOT.ETC_DIR.'instapush.php';
 
   if(is_logged()){
     header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ADMIN_DIR);
@@ -43,6 +45,15 @@
         exit;
       }else{
         $LOG->insert('[!] Tentative de connexion avec un mot de passe invalide - uid='.$userid.' - ip='.$IP);
+
+        // Send push notification
+        $push = InstaPush::getInstance(INSTAPUSH_APPLICATION_ID, INSTAPUSH_APPLICATION_SECRET);
+        $push->track('LoginFailure', array( 
+                'AdminID'=>$userid,
+                'RemoteIP'=>$IP
+        ));
+        
+        // User redirect
         header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.'login.php');
         exit;
       }

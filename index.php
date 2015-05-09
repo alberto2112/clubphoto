@@ -2,7 +2,10 @@
   include 'settings.php';
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
   include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
+
+  $_ISADMIN = is_admin();
 ?>
 <html>
 <head>

@@ -148,12 +148,17 @@
         echo '
       <div class="row border-up">
         <ul class="content">
-          <li>Nouveau administrateur</li>
+          <li class="disabled">Nouveau administrateur</li>
         </ul>
       </div>
       <div class="row border-up">
         <ul class="content">
-          <li>Gerer administrateurs</li>
+          <li class="disabled">Gerer administrateurs</li>
+        </ul>
+      </div>
+      <div class="row border-up">
+        <ul class="content">
+          <li class="disabled">Notifications push</li>
         </ul>
       </div>';
       }
