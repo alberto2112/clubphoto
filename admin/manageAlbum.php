@@ -18,7 +18,7 @@
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
   include_once SYSTEM_ROOT.LIB_DIR.'instapush.class.php';
-  include_once SYSTEM_ROOT.ETC_DIR.'instapush.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'push.lib.php';
 
   $VARLABELS = array(
     'ALBUMNAME'=>'albumname',
@@ -53,6 +53,7 @@
     $LOG->insert('[!] msg=ALBUM CODE NOT FOUND ip='.$IP.' admin='.$ADMIN_NAME);    
   }else{
     $AL_LOG = new LOG(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/logs/events.log'); // Le fichier sera cree/ouvert uniquement si on ajoute des lignes
+    $push_sctrs = get_subscriptors(SYSTEM_ROOT.ETC_DIR); // Get push notification subscriptors
     
     if($action=='new' || $action=='edit'){
 
@@ -136,11 +137,7 @@
         $AL_LOG->insert('[+] - ALBUM CREATED by '.$ADMIN_NAME.'  - '.$IP);
 
         // Send push notification
-        $push = InstaPush::getInstance(INSTAPUSH_APPLICATION_ID, INSTAPUSH_APPLICATION_SECRET);
-        $push->track('NewAlbum', array( 
-                'AdminName'=> $ADMIN_NAME,
-                'AlbumName'=> $albumname
-        ));
+        send_push_to($push_sctrs, InstaPush::getInstance('null','null'), 'newalbum', array('AdminName'=>$ADMIN_NAME, 'AlbumName'=>$albumname));
 
         // !! Ne pas ajouter -> break;
 
@@ -210,24 +207,31 @@
       
         // Delete album
         rmdir_recurse(SYSTEM_ROOT.TRASH_DIR.$codalbum);
-      
+
+        // Enregistrer activitee
         $LOG->insert('[-] ['.$codalbum.'] -  ALBUM DELETED FROM TRASH by '.$ADMIN_NAME.'  - '.$IP, true);
+
+        // Send push notification
+        send_push_to($push_sctrs, InstaPush::getInstance('null','null'), 'delalbum', array('AdminName'=>$ADMIN_NAME, 'AlbumName'=>$albumname));
       
-        header('Location: '.PUBLIC_ROOT.ADMIN_DIR.'list_albums.php'); exit;
+        header('Location: '.PUBLIC_ROOT.ADMIN_DIR); exit;
         break;
       
       case 'delete':
         // Get album size
         $album_size = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/album_size.txt',null,null,null,9);
-          
+
         // Update used quota
         update_quota(FILE_USED_QUOTA, ($album_size * -1));
-          
+
         // Delete album
         rmdir_recurse(SYSTEM_ROOT.ALBUMS_DIR.$codalbum);
-      
+
         // Enregistrer activitee
         $LOG->insert('[-] ['.$codalbum.'] - ALBUM DELETED by '.$ADMIN_NAME.'  - '.$IP, true);
+
+        // Send push notification
+        send_push_to($push_sctrs, InstaPush::getInstance('null','null'), 'delalbum', array('AdminName'=>$ADMIN_NAME, 'AlbumName'=>$albumname));
 
         header('Location: '.PUBLIC_ROOT.ADMIN_DIR); exit;
         break;

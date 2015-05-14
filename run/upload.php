@@ -63,7 +63,7 @@
     if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php'))
       $CONFIG = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
     else
-      $CONFIG = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';// remplir l'array avec des parametres par defaut
+      $CONFIG = include SYSTEM_ROOT.ETC_DIR.'album_def.config.php';// remplir l'array avec des parametres par defaut
 
     // Empecher de telecharger des photos a tout personne externe au club photo
     if(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($CONFIG, COOKIE_RIGHTS_KEY)){
@@ -117,6 +117,12 @@
           $LOG->insert('[!] QUOTA DEPASEE - '.$IP.' - UKEY: '.$USER_SESSION.' (/'.RUN_DIR.'upload.php)', false);
           $LOG->insert('    -> DISK LIMIT: '.DISK_QUOTA.'Ko - CURRENT USED DISK SPACE: '.$current_used_quota.'Ko');
           $LOG->close();
+
+          // Send push notification
+          include_once SYSTEM_ROOT.LIB_DIR.'instapush.class.php';
+          include_once SYSTEM_ROOT.LIB_DIR.'push.lib.php';
+          $push_sctrs = get_subscriptors(SYSTEM_ROOT.ETC_DIR); // Get push notification subscriptors
+          send_push_to($push_sctrs, InstaPush::getInstance('null','null'), 'quotalimit', array('Quota'=>DISK_QUOTA));
           exit;
         }
       }

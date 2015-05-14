@@ -34,7 +34,7 @@
   if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php'))
     $CONFIG = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
   else
-    $CONFIG = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';// remplir l'array avec des parametres par defaut
+    $CONFIG = include SYSTEM_ROOT.ETC_DIR.'album_def.config.php';// remplir l'array avec des parametres par defaut
 
 // NOTE: Revoir ça; pourquoi le renvoyer quand on peut lui montrer un bouton pour qu'il telecharge quelque chose?
   //if($USER_SESSION==false){
@@ -114,7 +114,7 @@
     <div class="photo-wrapper">
 <?php
 
-  $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
+  $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'album_clean.config.php'; // Charger array de configuration propre
 
   if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php')===true){
     $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php';

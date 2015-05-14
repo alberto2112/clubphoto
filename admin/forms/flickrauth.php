@@ -59,13 +59,13 @@
             <div class="row">
               <div class="content">
                   <span>Cl&eacute;:</span>
-                  <input id="sortie" type="text" name="apikey" placeholder="Cl&eacute; d'application" <?php echo $HTML['apikey']; ?>/>
+                  <input type="text" name="apikey" placeholder="Cl&eacute; d'application" <?php echo $HTML['apikey']; ?>/>
 
                   <span>Secret:</span>
-                  <input id="sortie" type="text" name="apisecret" placeholder="Valeur secret" <?php echo $HTML['apisecret']; ?>/>
+                  <input type="text" name="apisecret" placeholder="Valeur secret" <?php echo $HTML['apisecret']; ?>/>
 
-                  <span>Cl&eacute;:</span>
-                  <input id="sortie" type="text" name="apitoken" placeholder="Cl&eacute; d'autoritation" <?php echo $HTML['apitoken']; ?>/>
+                  <span>Token:</span>
+                  <input type="text" name="apitoken" placeholder="Cl&eacute; d'autoritation" <?php echo $HTML['apitoken']; ?>/>
               </div>
             </div>
           </div>

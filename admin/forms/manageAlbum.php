@@ -25,7 +25,7 @@
 		$action='new';
 		$codalbum = tinyURL(5);
 		$send_caption = 'Cr&eacute;er album';
-        $CONFIG = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php'; // remplir l'array avec des parametres par defaut
+        $CONFIG = include SYSTEM_ROOT.ETC_DIR.'album_def.config.php'; // remplir l'array avec des parametres par defaut
 	} else{
 		$action='edit';
 
@@ -35,7 +35,7 @@
         if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php'))
           $CONFIG = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
         else
-          $CONFIG = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';// remplir l'array avec des parametres par defaut
+          $CONFIG = include SYSTEM_ROOT.ETC_DIR.'album_def.config.php';// remplir l'array avec des parametres par defaut
     }
 
     // Forcer creation de une rights_key

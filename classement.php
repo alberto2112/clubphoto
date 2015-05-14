@@ -27,7 +27,7 @@
   }
 
 // Get other vars
-  $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
+  $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'album_clean.config.php'; // Charger array de configuration propre
   $RKEY     = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);
   $ALBUM_ROOT = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/';
   $RANKING_FILENAME = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/'.PROC_DIR.'/ranking_cache.html';

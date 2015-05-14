@@ -20,6 +20,12 @@
 <!-- / Header -->
   <ul class="maj">
     <li>
+      <h2 class="date">14.05.2015</h2>
+      <ol>
+        <li>Implementation de notifications push (<a href="https://instapush.im">Instapush</a>)</li>
+      </ol>
+    </li>
+    <li>
       <h2 class="date">30.04.2015</h2>
       <ol>
         <li>Tatouage pour les photos post&eacute;s</li>

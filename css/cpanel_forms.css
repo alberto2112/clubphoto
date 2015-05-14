@@ -22,6 +22,7 @@
 	/*font-size:85%;*/
     font-weight:100;
 }
+.basic-grey a,
 .basic-grey label>span{
     display:block;
     padding-right: 10px;

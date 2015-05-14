@@ -27,6 +27,7 @@
   }else{
     echo '
             <li class="tb-stats-g"><a href="'.PUBLIC_ROOT.ADMIN_DIR.'stats.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Voir classement">Classement</a></li>
+            <li class="tb-recycle-g disabled"><a href="'.PUBLIC_ROOT.ADMIN_DIR.FORMS_DIR.'trash.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Voir corbeille">Corbeille (0)</a></li>
             <li class="tb-settings-g"><a href="'.PUBLIC_ROOT.ADMIN_DIR.FORMS_DIR.'manageAlbum.php?'.URI_QUERY_ALBUM.'='.$_CODALBUM.'" title="Editer album">Param&egrave;tres</a></li>
             <li class="tb-sendto-g"><a href="#" title="Envoyer photos s&eacute;lection&eacute;s &aacute; ..." onclick="ShowModalBox(\'mb-snd-selct\')">Envoyer &aacute;</a></li>';
   }

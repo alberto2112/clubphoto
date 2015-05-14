@@ -1,0 +1,23 @@
+<?php
+  return array(
+      'albumcode'=>'',
+      'albumname'=>'',
+      'allowupload'=>'',
+      'allowphotomanag'=>'',
+      'uploadslimit'=>'1',
+      'upload-from'=>'',
+      'upload-to'=>'',
+      'allowvotes'=>'',
+      'vote-from'=>'',
+      'vote-to'=>'',
+      'allowselfrating'=>'',
+      'hidecammodelonrate'=>'',
+      'allowcomments'=>'',
+      'showrateforuploads'=>'',
+      'showranking'=>'',
+      'watermark'=>'',
+      'antitriche'=>'',
+      'ratemethod'=>'',
+      'RKEY'=>''
+    );
+?>

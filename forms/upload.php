@@ -19,7 +19,7 @@
   if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php'))
     $CONFIG = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
   else
-    $CONFIG = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';// remplir l'array avec des parametres par defaut
+    $CONFIG = include SYSTEM_ROOT.ETC_DIR.'album_def.config.php';// remplir l'array avec des parametres par defaut
 
   // Empecher de telecharger des photos a tout personne externe au club photo
   if(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($CONFIG, 'RKEY')){

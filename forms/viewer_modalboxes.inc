@@ -21,7 +21,7 @@
                   if(@is_readable($album.'config.php')===true)
                     $CFG = include $album.'config.php';
                   else
-                    $CFG = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
+                    $CFG = include SYSTEM_ROOT.ETC_DIR.'album_clean.config.php'; // Charger array de configuration propre
                   
                   echo '          <li><a href="#">'.get_arr_value($CFG, 'albumname').'</a></li>'."\n";
                 }

@@ -19,15 +19,25 @@
   */
   margin-top:15%;
   display:none;
-  padding:.25em .7em .5em;
+  padding:5px 11px 8px;
   background-color:#f4f4f4;
   color:#313131;
   font-weight: 100;
   box-shadow: 5px 3px 30px black;
 }
+.mb-title{
+  margin: -5px -11px 11px;
+  padding: .3em .5em .45em;
+  background-color:#a3a3a3;
+  color:#fff;
+  font-size:180%;
+  font-weight:300;
+}
+
 .modal_box p{
   padding:0;
   margin:.25em 0;
+  font-size: 125%;
 }
 .modal_box ul{
   margin:0;

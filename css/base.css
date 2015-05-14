@@ -123,7 +123,8 @@ h1.instance-header{
   }
 
 /* Card COLORS */
-  .card, .dialog {
+  .card,
+  .dialog {
     background-color: #f4f4f4;
     /* color:#313131; */
     color:#888;

@@ -29,7 +29,7 @@
   //Get n clear request vars
   $photo_filename = clear_request_param(getRequest_param(URI_QUERY_PHOTO,''), 'a-zA-Z0-9\.', 42, false);
   $str_cookie     = $codalbum.'_'.str_replace('.','_',$photo_filename);
-  $AL_CONF        = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
+  $AL_CONF        = include SYSTEM_ROOT.ETC_DIR.'album_clean.config.php'; // Charger array de configuration propre
   $RIGHTS_KEY     = get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY);
   $USER_SESSION   = 'NotAMember';
   $_CAN_RATE      = false;
@@ -139,7 +139,7 @@
 
   }else{
     //$str_message = 'Le fichier de parametrage n\'existe pas: '.SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
-    $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';
+    $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'album_def.config.php';
     $AL_CONF['allowvotes'] ='0';
   }
 // ------------------------------------

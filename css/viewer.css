@@ -117,6 +117,7 @@ input[type=checkbox]:checked + label:before {
 .toolbar .tb-myuploads-g{background: transparent url(../images/toolbar_myuploads_g_16x16.png) no-repeat left center;}
 .toolbar .tb-myrates-g{background: transparent url(../images/toolbar_double_check_g_16x16.png) no-repeat left center;}
 .toolbar .tb-clonesession-g{background: transparent url(../images/toolbar_account_switch_g_16x16.png) no-repeat left center;}
+.toolbar .tb-recycle-g{background: transparent url(../images/toolbar_recycle_g_16x16.png) no-repeat left center;}
 .toolbar .tb-settings-g{background: transparent url(../images/toolbar_settings_g_16x16.png) no-repeat left center;}
 .toolbar .tb-sendto-g{background: transparent url(../images/toolbar_send_g_16x16.png) no-repeat left center;}
 .toolbar .tb-stats-g{background: transparent url(../images/toolbar_chartbar_g_16x16.png) no-repeat left center;}

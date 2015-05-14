@@ -71,12 +71,12 @@ class InstaPush
 	/**
 	* @var string InstaPush Application ID
 	*/
-	private $appId;
+	public $appId;
 	
 	/**
 	* @var string InstaPush Application secret
 	*/
-	private $appSecret;
+	public $appSecret;
 	
 	/**
 	* Default options that can be overridden via the $options constructor arg

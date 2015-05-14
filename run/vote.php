@@ -109,7 +109,7 @@
   if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
     $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
   else
-    $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';
+    $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'album_def.config.php';
 
 //RIGHTS_KEY
 

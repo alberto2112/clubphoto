@@ -53,30 +53,40 @@ body{
 */
 .album-tools{
   display:block;
-  padding:8px 0;
-  text-align:center;
+  text-align:left;
 }
 
 .album-tools a{
   display:block;
-  text-indent: -999px;
-  width:20px;
-  height:20px;
+  text-indent:52px;
+  height:32px;
   background-repeat: no-repeat;
-  background-size:contain;
-  background-position:center;
+  /*background-size:contain;*/
+  background-position:8px center;
+  
+  text-decoration: none;
+  color: #888;
+  font-weight: 300;
+  font-size:120%;
+  padding:12px 0 9px;
+  border-bottom: 1px solid #ccc;
 }
 
-.album-tools .tool-view{  background-image: url(../images/ico_eye_g_42x42.png); }
-.album-tools .tool-logs{  background-image: url(../images/ico_file_document_g_42x42.png);}
-.album-tools .tool-trash{  background-image: url(../images/ico_delete_g_42x42.png);}
-.album-tools .tool-delete{  background-image: url(../images/ico_close_g_42x42.png);}
-.album-tools .tool-ranking{  background-image: url(../images/ico_circle_checkbox_g_42x42.png);}
-.album-tools .tool-settings{  background-image: url(../images/ico_settings_g_42x42.png);}
+.album-tools a:hover{
+  background-color:#7CCBFF;
+  color:#fff;
+}
+
+.album-tools .tool-view{  background-image: url(../images/ico_toapp_g_32x32.png); }
+.album-tools .tool-logs{  background-image: url(../images/ico_file_document_g_32x32.png);}
+.album-tools .tool-trash{  background-image: url(../images/ico_delete_g_32x32.png);}
+.album-tools .tool-delete{  background-image: url(../images/ico_close_g_32x32.png);}
+.album-tools .tool-ranking{  background-image: url(../images/ico_circle_checkbox_g_32x32.png);}
+.album-tools .tool-settings{  background-image: url(../images/ico_settings_g_32x32.png);}
 
 .album-tools li{
-  display:inline-block;
-  margin:0 4.87%;
+  display:block;
+  margin:0;
   overflow: hidden;
 }
 

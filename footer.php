@@ -42,6 +42,7 @@
       <li>Upload script: <a href="http://www.dropzonejs.com/">DropzoneJS</a></li>
       <li>Icons made by Freepik from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
       <li><a href="https://github.com/lsolesen/pel">PEL</a> (PHP Exif Library) by <a href="https://github.com/weberhofer">Martin Geisler</a></li>
+      <li>Notifications push: <a href="https://instapush.im/">Instapush</a></li>
     </ul>
 
     <ul class="noborder">

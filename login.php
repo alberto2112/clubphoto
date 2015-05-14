@@ -6,8 +6,8 @@
   include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
   include_once SYSTEM_ROOT.LIB_DIR.'instapush.class.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'push.lib.php';
   include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
-  include_once SYSTEM_ROOT.ETC_DIR.'instapush.php';
 
   if(is_logged()){
     header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ADMIN_DIR);
@@ -23,7 +23,8 @@
 
   if($action == 'login'){
     $pwd_file = SYSTEM_ROOT.ETC_DIR.'users.csv';
-    $IP = getClient_ip();
+    $IP       = getClient_ip();
+    $push_sctrs = get_subscriptors(SYSTEM_ROOT.ETC_DIR);
     
     sleep(3); // Sleep 3 seconds for self protect from brute force attack
 
@@ -47,12 +48,15 @@
         $LOG->insert('[!] Tentative de connexion avec un mot de passe invalide - uid='.$userid.' - ip='.$IP);
 
         // Send push notification
+        send_push_to($push_sctrs, InstaPush::getInstance('null','null'), 'loginfail', array('AdminID'=>$userid, 'RemoteIP'=>$IP));
+/*
         $push = InstaPush::getInstance(INSTAPUSH_APPLICATION_ID, INSTAPUSH_APPLICATION_SECRET);
         $push->track('LoginFailure', array( 
                 'AdminID'=>$userid,
                 'RemoteIP'=>$IP
         ));
-        
+*/
+
         // User redirect
         header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.'login.php');
         exit;

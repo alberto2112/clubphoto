@@ -35,7 +35,7 @@
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
   include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
 
-  $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
+  $AL_CONF  = include SYSTEM_ROOT.ETC_DIR.'album_clean.config.php'; // Charger array de configuration propre
   $RKEY     = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);
 
   $_ISADMIN     = is_admin();
@@ -72,7 +72,7 @@
     }
   }else{
     $ERROR->insert('ALBUM CONFIG NOT FOUND AT: '.SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php', true);
-    $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'default_album.config.php';
+    $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'album_def.config.php';
     $AL_CONF['allowupload']='0'; // empecher de telecharger des photos deliberement
   }
 ?>

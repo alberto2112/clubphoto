@@ -56,7 +56,7 @@
       if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$fname.'/config.php')===true)
         $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$fname.'/config.php';
       else
-        $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php'; // Charger array de configuration propre
+        $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'album_clean.config.php'; // Charger array de configuration propre
       
       echo '<tr>';
         echo '<td align="center"><a href="http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$fname.'" title="Voir album">'.$fname.'</a></td>';

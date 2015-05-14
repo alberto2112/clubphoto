@@ -79,7 +79,7 @@
   $ALBUM_ROOT = SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/';
 
   if(is_readable($ALBUM_ROOT.'votes')){
-    $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'clean_album.config.php';
+    $AL_CONF = include SYSTEM_ROOT.ETC_DIR.'album_clean.config.php';
     
   // Load album config
     if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
