@@ -32,7 +32,7 @@
       'uploaderr'    => getHTML4CheckBoxState( get_arr_value($PUSH,'uploaderr') ),
       'ratingerr'    => getHTML4CheckBoxState( get_arr_value($PUSH,'ratingerr') ),
       'loginfail'    => getHTML4CheckBoxState( get_arr_value($PUSH,'loginfail') ),
-      'quotalmit'    => getHTML4CheckBoxState( get_arr_value($PUSH,'quotalmit') ),
+      'quotalimit'    => getHTML4CheckBoxState( get_arr_value($PUSH,'quotalimit') ),
       'appid'        => 'value="'.get_arr_value($PUSH,'appid', false).'" ',
       'appsecret'    =>'value="'.get_arr_value($PUSH,'appsecret', false).'" '
     );

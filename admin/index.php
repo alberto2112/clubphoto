@@ -130,8 +130,8 @@
         $("#mb-album-view").attr("href", "<?php echo 'http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR ?>"+codalbum);
         $("#mb-album-ranking").attr("href", "<?php echo PUBLIC_ROOT.ADMIN_DIR.'stats.php?'.URI_QUERY_ALBUM ?>="+codalbum);
         $("#mb-album-logs").attr("href", "<?php echo PUBLIC_ROOT.ADMIN_DIR.FORMS_DIR.'journal.php?'.URI_QUERY_ALBUM ?>="+codalbum);
-        $("#mb-album-trash").attr("onclick","javascript:DeleteDialog('<?php echo $fname; ?>', true);");
-        $("#mb-album-delete").attr("onclick","javascript:DeleteDialog('<?php echo $fname; ?>', false);");
+        $("#mb-album-trash").attr("onclick","javascript:DeleteDialog('"+codalbum+"', true);");
+        $("#mb-album-delete").attr("onclick","javascript:DeleteDialog('"+codalbum+"', false);");
 
         ShowModalBox(mboxID);
       }
