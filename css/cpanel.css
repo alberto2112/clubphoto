@@ -13,7 +13,11 @@
 body{
   background-color: #e7e7e7;
   /* font-family: 'Helvetica Neue', Helvetica, Arial; */
+  margin:0;
+  padding:0;
 }
+
+h4{margin:0;padding:0 0 .1em .45em;font-weight: 100;}
 
 .panel{margin:0 auto;}
 .content span{color: #888;}
@@ -24,7 +28,7 @@ body{
 
 .quota-total{margin:0 8px;}
 
-.quota-used{background-color:#55a;float:left;}
+.quota-used{background-color:#2196F3;float:left;}
 .quota-used span{display:inline-block;font-size:80%;padding:.3em 0 0 .55em;width:8em;}
 .quota-total{background-color:#aaa;overflow: hidden;}
 
@@ -73,8 +77,8 @@ body{
 }
 
 .album-tools a:hover{
-  background-color:#7CCBFF;
-  color:#fff;
+  background-color:#BBDEFB;
+  color:#333;
 }
 
 .album-tools .tool-view{  background-image: url(../images/ico_toapp_g_32x32.png); }
@@ -92,7 +96,7 @@ body{
 
 /* FIXES */
 .disabled{
-  text-decoration:line-through;
+  text-decoration:line-through !important;
 }
 .indent{
   padding-left:13px;

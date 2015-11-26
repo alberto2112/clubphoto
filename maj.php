@@ -10,7 +10,7 @@
     <?php include SYSTEM_ROOT.ETC_DIR.'metatags.html'; ?>
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/reset.css?v='.VERSION_CSS; ?>" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/base.css?v='.VERSION_CSS; ?>" type="text/css" />
-    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/buttons.css?v='.VERSION_CSS; ?>" type="text/css" />
+    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/maj.css?v='.VERSION_CSS; ?>" type="text/css" />
 </head> 
 <body>
   <!-- Header -->
@@ -22,14 +22,17 @@
     <li>
       <h2 class="date">14.05.2015</h2>
       <ol>
-        <li>Implementation de notifications push (<a href="https://instapush.im">Instapush</a>)</li>
+        <li>Administrateur: Implementation de notifications push (<a href="https://instapush.im">Instapush</a>)</li>
+        <li>Administrateur: Menu pour supprimer des albums</li>
+        <li>Administrateur: Menu pour envoyer des albums &agrave; la corbeille</li>
+        <li>Administrateur: Am&eacute;liorations visuelles</li>
       </ol>
     </li>
     <li>
       <h2 class="date">30.04.2015</h2>
       <ol>
-        <li>Tatouage pour les photos post&eacute;s</li>
-        <li>Statistiques d&eacute;tailles dans le dossier 'mes t&eacute;l&eacute;chargements'</li>
+        <li>Site: Tatouage pour les photos post&eacute;s</li>
+        <li>Adherents: Statistiques d&eacute;tailles dans le dossier 'mes t&eacute;l&eacute;chargements'</li>
       </ol>
     </li>
   </ul>

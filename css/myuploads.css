@@ -66,7 +66,7 @@ text-indent:-9999px;
   left:0;
   top:0;
   right:0;
-  bottom:0;
+  bottom:3px;
   background-color:rgba(0,0,0,.75);
   padding:5px 8px;
 }
@@ -148,6 +148,7 @@ text-indent:-9999px;
   background-color:#10ADF5;
   color:#fff;
   font-family: "Lato", sans-serif;
+  font-weight:300;
   font-size:127%;
   text-decoration: none;
 }

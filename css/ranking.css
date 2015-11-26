@@ -73,3 +73,28 @@
   top:60px;
   background:transparent url("../images/ico_calculator_w_16x16.png") no-repeat 3px center;
 }
+
+.actionbtn {
+  display:block;
+  padding:8px 0 9px 7px;
+  color: #777;
+  text-decoration: none;
+  text-align:left;
+  text-indent: 33px;
+  
+  background-repeat: no-repeat;
+  background-position: 9px center;
+}
+
+.actionbtn:hover{
+  color:#3879D9;
+  background-color: #EAE8E8;
+}
+
+.actionbtn.download{
+  background-image: url("../images/ico_cloud_download_g_24x24.png");
+}
+
+.actionbtn.sendhome{
+  background-image: url("../images/ico_image_filter_g_24x24.png");
+}

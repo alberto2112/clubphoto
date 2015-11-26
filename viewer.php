@@ -48,24 +48,28 @@
   if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php')===true){
     $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/config.php';
 
+    // Recuperer session
+    $USER_SESSION   = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$_CODALBUM, make_rkey(14,'012345679VWXYZ'));
     // Determiner si cette personne es un des adherents
-    if(!empty($RKEY) && get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY) == $RKEY){
-      // Est un adherent: Permettre a cette personne de voter ou telecharger ses photos pendant X heures
-      setcookie(COOKIE_RIGHTS_KEY, $RKEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT);
-      $_ISMEMBER = true;
-    }elseif(array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) && get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) == get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY)){
-      // Est un adherent
-      $_ISMEMBER = true;
+    $_ISMEMBER  = file_exists(SYSTEM_ROOT.ALBUMS_DIR.$_CODALBUM.'/'.PROC_DIR.$USER_SESSION); //Il a deja eu acces avec le lien privilegie
+    $_ISMEMBER += !empty($RKEY) && (get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY) == $RKEY);    //Il a access depuis le lien privilegie envoye par mail (ou autre)
+    $_ISMEMBER += array_key_exists(COOKIE_RIGHTS_KEY.$_CODALBUM, $_COOKIE) && (get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY.$_CODALBUM) == get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY));    
+
+    if($_ISMEMBER){
+      // Est un adherent: Permettre a cette personne de voter ou telecharger ses photos pendant X heures/jours
+      setcookie(COOKIE_RIGHTS_KEY.$_CODALBUM, get_arr_value($AL_CONF, COOKIE_RIGHTS_KEY), time() + SESSION_LIFE_RKEY, PUBLIC_ROOT);
+      // Renew/Create USER_SESSION cookie
+      setcookie(COOKIE_USER_SESSION.$_CODALBUM, $USER_SESSION, time() + SESSION_LIFE_MEMBER, PUBLIC_ROOT);
     }
 
-    // Determiner droit de telechargement 
+    // Determiner droit de telechargement
     if($_ISMEMBER && get_arr_value($AL_CONF,'allowupload',false)=='1')
       $_CAN_UPLOAD = !out_of_date(get_arr_value($AL_CONF,'upload-from',false), get_arr_value($AL_CONF,'upload-to',false));
 
     // Determiner droit a voir le classement
     if(get_arr_value($AL_CONF,'showranking',false)=='2'){
      // Show ranking always
-      $_SHOWRANKING=true; 
+      $_SHOWRANKING=true;
     }elseif(get_arr_value($AL_CONF,'showranking',false)=='1' && get_arr_value($AL_CONF,'allowvotes',false)=='1'){
       // Show ranking after rating period
       $_SHOWRANKING = (out_of_date(get_arr_value($AL_CONF,'vote-from',false), get_arr_value($AL_CONF,'vote-to',false), true) == 1);

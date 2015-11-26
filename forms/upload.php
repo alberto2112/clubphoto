@@ -6,7 +6,7 @@
   include SYSTEM_ROOT.ETC_DIR.'versions.php';
   include SYSTEM_ROOT.LIB_DIR.'datetime.lib.php';
 
-  $codalbum = getRequest_param(URI_QUERY_ALBUM, false);
+  $codalbum = clear_request_param(getRequest_param(URI_QUERY_ALBUM, false), 'a-zA-Z0-9', 8, false);
 
   if(empty($codalbum)){
     header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT);
@@ -22,7 +22,7 @@
     $CONFIG = include SYSTEM_ROOT.ETC_DIR.'album_def.config.php';// remplir l'array avec des parametres par defaut
 
   // Empecher de telecharger des photos a tout personne externe au club photo
-  if(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($CONFIG, 'RKEY')){
+  if(!array_key_exists(COOKIE_RIGHTS_KEY.$codalbum, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY.$codalbum) != get_arr_value($CONFIG, 'RKEY')){
     header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum);
     exit;
   }
@@ -108,7 +108,7 @@
       
 		<script>
             var added_files=0;
-            var uploaded_files=0;
+            var uploaded_files=<?php echo $count; ?>;
             var other_counter=0;
             var step_counter=1;
             var total_steps=2;

@@ -101,6 +101,22 @@ h2{
 
 /* BUTTONS */
 .button-wrapper {margin-top:1em;}
+.button-inheader {
+  font-size: 70%;
+  position:absolute;
+  display:block;
+  text-align:right;
+  width: inherit;
+  padding-top: 9px;
+}
+.button-inheader a{
+  color: #222;
+  border-radius: 3px;
+  background-color: #f2f;
+  padding: 1px 8px 2px;
+  margin: 0;
+  font-weight:700;
+}
 
 /* COLORS */
 body,

@@ -73,7 +73,7 @@
 <!-- /modalboxes -->
   <div class="header">
       <h1>Administration site votations</h1>
-      <h4>Bienvenu: <?php echo $_SESSION['UNAME']; ?></h4>
+      <h4>Bienvenu <?php echo $_SESSION['UNAME']; ?>!</h4>
   </div>
 <!-- <panel> -->
   <div class="panel">

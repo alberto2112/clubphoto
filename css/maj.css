@@ -1,0 +1,22 @@
+.maj{
+  list-style-type: none;
+}
+.maj>li{
+  padding:1em 0 1em .5em;
+}
+
+.maj ol>li{
+  padding:.5em 0 .4em .3em;
+  font-size:135%;
+  font-weight:300;
+}
+.date{
+  font-size:200%;
+  font-weight:300;
+  background-color: #cea;
+  padding-left:.5em;
+}
+.date:before{
+  content:"MAJ du ";
+}
+.date{}

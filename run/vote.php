@@ -64,11 +64,11 @@
 // =========================================================
 
   // Clear request vars
-  $codalbum   = clear_request_param(getRequest_param(URI_QUERY_ALBUM, false), 'a-zA-Z0-9', 8, false);
-  $points     = clear_request_param(getRequest_param(URI_QUERY_POINTS, 1), '0-9', 1, false);
+  $codalbum       = clear_request_param(getRequest_param(URI_QUERY_ALBUM, false), 'a-zA-Z0-9', 8, false);
+  $points         = clear_request_param(getRequest_param(URI_QUERY_POINTS, 1), '0-9', 1, false);
   $photo_filename = clear_request_param(getRequest_param(URI_QUERY_PHOTO, false), 'a-zA-Z0-9\.', 42, false);
-  $comments   = clear_request_param(getRequest_param(URI_QUERY_COMMENTS, false), false, 500, true);
-  $RIGHTS_KEY = get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY);
+  $comments       = clear_request_param(getRequest_param(URI_QUERY_COMMENTS, false), false, 500, true);
+  $RIGHTS_KEY     = clear_request_param(get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY.$codalbum), 'a-zA-Z0-9', 24, false);
   //$RIGHTS_KEY = clear_request_param(getRequest_param(URI_QUERY_RIGHTS_KEY, ''), 'a-zA-Z0-9', 16, false);  // Album rights key (TOKEN)
 
 // Recuperer $USER_SESSION (Cookie)

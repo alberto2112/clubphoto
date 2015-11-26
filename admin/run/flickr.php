@@ -60,10 +60,10 @@
       if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo.'.dsc.txt')){
         $photo_info[DESCRIPTION] = file_get_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/'.$photo.'.dsc.txt', false, null, -1, 512)."\n\n"; // Limited to 512 chars
       }
-      $photo_info[DESCRIPTION] .= '&#201;toiles: '.$points.' Moyenne:'.$avg;
+      $photo_info[DESCRIPTION] .= 'Etoiles:'.$points.' Moyenne:'.$avg;
       
       // Telecharger photos sur flickr
-      $id = $flickr->sync_upload(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/large/'.$photo, $photo_info[TITLE], $photo_info[DESCRIPTION], $tags);
+      $id = $flickr->sync_upload(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/large/'.$photo, html_entity_decode($photo_info[TITLE], ENT_QUOTES, CHARSET), html_entity_decode($photo_info[DESCRIPTION], ENT_QUOTES, CHARSET), $tags);
       $photoids[] = $id;
       
     }

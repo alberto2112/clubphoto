@@ -55,6 +55,7 @@
     $UPLOADERID = @sprintf("%u",ip2long($IP)) | '0';
   }
 
+// Get files
   if (!empty($_FILES)) {
 
     // Charger les parametres de l'album
@@ -66,7 +67,7 @@
       $CONFIG = include SYSTEM_ROOT.ETC_DIR.'album_def.config.php';// remplir l'array avec des parametres par defaut
 
     // Empecher de telecharger des photos a tout personne externe au club photo
-    if(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($CONFIG, COOKIE_RIGHTS_KEY)){
+    if(!array_key_exists(COOKIE_RIGHTS_KEY.$codalbum, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY.$codalbum) != get_arr_value($CONFIG, COOKIE_RIGHTS_KEY)){
       // Add log line if not album_rkey cookie founded
       $ERRLOG->insert('[!] NOT A MEMBER - ip='.$IP.' uploaderid='.$UPLOADERID.' referer='.get_arr_value($_SERVER, 'HTTP_REFERER', 'UNKNOWN'));
       $ERRLOG->close();
@@ -198,8 +199,8 @@
         
       }else{
         // Creer cookie d'auteur
-        $str_cookie = $codalbum.'_'.str_replace('.','_',$photo_basename);
-        setcookie($str_cookie,'-1',time()+(3600 * 24 * 21), PUBLIC_ROOT); // For 21 days
+        //$str_cookie = $codalbum.'_'.str_replace('.','_',$photo_basename);
+        //setcookie($str_cookie,'-1',time()+(3600 * 24 * 21), PUBLIC_ROOT); // For 21 days
 
         // Ajouter photo a user session
         $PROC->insert($photo_basename, true); // Insert and close file

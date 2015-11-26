@@ -86,7 +86,7 @@ input[type=checkbox]:checked + label:before {
   color:#333;
   padding:5px;
   margin:5px;
-  width:10em;
+  width:11.66em;
   right:5px;
   font-size:90%;
   z-index:998;

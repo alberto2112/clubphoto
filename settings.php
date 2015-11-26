@@ -11,6 +11,7 @@
   define('FORMS_DIR','forms/');
   define('RUN_DIR','run/');
   define('ALBUMS_DIR','albums/');
+  define('FAQ_DIR','FAQ/');
   define('ADMIN_DIR','admin/');
   define('WORKSPACE_DIR','tmp/');
   define('SOFTWARE_DIR','bin/');
@@ -47,9 +48,9 @@
   define('COOKIE_RIGHTS_KEY','RKEY');
   define('COOKIE_FINGERPRINT','JSFPSESSID');
 
-  define('SESSION_LIFE_RKEY', 3600*3);            //3 HOURS
-  define('SESSION_LIFE_MEMBER', 3600*24*15);      //15 DAYS
-  define('SESSION_LIFE_FINGERPRINT', 3600*24*30); //30 DAYS 
+  define('SESSION_LIFE_RKEY', 3600*24*15);         //15 DAYS
+  define('SESSION_LIFE_MEMBER', 3600*24*20);      //20 DAYS
+  define('SESSION_LIFE_FINGERPRINT', 3600*24*30); //30 DAYS
 
   define('USER_LEVEL_SUPERADMIN','1');
   define('USER_LEVEL_ADMIN','2');

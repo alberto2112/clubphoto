@@ -5,7 +5,7 @@
   *    celui-ci declare la variable $_CODALBUM
   **/
 
-  if(!defined('SYSTEM_ROOT')) 
+  if(!defined('SYSTEM_ROOT'))
     include __DIR__.'/../settings.php';
 
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
@@ -17,7 +17,7 @@
   include_once SYSTEM_ROOT.LIB_DIR.'csv.lib.php';
   include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
   include_once SYSTEM_ROOT.ETC_DIR.'photoinfo.csv.conf.php';
-  
+
 
   //Get $codalbum
   $codalbum       = clear_request_param(getRequest_param(URI_QUERY_ALBUM,''), 'a-zA-Z0-9', 8, false);
@@ -30,7 +30,7 @@
   $photo_filename = clear_request_param(getRequest_param(URI_QUERY_PHOTO,''), 'a-zA-Z0-9\.', 42, false);
   $str_cookie     = $codalbum.'_'.str_replace('.','_',$photo_filename);
   $AL_CONF        = include SYSTEM_ROOT.ETC_DIR.'album_clean.config.php'; // Charger array de configuration propre
-  $RIGHTS_KEY     = get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY);
+  $RIGHTS_KEY     = clear_request_param(get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY.$codalbum), 'a-zA-Z0-9', 24, false);
   $USER_SESSION   = 'NotAMember';
   $_CAN_RATE      = false;
   $_HAS_RATED     = false;
@@ -66,14 +66,14 @@
 
 //===========================================================================
     // Get RIGHTS_KEY or cookie RIGHTS_KEY
-    if(empty($RIGHTS_KEY) || !array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || ($RIGHTS_KEY != get_arr_value($AL_CONF, 'RKEY')) ){
+    if(empty($RIGHTS_KEY) || !array_key_exists(COOKIE_RIGHTS_KEY.$codalbum, $_COOKIE) || ($RIGHTS_KEY != get_arr_value($AL_CONF, 'RKEY')) ){
       // Si la cookie n'existe pas et il n'apporte pas le RIGHT_KEY nier les droits de voter
       $_CAN_RATE = false;
     }else{
       // RIGHT_KEY a ete trouve
       $_CAN_RATE = ( get_arr_value($AL_CONF, 'allowvotes')=='1' );
       // Renouveler temps de vie du cookie
-      setcookie(COOKIE_RIGHTS_KEY, $RIGHTS_KEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT);
+      setcookie(COOKIE_RIGHTS_KEY.$codalbum, $RIGHTS_KEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT);
       // Recuperer session
       $USER_SESSION   = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, make_rkey(14,'012345679VWXYZ'));
       // Refresh/Create USER_SESSION cookie
@@ -97,7 +97,7 @@
         }
       }
 */
-      
+
     // Anti triche
       if($_HAS_RATED && $AL_CONF['antitriche']=='1'){
         $_CAN_RATE    = false;
@@ -106,7 +106,7 @@
       // Periode de votations
         $ood_result = out_of_date($AL_CONF['vote-from'], $AL_CONF['vote-to'], true);
         $_CAN_RATE  = ($ood_result=='0');
-        
+
         if($ood_result==1){
           // Periode terminee
           $str_message = 'La p&eacute;riode de votes est termin&eacute; le '.$AL_CONF['vote-to'];
@@ -115,8 +115,8 @@
           $str_message = 'La p&eacute;riode de votes d&eacute;bute le '.$AL_CONF['vote-from'];
         }
       }
-    
-    
+
+
     // Self rating
       if($_CAN_RATE && $AL_CONF['allowselfrating']=='0'){
           // Determiner si le membre est l'auteur de la photo
@@ -125,7 +125,7 @@
   /*
           if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION)){
             $_IS_AUTHOR = in_array(
-              $photo_filename, 
+              $photo_filename,
               file(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES),
               true
             );
@@ -143,7 +143,7 @@
     $AL_CONF['allowvotes'] ='0';
   }
 // ------------------------------------
-  
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -152,13 +152,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php
 
-// Make twitter metatags
+// Write twitter metatags
+/*
   echo '    <meta name="twitter:card" content="photo">
     <meta name="twitter:url" content="http://'.SITE_DOMAIN.PUBLIC_ROOT.FORMS_DIR.'vote.php?'.URI_QUERY_PHOTO.'='.$photo_filename.'&'.URI_QUERY_ALBUM.'='.$codalbum.'">
     <meta name="twitter:title" content="'.get_arr_value($AL_CONF, 'albumname').' &gt; '.$photo_info[TITLE].'">
     <meta name="twitter:description" content="'.$photo_info[DESCRIPTION].'">
     <meta name="twitter:image" content="http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/medium/'.$photo_filename.'">'."\n";
+*/
 ?>
+
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/reset.css" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/base.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT; ?>css/buttons.css?v=<?php echo VERSION_CSS; ?>" type="text/css" />
@@ -173,7 +176,7 @@
         <h1><a href="<?php echo PUBLIC_ROOT.ALBUMS_DIR.$codalbum; ?>"><?php echo get_arr_value($AL_CONF, 'albumname'); ?></a> <span>&gt; <?php echo $photo_info[TITLE]; ?></span></h1>
     </div>
 <!-- /Header -->
-    
+
 <!-- Photo -->
     <div class="photo-wrapper" style="background-image: url('<?php echo PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/large/'.$photo_filename; ?>')">
       <img src="<?php echo PUBLIC_ROOT.ALBUMS_DIR.$codalbum.'/photos/large/'.$photo_filename; ?>" class="handheld" />
@@ -199,7 +202,7 @@
 
     $last_photo = $file;
   }
-  
+
   echo '<div class="button-wrapper">';
   if($photo_precedente=='' || $photo_precedente=='-1'){
     echo '<span class="disabled">Photo pr&eacute;c&eacute;dente</span>'."\n";
@@ -248,10 +251,10 @@
         <li class="flash">
           <span title="Flash"><?php echo $photo_info[FLASH]; ?></span>
         </li>
-        
+
 <?php
   //<li><span id="showrules">Show rules</span></li>
-  
+
   if(strpos(get_arr_value($AL_CONF, 'albumdesc', ''), '[\d]') > 0){
     echo '<li class="download"><a href="'.PUBLIC_ROOT.RUN_DIR.'download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo_filename.'">T&eacute;l&eacute;charger</a></li>';
   }
@@ -280,7 +283,7 @@
 
 // Print vote form
   if($_CAN_RATE){ // Montrer le bouton uniquement si la periode de votes est ouverte
-    echo '<div class="vote-form" id="vote-counter"><h2>Votations</h2>';
+    echo '<div class="vote-form" id="vote-counter"><div class="button-inheader"><a href="'.PUBLIC_ROOT.FAQ_DIR.'charte_evaluation.xlsx" title="Comment &eacute;valuer une photo">Aide</a></div><h2>Votations</h2>';
     if($AL_CONF['ratemethod']=='stars'){
       // Vote par etoiles
       //$href =RUN_DIR. 'vote.php?'.URI_QUERY_PHOTO.'='.$photo_filename.'&amp;'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_RATE_METHOD.'='.$AL_CONF['ratemethod'].'&amp;'.URI_QUERY_POINTS.'=';
@@ -295,11 +298,11 @@
       // Vote par likes
       echo '<input type="checkbox" id="chk-vote" points="1" /><label>Voter pour cette photo</label>';
     }
-    
+
     if($AL_CONF['allowcomments']=='1'){
       echo "\n".'        <textarea placeholder="Vos impressions (factultatif, max 500 chars)" id="comments" maxlength="500"></textarea>';
     }
-    
+
     echo "\n".'          <div class="button-wrapper at-center"><a class="green hidden" id="send-vote" href="'.RUN_DIR.'vote.php?'.URI_QUERY_PHOTO.'='.$photo_filename.'&amp;'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_POINTS.'=1">Confirmer vote</a></div>
           </div>';
   }
@@ -321,15 +324,15 @@
 
     <script type="text/javascript">
         var vote_points=0;
-      
+
         $('.btn-vote').bind('click', function(e){
           e.preventDefault();
           //str_points = $(this).attr('href').substring(9) + '&<?php echo URI_QUERY_ACTION; ?>=ajax-vote';
           vote_points = $(this).attr('points');
           $('#send-vote').removeClass("hidden");
         });
-      
-       $('#chk-vote').bind('click', function(e){          
+
+       $('#chk-vote').bind('click', function(e){
          if($(this).prop('checked')){
            vote_points = $(this).attr('points');
            $('#send-vote').removeClass("hidden");

@@ -39,7 +39,7 @@
 // NOTE: Revoir ça; pourquoi le renvoyer quand on peut lui montrer un bouton pour qu'il telecharge quelque chose?
   //if($USER_SESSION==false){
 // NOTE: Donc, on se fie au RKEY et pas au UKEY
-  if(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($CONFIG, 'RKEY')){
+  if(!array_key_exists(COOKIE_RIGHTS_KEY.$codalbum, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY.$codalbum) != get_arr_value($CONFIG, 'RKEY')){
     $ERRLOG->insert('EMPTY RKEY - '.$IP, true);
     header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum);
     exit;

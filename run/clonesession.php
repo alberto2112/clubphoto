@@ -120,7 +120,6 @@ if(@is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php')===true)
       case 'request':
       default:
       if(!empty($USER_SESSION) && !empty($LONGIP)){
-        
         $PIN = make_rkey(5, '0123456789');
         file_put_contents(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$LONGIP.'.clnssn', $USER_SESSION.';'.md5($PIN));
         echo $PIN;

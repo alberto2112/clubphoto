@@ -240,7 +240,8 @@ if ( !class_exists('phpFlickr') ) {
 				}
 				fputs ($fp,'POST ' . $matches[2] . " HTTP/1.1\n");
 				fputs ($fp,'Host: ' . $matches[1] . "\n");
-				fputs ($fp,"Content-type: application/x-www-form-urlencoded\n");
+				//fputs ($fp,"Content-type: application/x-www-form-urlencoded\n");
+                fputs ($fp,'Content-type: application/x-www-form-urlencoded; charset=ISO-8859-15'."\n"); // <- Added by Alberto
 				fputs ($fp,"Content-length: ".strlen($data)."\n");
 				fputs ($fp,"Connection: close\r\n\r\n");
 				fputs ($fp,$data . "\n\n");

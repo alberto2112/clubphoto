@@ -37,6 +37,7 @@
 
     <ul>
       <li class="title">Autres infos</li>
+      <li><a href="https://shost.ca/">H&eacute;bergeur web</a></li>
       <li><a href="http://photo.mjcrodez.com/">Site officiel du Club photo</a></li> 
       <li><a href="http://www.mjcrodez.com/">Site officiel de la MJC (Rodez)</a></li>     
       <li>Upload script: <a href="http://www.dropzonejs.com/">DropzoneJS</a></li>
