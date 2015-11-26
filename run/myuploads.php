@@ -34,7 +34,7 @@
     $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
 
     // Renvoyer s'il n'a pas RKEY ou si RKEY ne correspond avec celui de l'album
-    if(!array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY) != get_arr_value($AL_CONF, 'RKEY')){
+    if(!array_key_exists(COOKIE_RIGHTS_KEY.$codalbum, $_COOKIE) || get_arr_value($_COOKIE,COOKIE_RIGHTS_KEY.$codalbum) != get_arr_value($AL_CONF, 'RKEY')){
       $ERRLOG->insert('EMPTY RKEY - '.$IP, true);
       header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT.ALBUMS_DIR.$codalbum);
       exit;
