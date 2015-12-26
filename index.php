@@ -16,6 +16,7 @@
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/base.css?v='.VERSION_CSS; ?>" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/buttons.css?v='.VERSION_CSS; ?>" type="text/css" />
     <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/home.css?v='.VERSION_CSS; ?>" type="text/css" />
+    <link rel="stylesheet" media="screen" href="<?php echo PUBLIC_ROOT.'css/album_cards.css?v='.VERSION_CSS; ?>" type="text/css" />
 </head> 
 <body>
   <div class="header">
@@ -46,7 +47,7 @@
       echo '<div class="card">';
         echo '<div class="row">';
           echo '<div class="content image">';
-            echo '<a href="'.PUBLIC_ROOT.ALBUMS_DIR.$fname.'" class="info-photo" title="Regarder album"';
+            echo '<a href="'.PUBLIC_ROOT.ALBUMS_DIR.$fname.'" class="info-album" title="Regarder album"';
       // Add any photo thumb
           foreach(read_dir(SYSTEM_ROOT.ALBUMS_DIR.$fname.'/photos/thumbs','*.jpg',true) as $file){
             echo ' style="background-image: url('.PUBLIC_ROOT.ALBUMS_DIR.$fname.'/photos/medium/'.$file.');"';

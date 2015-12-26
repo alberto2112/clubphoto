@@ -33,7 +33,7 @@
 	<link href="<?php echo PUBLIC_ROOT; ?>css/cpanel_journals.css?v=<?php echo VERSION_CSS; ?>" media="all" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <h1><?php echo ($journal==false)? 'Journaux' : 'Journal: '.$codalbum.'/'.$journal ?></h1>
+    <h1><a class="header-button ico-home notext" href="<?php echo PUBLIC_ROOT.ADMIN_DIR; ?>">CPanel</a><?php echo ($journal==false)? 'Journaux' : 'Journal: '.$codalbum.'/'.$journal ?></h1>
     <div class="j-list">
 <?php
 // Print lof journals

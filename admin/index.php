@@ -24,6 +24,8 @@
         $quota_used_prct = ($quota_used * 100) / DISK_QUOTA;
       }
     }
+
+    $ntrash = count_files(SYSTEM_ROOT.TRASH_DIR, '*');
 ?>
 <html>
 <head>
@@ -84,7 +86,7 @@
       </div>
       <ul class="row border-up content">
           <li><a class="link" href="<?php echo PUBLIC_ROOT.ADMIN_DIR.FORMS_DIR; ?>manageAlbum.php">Cr&eacute;er nouvel album</a></li>
-
+          <li><a class="link" href="<?php echo PUBLIC_ROOT.ADMIN_DIR.FORMS_DIR; ?>trash.php" title="<?php echo $ntrash.' '.(($ntrash < 2)? 'element':'elements'); ?> en la corbeille">Corbeille<span class="ntrash"><?php echo $ntrash; ?></span></a></li>
 <?php
   $ddc=0;
   foreach(glob(SYSTEM_ROOT.ALBUMS_DIR.'*', GLOB_ONLYDIR) as $folder){
@@ -238,5 +240,8 @@
     <!-- </Journal> -->
   </div>
 <!-- </panel> -->
+<?php
+  include SYSTEM_ROOT.ADMIN_DIR.'footer.php';
+?>
 </body>
 </html>

@@ -7,6 +7,7 @@
   include SYSTEM_ROOT.LIB_DIR.'datetime.lib.php';
 
   $codalbum = clear_request_param(getRequest_param(URI_QUERY_ALBUM, false), 'a-zA-Z0-9', 8, false);
+  $count = 0;
 
   if(empty($codalbum)){
     header('Location: http://'.SITE_DOMAIN.PUBLIC_ROOT);
@@ -55,8 +56,6 @@
 
   // Get number of uploads for this user
   if(is_readable(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION)){
-    
-    $count = 0;
     foreach(file(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.DIRECTORY_SEPARATOR.PROC_DIR.$USER_SESSION, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $k => $f){
       if(file_exists(SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/photos/thumbs/'.$f)){
         $count++;

@@ -17,7 +17,7 @@
     }
 
 
-	$result = clear_request_param(getRequest_param('res', false), 'a-zA-Z0-9', 16, false);
+	$result = clear_request_param(getRequest_param('res', 'step0'), 'a-zA-Z0-9', 16, false);
 ?>
 <html>
   <head>

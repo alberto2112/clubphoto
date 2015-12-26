@@ -118,4 +118,46 @@
     
     return $R;
   }
+
+//-----------------------------------------------
+
+  function get_ranking($path_of_votes){
+    /**
+     * @param $path_of_votes (String)
+     * @return Array (Sorted ranking)
+     */ 
+    
+    $i=0;
+    $LoP     = array();
+    $aPoints = array();
+    $aVotes  = array();
+    $aAVG    = array();
+    
+    // Make array to sort
+    foreach(glob($path_of_votes.'*') as $file){
+      if($file!='.' && $file!='..'){
+        if(substr($file,-7)=='jpg.txt'){
+          $votes_fname  = $file;
+          $thumb_fname  = substr($file, strrpos($file,DIRECTORY_SEPARATOR)+1,-4);
+          $points_fname = $path_of_votes.$thumb_fname.'.pts.txt';
+        
+          $votes  = filesize($votes_fname);
+          $points = filesize($points_fname);
+          $avg    = round($points / $votes, 1);
+
+          $LoP[]     = array($thumb_fname, $votes, $points, $avg);
+          $aPoints[] = $points;
+          $aVotes[]  = $votes;
+          $aAVG[]    = $avg;
+
+        }
+      }
+    }
+    
+    // Array sort
+    //array_multisort($aAVG, SORT_DESC, $aPoints, SORT_DESC, $aVotes, SORT_ASC, $LoP);
+    array_multisort($aAVG, SORT_DESC, $aPoints, SORT_DESC, $LoP);
+    
+    return $LoP;
+  }
 ?>

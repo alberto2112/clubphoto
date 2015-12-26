@@ -120,10 +120,10 @@
           $LOG->close();
 
           // Send push notification
-          include_once SYSTEM_ROOT.LIB_DIR.'instapush.class.php';
+          include_once SYSTEM_ROOT.LIB_DIR.'pushservice.class.php';
           include_once SYSTEM_ROOT.LIB_DIR.'push.lib.php';
           $push_sctrs = get_subscriptors(SYSTEM_ROOT.ETC_DIR); // Get push notification subscriptors
-          send_push_to($push_sctrs, InstaPush::getInstance('null','null'), 'quotalimit', array('Quota'=>DISK_QUOTA));
+          send_push_to($push_sctrs, PushService::getInstance('null','null'), 'quotalimit', array('Quota'=>DISK_QUOTA));
           exit;
         }
       }

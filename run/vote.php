@@ -114,7 +114,7 @@
 //RIGHTS_KEY
 
     // Get RIGHTS_KEY or cookie RIGHTS_KEY
-    if(empty($RIGHTS_KEY) || !array_key_exists(COOKIE_RIGHTS_KEY, $_COOKIE) || ($RIGHTS_KEY != get_arr_value($AL_CONF, 'RKEY')) ){
+    if(empty($RIGHTS_KEY) || !array_key_exists(COOKIE_RIGHTS_KEY.$codalbum, $_COOKIE) || ($RIGHTS_KEY != get_arr_value($AL_CONF, 'RKEY')) ){
       // Si la cookie n'existe pas et il n'apporte pas le RIGHT_KEY nier les droits de voter
       $_CAN_RATE     = false;
       $vote_result   = 'VOTE REJETE. CE N\'EST PAS UN MEMBRE';
@@ -123,7 +123,7 @@
       // RIGHT_KEY a ete trouve
       $_CAN_RATE = ( get_arr_value($AL_CONF, 'allowvotes')=='1' );
       // Renouveler temps de vie du cookie
-      setcookie(COOKIE_RIGHTS_KEY, $RIGHTS_KEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT);
+      setcookie(COOKIE_RIGHTS_KEY.$codalbum, $RIGHTS_KEY, time() + SESSION_LIFE_RKEY, PUBLIC_ROOT);
       // Recuperer session
       $USER_SESSION   = get_arr_value($_COOKIE, COOKIE_USER_SESSION.$codalbum, make_rkey(14,'012345679VWXYZ'));
       // Refresh/Create USER_SESSION cookie
@@ -207,6 +207,8 @@
           $comments = str_replace('&Atilde;&reg;', '&icirc;', $comments);
           $comments = str_replace('&Atilde;&macr;', '&uml;', $comments);
           $comments = str_replace('&Atilde;&sect;', '&ccedil;', $comments);
+          $comments = str_replace('&acirc;&euro;&trade;', "'", $comments);
+
 
         // Enregistrer commentaire    
           $C = new LOG($comments_filename, false);

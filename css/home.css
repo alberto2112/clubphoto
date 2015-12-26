@@ -13,26 +13,12 @@
 
 /* TABLETS / LARGE SCREENS */
 @media (min-width: 641px){
-  .albums{
-    width:80%;
-  }
-  
   .ms-title{
     width:380px;
     padding:7px 0 7px 113px;
     position:absolute;
     top:197px;
     background-color: rgba(0,0,0,.25);
-  }
-  
-  .albums .card{
-    width:auto !important;
-    display:inline-block;
-    margin:2px;
-  }
-  
-  .info-photo{
-    width:186px;
   }
 }
 
@@ -75,32 +61,3 @@
   bottom:4.35em;
 */
 }
-.albums{
-  margin:0 auto;
-  padding:1em 0 3em 0;
-  text-align:center;
-}
-.info-photo{
-  display:block; 
-  /* width:186px; */
-  height:186px;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  position:relative;
-  color:#fff;
-  text-decoration: none;
-  padding:7px;
-  text-shadow: rgba(45,45,45,.6) 1px 1px;
-  text-align:left;
-}
-.info-nphotos{
-  /*display:block;*/
-  background:transparent url("../images/ico_photos_w_20x20.png") no-repeat 0 50%; 
-  padding:0 0 0 24px;
-  font-size:14px;
-  position:absolute;
-  bottom:7px;
-  right:5px;
-}
-.info-aname{}

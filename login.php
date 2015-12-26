@@ -5,7 +5,7 @@
   include_once SYSTEM_ROOT.LIB_DIR.'system.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
-  include_once SYSTEM_ROOT.LIB_DIR.'instapush.class.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'pushservice.class.php';
   include_once SYSTEM_ROOT.LIB_DIR.'push.lib.php';
   include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
 
@@ -17,12 +17,13 @@
     exit;
   }
 
-  $action = clear_request_param(getRequest_param(URI_QUERY_ACTION, 'show_form'), 'a-z', 8, false);
+  $pwd_file = SYSTEM_ROOT.ETC_DIR.'users.csv';
+  $action   = clear_request_param(getRequest_param(URI_QUERY_ACTION, 'show_form'), 'a-z', 8, false);
   $password = clear_request_param(getRequest_param(URI_QUERY_PASSWORD, ''), 'a-zA-Z0-9', 32, false);
-  $userid = clear_request_param(getRequest_param(URI_QUERY_USER, ''), 'a-zA-Z0-9', 32, false);
+  $userid   = clear_request_param(getRequest_param(URI_QUERY_USER, ''), 'a-zA-Z0-9', 32, false);
+  $users = array();
 
   if($action == 'login'){
-    $pwd_file = SYSTEM_ROOT.ETC_DIR.'users.csv';
     $IP       = getClient_ip();
     $push_sctrs = get_subscriptors(SYSTEM_ROOT.ETC_DIR);
     
@@ -48,9 +49,9 @@
         $LOG->insert('[!] Tentative de connexion avec un mot de passe invalide - uid='.$userid.' - ip='.$IP);
 
         // Send push notification
-        send_push_to($push_sctrs, InstaPush::getInstance('null','null'), 'loginfail', array('AdminID'=>$userid, 'RemoteIP'=>$IP));
+        send_push_to($push_sctrs, PushService::getInstance('null','null'), 'loginfail', array('AdminID'=>$userid, 'RemoteIP'=>$IP));
 /*
-        $push = InstaPush::getInstance(INSTAPUSH_APPLICATION_ID, INSTAPUSH_APPLICATION_SECRET);
+        $push = PushService::getInstance(INSTAPUSH_APPLICATION_ID, INSTAPUSH_APPLICATION_SECRET);
         $push->track('LoginFailure', array( 
                 'AdminID'=>$userid,
                 'RemoteIP'=>$IP
@@ -64,6 +65,15 @@
     }
     
     $LOG->close();
+  }else{
+    if(file_exists($pwd_file)){
+      foreach(file($pwd_file) as $user){
+        if(substr($user,0,1)!='#'){
+          $U = explode(';',$user,5);
+          $users[$U[1]] = rtrim($U[4]);
+        }
+      }
+    }
   }
 ?>
 <html>
@@ -74,8 +84,10 @@
     <script src="<?php echo PUBLIC_ROOT; ?>js/jquery.1.10.1.min.js"></script>
     <script src="<?php echo PUBLIC_ROOT; ?>js/fingerprint.js"></script>
     <script type="text/javascript">
-      var fgrpt = new Fingerprint({screen_resolution: true}).get();
-      $.post(<?php echo '"'.((SYS_HTTPS_AVAILABLE==true)?'https://':'http://').SITE_DOMAIN.PUBLIC_ROOT.RUN_DIR.'fingerprint.php", {'.URI_QUERY_ACTION.':"refresh", '.URI_QUERY_FINGERPRINT.':'; ?>fgrpt});
+      if(navigator.doNotTrack == 0) {
+        var fgrpt = new Fingerprint({screen_resolution: true}).get();
+        $.post(<?php echo '"'.((SYS_HTTPS_AVAILABLE==true)?'https://':'http://').SITE_DOMAIN.PUBLIC_ROOT.RUN_DIR.'fingerprint.php", {'.URI_QUERY_ACTION.':"refresh", '.URI_QUERY_FINGERPRINT.':'; ?>fgrpt});
+      }
     </script>
   </head>
   <body>
@@ -90,8 +102,14 @@
         <div class="select-box user">
           <select name="<?php echo URI_QUERY_USER; ?>">
             <option disabled selected style="display:none;">Choisissez administrateur</option>
-            <option value="1">Philippe</option>
-            <option value="2">Alberto</option>
+
+<?php
+  if(count($users)>0){
+    foreach($users as $uid=>$uname){
+      echo '            <option value="'.$uid.'">'.$uname.'</option>'."\n";
+    }
+  }
+?>
           </select>
         </div>
         <div class="text-box">

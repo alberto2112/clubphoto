@@ -27,13 +27,13 @@
     
     if($action=='test'){
       if(is_readable($config_filename)){
-        require_once SYSTEM_ROOT.LIB_DIR.'instapush.class.php';
+        require_once SYSTEM_ROOT.LIB_DIR.'pushservice.class.php';
         
         // Load config
         $C = include $config_filename;
         
         // Send push notification
-        $push = InstaPush::getInstance($C['appid'], $C['appsecret']);
+        $push = PushService::getInstance($C['appid'], $C['appsecret']);
         $result = $push->track('Test', array('domain'=>SITE_DOMAIN));
         
         $err = ($result)? 'TEST_OK':'FAILED_TEST';

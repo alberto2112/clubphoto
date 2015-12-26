@@ -17,7 +17,7 @@
 
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'log.class.php';
-  include_once SYSTEM_ROOT.LIB_DIR.'instapush.class.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'pushservice.class.php';
   include_once SYSTEM_ROOT.LIB_DIR.'push.lib.php';
 
   $VARLABELS = array(
@@ -137,7 +137,7 @@
         $AL_LOG->insert('[+] - ALBUM CREATED by '.$ADMIN_NAME.'  - '.$IP);
 
         // Send push notification
-        send_push_to($push_sctrs, InstaPush::getInstance('null','null'), 'newalbum', array('AdminName'=>$ADMIN_NAME, 'AlbumName'=>$albumname));
+        send_push_to($push_sctrs, PushService::getInstance('null','null'), 'newalbum', array('AdminName'=>$ADMIN_NAME, 'AlbumName'=>$albumname));
 
         // !! Ne pas ajouter -> break;
 
@@ -212,7 +212,7 @@
         $LOG->insert('[-] ['.$codalbum.'] -  ALBUM DELETED FROM TRASH by '.$ADMIN_NAME.'  - '.$IP, true);
 
         // Send push notification
-        send_push_to($push_sctrs, InstaPush::getInstance('null','null'), 'delalbum', array('AdminName'=>$ADMIN_NAME, 'AlbumName'=>$codalbum));
+        send_push_to($push_sctrs, PushService::getInstance('null','null'), 'delalbum', array('AdminName'=>$ADMIN_NAME, 'AlbumName'=>$codalbum));
       
         header('Location: '.PUBLIC_ROOT.ADMIN_DIR); exit;
         break;
@@ -231,7 +231,7 @@
         $LOG->insert('[-] ['.$codalbum.'] - ALBUM DELETED by '.$ADMIN_NAME.'  - '.$IP, true);
 
         // Send push notification
-        send_push_to($push_sctrs, InstaPush::getInstance('null','null'), 'delalbum', array('AdminName'=>$ADMIN_NAME, 'AlbumName'=>$codalbum));
+        send_push_to($push_sctrs, PushService::getInstance('null','null'), 'delalbum', array('AdminName'=>$ADMIN_NAME, 'AlbumName'=>$codalbum));
 
         header('Location: '.PUBLIC_ROOT.ADMIN_DIR); exit;
         break;

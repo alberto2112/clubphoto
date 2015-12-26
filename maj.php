@@ -20,6 +20,12 @@
 <!-- / Header -->
   <ul class="maj">
     <li>
+      <h2 class="date">27.11.2015</h2>
+      <ol>
+        <li>Adh&eacute;rents: Ranking g&eacute;neral de fin de p&eacute;riode de votes class&eacute; par: Moyenne(DESC), Nombre de votes(ASC) pour un r&eacute;sultat plus juste.</li>
+      </ol>
+    </li>
+    <li>
       <h2 class="date">14.05.2015</h2>
       <ol>
         <li>Administrateur: Implementation de notifications push (<a href="https://instapush.im">Instapush</a>)</li>
@@ -32,7 +38,7 @@
       <h2 class="date">30.04.2015</h2>
       <ol>
         <li>Site: Tatouage pour les photos post&eacute;s</li>
-        <li>Adherents: Statistiques d&eacute;tailles dans le dossier 'mes t&eacute;l&eacute;chargements'</li>
+        <li>Adh&eacute;rents: Statistiques d&eacute;tailles dans le dossier 'mes t&eacute;l&eacute;chargements'</li>
       </ol>
     </li>
   </ul>

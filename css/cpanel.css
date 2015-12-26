@@ -40,13 +40,21 @@ h4{margin:0;padding:0 0 .1em .45em;font-weight: 100;}
   word-wrap: break-word;
   overflow: hidden;
 }
-.nphotos{
-  background:transparent url(../images/ico_photos_b_16x16.png) no-repeat left 3px;
+.nphotos,
+.ntrash{
   padding-left:23px;
   float:right;
   color:inherit;
-  font-size:90%;
+  font-size:85%;
   width:1.85em;
+  height:17px;
+}
+
+.nphotos{
+  background:transparent url(../images/ico_photos_b_16x16.png) no-repeat left 2px;
+}
+.ntrash{
+  background:transparent url(../images/ico_delete_variant_g_16x16.png) no-repeat left 1px;
 }
 /*
 .album-thmbnl{

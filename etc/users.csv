@@ -1,3 +1,5 @@
-# hash(md5);  user_id;  user_level;  rights;  user_name
+# hash(md5);  user_id;  user_type;  rights;  user_name
 cf63b3e92dcaeed1c866f01095ab27e2;1;2;7;Philippe
-e10adc3949ba59abbe56e057f20f883e;2;1;7;Alberto
+177dacb14b34103960ec27ba29bd686b;2;1;7;Alberto
+4fd9d1e56b1d0c63ae625c2643dcc75e;3;2;7;David
+4fd9d1e56b1d0c63ae625c2643dcc75e;4;2;7;Sebastien

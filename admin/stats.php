@@ -6,6 +6,7 @@
   include_once SYSTEM_ROOT.LIB_DIR.'filesystem.lib.php';
   include_once SYSTEM_ROOT.LIB_DIR.'login.lib.php';
   include_once SYSTEM_ROOT.ETC_DIR.'photoinfo.csv.conf.php';
+  include_once SYSTEM_ROOT.LIB_DIR.'rate.lib.php';
   include_once SYSTEM_ROOT.ETC_DIR.'versions.php';
   include_once SYSTEM_ROOT.LIB_DIR.'csv.lib.php';
 
@@ -55,7 +56,7 @@
         echo '<td><input type="checkbox" id="p['.$nline.']" name="p['.$nline.']" value="'.$photo[0].'" onclick="javascript:countChecked();" '.(($selected)?'checked="checked" ':'').'/></td>';
         echo '<td>';
           echo '<a class="actionbtn download" href="download.php?'.URI_QUERY_ALBUM.'='.$codalbum.'&amp;'.URI_QUERY_PHOTO.'='.$photo[0].'">T&eacute;l&eacute;charger photo</a>';
-          echo '<a class="actionbtn sendhome disabled" href="#" onclick="javascript:ShowModalBox(\'mb-snd-home\')">Envoyer &aacute; l\'acueil</a>';
+          echo '<a class="actionbtn sendhome disabled" href="#" onclick="javascript:show_mb_send2home(\''.$photo[0].'\')">Envoyer &aacute; l\'acueil</a>';
         echo '</td>';
       echo '</tr>'."\n";
   }
@@ -89,6 +90,7 @@
       $AL_CONF = include SYSTEM_ROOT.ALBUMS_DIR.$codalbum.'/config.php';
 
   // Make sorted list of photos
+/*
     $i=0;
     $LoP = array();
     $aPoints = array();
@@ -117,7 +119,8 @@
 
     // Sort array of photos
     array_multisort($aPoints, SORT_DESC, $aVotes, SORT_ASC, $LoP);
-
+*/
+    $LoP = get_ranking($ALBUM_ROOT.'votes/');
 ?>
 <html>
   <head>
@@ -189,17 +192,35 @@
           <a href="#" class="button red" onClick="sndSelectedPhotos();">Continuer</a>
         </div>
       </div>
-      <!-- Modal box - Photos to flickr -->
+      <!-- / Modal box - Photos to flickr -->
       <!-- Modal box - send to home -->
       <div class="modal_box" id="mb-snd-home">
         <p>Envoyer photo &agrave; l'acueil</p>
-        <textarea name="phototitle">Photo la plus &eacute;toil&eacute;e pour l'album: blah blah blah blah</textarea>
+        <textarea id="txtPic2Home">Photo la plus &eacute;toil&eacute;e pour l'album: <?php echo $AL_CONF['albumname']; ?></textarea>
+        <input type="hidden" id="albumPic2Home" value="" />
+        <input type="hidden" id="photoPic2Home" value="" />
         <div class="btn_wraper">
           <a href="#" class="button gray" onClick="HideModalBoxes('mb-snd-home');">Annuler</a>
-          <a href="#" class="button red" onClick="sndSelectedPhotos();">Continuer</a>
+          <a href="#" class="button red" onClick="sndPic2Home();">Continuer</a>
         </div>
       </div>
-      <!-- Modal box - send to home -->
+      <!-- / Modal box - send to home -->
+      <!-- Modal box - msg ok -->
+      <div class="modal_box" id="mb-msg-ok">
+        <p>La photo a &eacute;t&eacute; bien envoy&eacute;e &agrave; l'acueil</p>
+        <div class="btn_wraper">
+          <a href="#" class="button green" onClick="HideModalBoxes('mb-msg-ok');">Continuer</a>
+        </div>
+      </div>
+      <!-- / Modal box - msg ok -->
+      <!-- Modal box - msg err -->
+      <div class="modal_box" id="mb-msg-error">
+        <p>Un erreur s'est produite !!</p>
+        <div class="btn_wraper">
+          <a href="#" class="button red" onClick="HideModalBoxes('mb-msg-error');">Et merde...</a>
+        </div>
+      </div>
+      <!-- / Modal box - msg err -->
     </div>
 <!-- / Modal boxes -->
   <div class="header">
@@ -273,6 +294,11 @@
       $(function(){
           $("table").stupidtable();
       });
+      
+      function show_mb_send2home(photoid){
+        $("#photoPic2Home").val(photoid);
+        ShowModalBox("mb-snd-home");
+      }
 
       function countChecked(){
         $("#chkbox_counter").text($("input[type=checkbox]:checked").length) ;
@@ -287,6 +313,31 @@
 
         //alert( selectedPhotos );
         document.location.href="<?php echo PUBLIC_ROOT.ADMIN_DIR.RUN_DIR.'flickr.php?'.URI_QUERY_ACTION.'=send&'.URI_QUERY_ALBUM.'='.$codalbum.'&'.URI_QUERY_PHOTO.'='  ?>"+selectedPhotos ;
+      }
+      
+      function sndPic2Home(){
+        //alert($('#photoPic2Home').val());
+        
+        var data = {"<?php echo URI_QUERY_COMMENTS; ?>": $("#txtPic2Home").val()};
+        var urlparams = "<?php echo URI_QUERY_ALBUM.'='.$codalbum.'&'.URI_QUERY_PHOTO.'='; ?>"+$("#photoPic2Home").val();
+        
+        HideModalBoxes("mb-snd-home");
+
+        $.ajax({
+          type: 'POST',
+          dataType: 'text',
+          //contentType: 'text/plain; charset=<?php echo CHARSET; ?>',
+          //scriptCharset: '<?php echo CHARSET; ?>',
+          url: '<?php echo ((SYS_HTTPS_AVAILABLE)?'https':'http').'://'.SITE_DOMAIN.PUBLIC_ROOT.ADMIN_DIR.RUN_DIR; ?>send_to_home.php?'+urlparams,
+          data: data,
+          success: function(data) {
+            if(data.length < 5){
+              ShowModalBox("mb-msg-ok");
+            }else{
+              ShowModalBox("mb-msg-error");
+            }
+          }
+        });
       }
     </script>
   </body>

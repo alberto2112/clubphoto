@@ -132,6 +132,11 @@ h1.instance-header{
     color:#888;
   }
 
+  .card .row{
+    padding-top:5px;
+    padding-bottom:5px;
+  }
+
   .card .row,
   .card ul.row li{
     border-color:#E1E1E1;
